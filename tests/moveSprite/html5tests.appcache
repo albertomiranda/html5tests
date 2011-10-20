@@ -1,0 +1,16 @@
+CACHE MANIFEST
+      
+# This is a comment
+
+CACHE:
+/css/default.css
+/js/models/Player.class.js
+/js/crafty.js
+/js/game.js
+/img/soccer_field.gif
+/sprites/rpg.png
+/sprites/aus.png
+/sprites/kaioh.png
+
+NETWORK:
+* 

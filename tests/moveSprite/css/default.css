@@ -1,0 +1,33 @@
+/* 
+    Document   : default
+    Created on : Oct 19, 2011, 8:41:43 PM
+    Author     : Alberto Miranda <alberto@nextive.com>
+    Description:
+        Default styles for HTML Tests
+*/
+
+@font-face {
+  font-family: 'Arvo';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Arvo'), url('http://themes.googleusercontent.com/font?kit=vvWPwz-PlZEwjOOIKqoZzA') format('truetype');
+}
+
+body{
+    font:normal normal normal 12px arial;
+}
+
+h1{
+    font:normal normal normal 22px arvo;
+    background: dodgerblue;
+    padding:4px;
+}
+
+h1 .title{
+    font-size:30px;
+}
+
+h1 .subtitle{
+    color:white;
+}
+
