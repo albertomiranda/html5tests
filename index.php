@@ -15,7 +15,7 @@
     }
 ?>
 <!doctype html>
-<html lang="en">
+<html lang="en" manifest="html5tests.appcache">
     <head>
         <meta charset="utf-8">
         
