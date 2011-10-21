@@ -34,4 +34,4 @@ var Global = {
           }
         }, false);
     }
-}
+};
