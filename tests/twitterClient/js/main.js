@@ -8,7 +8,7 @@
 
 //------------------------------------------------------------------------------
 //REQUIRES
-require(["app/twitter/Tweet.class"], function() {
+require(["app/twitter/Twitt.class", "lib/mustache", "templates/twitt.template"], function() {
     //required js files was just loaded
 });
 //------------------------------------------------------------------------------
@@ -22,6 +22,7 @@ $(document).ready(function(){
 //------------------------------------------------------------------------------
 
 Voxine = {};
+Voxine.templates = {};
 Voxine.tools = {
     "isMobile": function(){
         //mobile detection
@@ -47,7 +48,7 @@ Voxine.tools = {
     },
     
     "runTests": function(){
-        var tweetData = {
+        var twittData = {
             "created_at": "Wed, 19 Jan 2011 21:16:37 +0000",
             "profile_image_url": "http://a2.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
             "from_user_id_str": "191709163",
@@ -66,7 +67,7 @@ Voxine.tools = {
             "to_user_id_str": null
         };
         
-        var Tweet = new Voxine.twitter.Tweet(tweetData);
-        console.log(Tweet);
+        var Twitt = new Voxine.twitter.Twitt(twittData);
+        console.log(Twitt.getHtml());
     }
 };
