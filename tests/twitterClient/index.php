@@ -22,7 +22,7 @@
         <script> google.load("jquery", "1.6.3"); </script>
         
         <!-- default javascript content -->
-        <script src="js/default.js"></script> 
+        <script data-main="js/main" src="js/lib/require.js"></script>
     </head>
     <body>
         <header>
