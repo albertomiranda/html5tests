@@ -18,13 +18,23 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
+        
+        <!-- mobile meta tags -->
         <meta class="meta_disable_zoom" name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <link rel="apple-touch-icon" href="images/identity/HTML5_Badge_64.png" />
+        <link rel="apple-touch-icon-precomposed" href="images/identity/HTML5_Badge_64.png" />
+        
         <title><?php echo "$title: $subtitle"; ?></title>
         <link href="css/default.css" rel="stylesheet" />
         
         <!-- jQuery -->
         <script src="http://www.google.com/jsapi"></script>
         <script> google.load("jquery", "1.6.3"); </script>
+        
+        <!-- default javascript content -->
+        <script src="js/default.js"></script> 
     </head>
     <body>
         <header>
