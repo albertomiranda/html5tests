@@ -1,1 +1,5 @@
 AddType text/cache-manifest .appcache
+AuthType Basic
+AuthName "Password Required"
+AuthUserFile /etc/apache2/password
+#Require user code
