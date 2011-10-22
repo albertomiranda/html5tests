@@ -1,16 +1,41 @@
+/**
+ * Tools.
+ * 
+ * @author Alberto Miranda <alberto@nextive.com>
+ * @author Esteban Abait <esteban.abait@nextive.com>
+ */
 define(["app/twitter/Twitt.class"], function(Twitt) {
+    /**
+     * Returns true if we are currently running in a mobile device.
+     * 
+     * @author Alberto Miranda <alberto@nextive.com>
+     * @return boolean
+     */
     var isMobile = function(){
         //mobile detection
         var mobile = (/iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase()));  
-        if (mobile) {  
-            alert('Enjoy your mobile experience!');
-            // Hides mobile browser's address bar when page is done loading.
-            window.addEventListener('load', function(e) {
-                setTimeout(function() {window.scrollTo(0, 1);}, 1);
-            }, false);
-        }
+        return mobile;
+    };
+    
+    /**
+     * Runs a display change to make evident you're on a mobile device.
+     * 
+     * @author Alberto Miranda <alberto@nextive.com>
+     */
+    var welcomeMobile = function(){
+        alert('Enjoy your mobile experience!');
+        // Hides mobile browser's address bar when page is done loading.
+        window.addEventListener('load', function(e) {
+            setTimeout(function() {window.scrollTo(0, 1);}, 1);
+        }, false);
     };
 
+    /**
+     * Checks if a appcache was updated.
+     * If updated asks the user to reload the page.
+     * 
+     * @author Alberto Miranda <alberto@nextive.com>
+     */
     var checkCacheUpdate = function(){
         window.applicationCache.addEventListener('updateready', function(e) {
           if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
@@ -22,6 +47,11 @@ define(["app/twitter/Twitt.class"], function(Twitt) {
         }, false);
     };
     
+    /**
+     * Runs a predefined set of tests.
+     * 
+     * @author Alberto Miranda <alberto@nextive.com>
+     */
     var runTests = function(){
         var data = {
             "created_at": "Wed, 19 Jan 2011 21:16:37 +0000",
@@ -45,9 +75,13 @@ define(["app/twitter/Twitt.class"], function(Twitt) {
         console.log(Twitt1);
     };
     
+    /**
+     * Return public methods and properties
+     */
     return {
-    	isMobile : isMobile,
-    	checkCaheUpdate : checkCacheUpdate,
-    	runTests : runTests
+    	isMobile: isMobile,
+    	checkCaheUpdate: checkCacheUpdate,
+    	runTests: runTests,
+        welcomeMobile: welcomeMobile
     };
 });

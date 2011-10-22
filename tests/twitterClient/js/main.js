@@ -7,21 +7,23 @@
  * @author Esteban Abait <esteban.abait@nextive.com>
  */
 //------------------------------------------------------------------------------
-Voxine = {};
-Voxine.templates = {};
-Voxine.Tools = {};
+Voxine = {}; //we want Voxine to be globally accessible (one global to rule them all!)
+//Voxine.templates = {};
+//Voxine.Tools = {};
 require(
     [
+        "Voxine/tools/Tools.class",
+        "Voxine/core/Namespace.class",
         "app/twitter/Twitt.class",
-        "app/tools/Tools.class",
         "templates/twitt.template",
         "lib/mustache"
     ], 
-    function(Twitt, Tools, twittTemplate) {
-        Voxine.Tools = Tools;
-        Voxine.templates.twittTemplate = twittTemplate;
+    function(Tools, Voxine, Twitt, twittTemplate) {
+        //init Voxine namespaces
+        Voxine.namespace('Voxine.Tools', Tools);
+        Voxine.namespace('Voxine.templates.twittTemplate', twittTemplate);
         
-	//INIT
+        //start
         $(document).ready(function(){
             Voxine.Tools.isMobile();
             Voxine.Tools.runTests();
