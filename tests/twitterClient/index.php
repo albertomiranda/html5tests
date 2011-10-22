@@ -3,7 +3,7 @@
     $subtitle = "Twitter Client";
 ?>
 <!doctype html>
-<html lang="en" manifest="html5tests.appcache">
+<html lang="en" manifest="appcache.php">
     <head>
         <meta charset="utf-8">
         

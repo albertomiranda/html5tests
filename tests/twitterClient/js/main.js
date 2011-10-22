@@ -25,7 +25,9 @@ require(
         
         //start
         $(document).ready(function(){
-            Voxine.Tools.isMobile();
+            if(Voxine.Tools.isMobile()){
+                Voxine.Tools.welcomeMobile();
+            }
             Voxine.Tools.runTests();
         });
     }
