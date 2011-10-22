@@ -30,7 +30,7 @@
         </header>
         
         <section>
-            <div id="twitts">
+            <div id="tweets">
                 
             </div>
         </section>
