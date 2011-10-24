@@ -5,6 +5,9 @@
  * @author Esteban Abait <esteban.abait@nextive.com>
  */
 define(["app/twitter/Twitt.class"], function(Twitt) {
+	
+	var m = '';
+	
     /**
      * Returns true if we are currently running in a mobile device.
      * 
@@ -75,6 +78,9 @@ define(["app/twitter/Twitt.class"], function(Twitt) {
         console.log(Twitt1);
     };
     
+    var setM = function(m) { this.m = m; };
+    var getM = function() { return this.m; };
+    
     /**
      * Return public methods and properties
      */
@@ -82,6 +88,8 @@ define(["app/twitter/Twitt.class"], function(Twitt) {
     	isMobile: isMobile,
     	checkCaheUpdate: checkCacheUpdate,
     	runTests: runTests,
-        welcomeMobile: welcomeMobile
+        welcomeMobile: welcomeMobile,
+        setM : setM,
+        getM : getM
     };
 });

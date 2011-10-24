@@ -15,13 +15,17 @@ require(
         "Voxine/tools/Tools.class",
         "Voxine/core/Namespace.class",
         "app/twitter/Twitt.class",
+        "app/twitter/Twitter.class",
         "templates/twitt.template",
         "lib/mustache"
     ], 
-    function(Tools, Voxine, Twitt, twittTemplate) {
+    function(Tools, Voxine, Twitt, Twitter, twittTemplate) {
         //init Voxine namespaces
         Voxine.namespace('Voxine.Tools', Tools);
         Voxine.namespace('Voxine.templates.twittTemplate', twittTemplate);
+        
+        Tools.setM('pepepe');
+        Twitter.whatever();
         
         //start
         $(document).ready(function(){
@@ -30,6 +34,7 @@ require(
             }
             Voxine.Tools.runTests();
         });
+        alert(Tools.getM());
     }
 );
 //------------------------------------------------------------------------------

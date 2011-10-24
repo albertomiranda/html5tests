@@ -6,6 +6,7 @@
  * @author Esteban Abait <esteban.abait@nextive.com>
  */
 define(function (data) {
+	
     return function(data){
         /**
          * Returns Twitt in HTML format, ready to display.
