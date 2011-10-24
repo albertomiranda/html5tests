@@ -1,10 +1,11 @@
-define(['Voxine/tools/Tools.class'], function (Tools, data) {
+define(["jQuery", "app/twitter/Twitt.class"], function ($, Twitt) {
 	
-	var whatever = function() {
-		alert(Tools.getM());
-		Tools.setM('rgsdfgnn');
+	var lastId = 0;
+	
+	var getTweets = function() {
+		console.log($);
 	}
 	return {
-		whatever : whatever
+		getTweets : getTweets
 	}
 });

@@ -17,12 +17,7 @@
         <title><?php echo "$title: $subtitle"; ?></title>
         <link href="css/default.css" rel="stylesheet" />
         
-        <!-- jQuery -->
-        <script src="http://www.google.com/jsapi"></script>
-        <script> google.load("jquery", "1.6.3"); </script>
-        
-        <!-- default javascript content -->
-        <script data-main="js/main" src="js/lib/require.js"></script>
+		<script data-main="js/main" src="js/lib/require.js"></script>
     </head>
     <body>
         <header>
