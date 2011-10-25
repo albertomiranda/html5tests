@@ -14,7 +14,7 @@ define([
       Voxine.namespace('Voxine.Tools', Tools);
       Voxine.namespace('Voxine.templates.twittTemplate', twittTemplate);
       
-      Twitter.getTweets({q:"Bieber"}, function(tweetList) { console.log(tweetList); });
+      Twitter.getTweets({q:"Handball"}, function(tweetList) { console.log(tweetList); });
       
       //start
       $(document).ready(function(){
