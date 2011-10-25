@@ -16,13 +16,6 @@
         
         <title><?php echo "$title: $subtitle"; ?></title>
         <link href="css/default.css" rel="stylesheet" />
-        
-        <!-- jQuery + jQuery Mobile-->
-        <script src="http://www.google.com/jsapi"></script>
-        <script> google.load("jquery", "1.6.3"); </script>
-        
-        <!-- default javascript content -->
-        <script data-main="js/main" src="js/lib/require.js"></script>
     </head>
     <body>
         <header>
@@ -41,5 +34,8 @@
             <div>@author Alberto Miranda <a href="mailto:alberto@nextive.com">&lt;alberto@nextive.com&gt;</a></div>
             <div>@author Esteban Abait <a href="mailto:esteban.abait@nextive.com">&lt;esteban.abait@nextive.com&gt;</a></div>
         </footer>
+        
+        <!-- default javascript content -->
+        <script data-main="js/main" src="js/lib/require.js"></script>
     </body>
 </html>
