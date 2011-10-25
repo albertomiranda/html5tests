@@ -16,6 +16,9 @@
         
         <title><?php echo "$title: $subtitle"; ?></title>
         <link href="css/default.css" rel="stylesheet" />
+        
+        <!-- TODO Update cache manifest with this as well -->
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0rc2/jquery.mobile-1.0rc2.min.css" />
     </head>
     <body>
         <header>

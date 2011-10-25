@@ -1,6 +1,7 @@
 // Filename: app.js
 define([
   'jQuery',
+  'jQueryMobile',
   "Voxine/tools/Tools.class",
   "Voxine/core/Namespace.class",
   "app/twitter/models/Twitt.class",
@@ -8,7 +9,7 @@ define([
   "templates/twitt.template",
   "app/twitter/Bindings.class",
   "lib/mustache"
-], function($, Tools, Voxine, Twitt, TwitterController, twittTemplate, Bindings){
+], function($, jQMobile, Tools, Voxine, Twitt, TwitterController, twittTemplate, Bindings){
     var initialize = function(){
         //init Voxine namespaces	
         Voxine.namespace('Voxine.Tools', Tools);
@@ -25,6 +26,7 @@ define([
             
             //detect mobile
             if(Voxine.Tools.isMobile()) Voxine.Tools.welcomeMobile();
+           
             //Voxine.Tools.runTests();
         });
     }

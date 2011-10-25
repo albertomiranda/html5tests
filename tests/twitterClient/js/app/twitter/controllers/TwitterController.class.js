@@ -6,9 +6,13 @@
  * @author Alberto Miranda <alberto@nextive.com>
  * @author Esteban Abait <esteban.abait@nextive.com>
  */
-define(["app/twitter/models/Twitter.class", "app/twitter/models/Twitt.class", "lib/mustache"], function(Twitter, Twitt) {
+define(["app/twitter/models/Twitter.class", 
+        "app/twitter/models/Twitt.class", 
+        "lib/mustache", 
+        "jQueryMobile"], function(Twitter, Twitt) {
     var getTweets = function(){
-        Twitter.getTweets({q:"Handball"}, function(data) { Voxine.TwitterController.render(data) });
+        $.mobile.showPageLoadingMsg();
+        Twitter.getTweets({q:"Handball"}, function(data) { Voxine.TwitterController.render(data); $.mobile.hidePageLoadingMsg(); });
     };
     
     var render = function(data){
