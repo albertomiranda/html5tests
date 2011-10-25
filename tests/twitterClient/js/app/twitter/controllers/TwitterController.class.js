@@ -21,6 +21,11 @@ define(["app/twitter/models/Twitter.class", "app/twitter/models/Twitt.class", "l
         });
         $('#getTwitts').hide();
         $('#twitts').html(html);
+        
+        //attach events
+        $('.twitt').click(function(){
+            alert("Selected Twitt ID: " + this.id);
+        });
     };
     
     return {

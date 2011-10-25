@@ -1,6 +1,6 @@
 define(function () {
 return "\
-<div class='twitt'>\
+<div class='twitt' id='{{id_str}}'>\
     <div>\
         <span class='title'>@author</span> <span class='author'>{{from_user}}</span>\
     </div>\

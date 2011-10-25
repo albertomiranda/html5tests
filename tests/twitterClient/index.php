@@ -31,7 +31,7 @@
         
         <section>
             <div id="twitts">
-                
+                No Twitts loaded
             </div>
             <input id="getTwitts" type="button" value="Get Twitts!" />
         </section>

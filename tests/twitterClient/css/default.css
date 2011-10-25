@@ -81,13 +81,26 @@ footer a{
     color:#eee;
 }
 
+#twitts{
+    background:#ccc;
+    padding:15px;
+    border-radius:10px;
+    margin:5px 0;
+}
+
 .twitt{
     background:#eee;
     padding:5px;
     border-bottom:1px solid black;
+    border-top:1px solid white;
 }
 
 .twitt .title{
     color:cornflowerblue;
     font:normal normal bold;
+}
+
+.twitt:hover{
+    background:moccasin;
+    cursor:pointer;
 }
