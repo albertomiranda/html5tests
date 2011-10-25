@@ -1,4 +1,4 @@
-define(["jQuery"], function ($) {
+define("app/twitter/models/Twitter.class", ["jQuery"], function ($) {
 	var lastId = 0;
 	
 	/**
@@ -8,11 +8,11 @@ define(["jQuery"], function ($) {
 	 * Takes as input a config object, more parameters can
 	 * be added to reflect the Twitter API.
 	 * 
-	 * @method getTweets
-	 * @param Object {q: query}
-	 * @param Function callback
-	 * @return the result of applying the callback to the twitter call or
-	 * 		   {error: errorThrown} in case of an error.
+	 * @method 	getTweets
+	 * @param 	Object {q: query}
+	 * @param 	Function callback
+	 * @return 	the result of applying the callback to the twitter call or
+	 * 		   	{error: errorThrown} in case of an error.
 	 */
 	var getTweets = function(searchConfig, callback) {
 		var q = searchConfig.q;
