@@ -47,7 +47,7 @@ define("app/twitter/models/Twitter.class", ["jQuery"], function ($) {
 		var q = searchConfig.q;
 		var sinceId = searchConfig.sinceId;
 		var url = "http://search.twitter.com/search.json?q=%40" + q + "&since_id=" + sinceId;
-		this.ajaxCall(url, callback);
+		ajaxCall(url, callback);
 	};
 	
 	 /** 
@@ -65,7 +65,7 @@ define("app/twitter/models/Twitter.class", ["jQuery"], function ($) {
 	var getUser = function(searchConfig, callback) {
 		var q = searchConfig.q;
 		var url = "http://api.twitter.com/1/users/lookup.json?q=%40" + q;
-		this.ajaxCall(url, callback);
+		ajaxCall(url, callback);
 	};
 	
 	return {
