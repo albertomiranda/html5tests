@@ -15,7 +15,7 @@ define(["app/twitter/models/Twitter.class", "app/twitter/models/Twitt.class", "l
         
         //render
         var html = '';
-        var template = Voxine.templates.twittTemplate;
+        var template = Voxine.templates.twitt;
         $.each(twitts, function(i, twitt){
             html+=Mustache.to_html(template, twitt);
         });

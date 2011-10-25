@@ -26,7 +26,7 @@ require(
         Voxine.namespace('Voxine.Tools', Tools);
         Voxine.namespace('Voxine.Twitter', Twitter);
         Voxine.namespace('Voxine.HtmlRenderer', HtmlRenderer);
-        Voxine.namespace('Voxine.templates.twittTemplate', twittTemplate);
+        Voxine.namespace('Voxine.templates.twitt', twittTemplate);
         
         //set default bindings
         Bindings.apply();
