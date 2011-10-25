@@ -7,16 +7,17 @@
  * @author Esteban Abait <esteban.abait@nextive.com>
  */
 define(["app/twitter/models/Twitter.class", "app/twitter/models/Twitt.class", "lib/mustache"], function(Twitter, Twitt) {
-    var load = function(){
-        var data = Voxine.Twitter.getTwitts();
-        var twitts = data.results;
-        //console.log(twitts);
-        //Voxine.HtmlRenderer.render(twitts.results);
+    var getTweets = function(){
+        Twitter.getTweets({q:"Handball"}, function(data) { Voxine.TwitterController.render(data) });
+    };
+    
+    var render = function(data){
+        var tweets = data.results;
         
         //render
         var html = '';
         var template = Voxine.templates.twitt;
-        $.each(twitts, function(i, twitt){
+        $.each(tweets, function(i, twitt){
             html+=Mustache.to_html(template, twitt);
         });
         $('#getTwitts').hide();
@@ -26,9 +27,10 @@ define(["app/twitter/models/Twitter.class", "app/twitter/models/Twitt.class", "l
         $('.twitt').click(function(){
             alert("Selected Twitt ID: " + this.id);
         });
-    };
+    }
     
     return {
-        "load": load
+        "getTweets": getTweets,
+        "render": render
     };
 });

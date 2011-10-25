@@ -12,22 +12,19 @@ define(function() {
     //add namespace support
     Voxine.namespace = function(namespace, data) {
         if(data==undefined) data = {};
-        var parts = namespace.split('.')
-        var parent = Voxine
+        var parts = namespace.split('.');
+        var parent = Voxine;
         
         //strip redundant leading global
         if (parts[0] === 'Voxine') parts = parts.slice(1);
 
-        for (var i = 0; i < parts.length; i += 1) {
+        for (var i = 0; i < parts.length; ++i) {
             //create a property if it doesn't exist
             if (typeof parent[parts[i]] === "undefined") parent[parts[i]] = {};
+            if(i+1>=parts.length) parent[parts[i]] = data; //assign data to last node
             parent = parent[parts[i]];
         }
-        
-        //assign passed data and return object
-        eval(namespace + "= data");
         return parent;
     };
-    
     return Voxine;
 });

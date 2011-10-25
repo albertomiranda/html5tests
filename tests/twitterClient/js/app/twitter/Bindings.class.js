@@ -11,7 +11,7 @@ define(['app/twitter/controllers/TwitterController.class'], function(TwitterCont
                 //alert('Loading Twitts...');
                 
                 //load twitts
-                TwitterController.load();
+                TwitterController.getTweets();
             });
         }
     };
