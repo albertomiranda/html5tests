@@ -14,8 +14,7 @@ define([
       Voxine.namespace('Voxine.Tools', Tools);
       Voxine.namespace('Voxine.templates.twittTemplate', twittTemplate);
       
-      Tools.setM('pepepe');
-      Twitter.getTweets();
+      Twitter.getTweets({q:"Bieber"}, function(tweetList) { console.log(tweetList); });
       
       //start
       $(document).ready(function(){
@@ -24,7 +23,6 @@ define([
           }
           Voxine.Tools.runTests();
       });
-      alert(Tools.getM());
   }
 
   return { 
