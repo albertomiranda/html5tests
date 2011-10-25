@@ -2,6 +2,15 @@ define(["jQuery", "app/twitter/Twitt.class"], function ($, Twitt) {
 	
 	var lastId = 0;
 	
+	/**
+	 * This method makes a JSONP call to the
+	 * Twitter's API, and then calls a callback on the results.
+	 * 
+	 * Takes as input a config object, more parameters can
+	 * be added to reflect to Twitter API.
+	 * 
+	 * @param Object {q: query}
+	 */
 	var getTweets = function(searchConfig, callback) {
 		var q = searchConfig.q;
 		
