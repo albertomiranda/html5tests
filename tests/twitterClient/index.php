@@ -17,7 +17,7 @@
         <title><?php echo "$title: $subtitle"; ?></title>
         <link href="css/default.css" rel="stylesheet" />
         
-        <!-- jQuery -->
+        <!-- jQuery + jQuery Mobile-->
         <script src="http://www.google.com/jsapi"></script>
         <script> google.load("jquery", "1.6.3"); </script>
         
@@ -33,6 +33,7 @@
             <div id="twitts">
                 
             </div>
+            <input id="getTwitts" type="button" value="Get Twitts!" />
         </section>
         
         <footer>

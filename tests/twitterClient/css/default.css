@@ -80,3 +80,14 @@ footer a{
     display:inline;
     color:#eee;
 }
+
+.twitt{
+    background:#eee;
+    padding:5px;
+    border-bottom:1px solid black;
+}
+
+.twitt .title{
+    color:cornflowerblue;
+    font:normal normal bold;
+}

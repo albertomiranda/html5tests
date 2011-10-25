@@ -4,7 +4,7 @@
  * @author Alberto Miranda <alberto@nextive.com>
  * @author Esteban Abait <esteban.abait@nextive.com>
  */
-define(["app/twitter/Twitt.class"], function(Twitt) {
+define(["app/twitter/models/Twitt.class"], function(Twitt) {
 	
 	var m = '';
 	

@@ -12,29 +12,32 @@ Voxine = {}; //we want Voxine to be globally accessible (one global to rule them
 //Voxine.Tools = {};
 require(
     [
+        "app/twitter/models/Twitter.class",
         "Voxine/tools/Tools.class",
         "Voxine/core/Namespace.class",
-        "app/twitter/Twitt.class",
-        "app/twitter/Twitter.class",
+        "app/twitter/models/Twitt.class",
         "templates/twitt.template",
+        "app/twitter/Bindings.class",
+        //"Voxine/renderers/HtmlRenderer.class",
         "lib/mustache"
     ], 
-    function(Tools, Voxine, Twitt, Twitter, twittTemplate) {
+    function(Twitter, Tools, Voxine, Twitt, twittTemplate, Bindings, HtmlRenderer) {
         //init Voxine namespaces
         Voxine.namespace('Voxine.Tools', Tools);
+        Voxine.namespace('Voxine.Twitter', Twitter);
+        Voxine.namespace('Voxine.HtmlRenderer', HtmlRenderer);
         Voxine.namespace('Voxine.templates.twittTemplate', twittTemplate);
         
-        Tools.setM('pepepe');
-        Twitter.whatever();
+        //set default bindings
+        Bindings.apply();
         
         //start
         $(document).ready(function(){
             if(Voxine.Tools.isMobile()){
                 Voxine.Tools.welcomeMobile();
             }
-            Voxine.Tools.runTests();
+            //Voxine.Tools.runTests();
         });
-        alert(Tools.getM());
     }
 );
 //------------------------------------------------------------------------------
