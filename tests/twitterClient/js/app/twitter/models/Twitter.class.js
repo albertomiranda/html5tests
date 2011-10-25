@@ -1,11 +1,16 @@
+/**
+ * Twitter interface.
+ * Provides methods to get data from Twitter.
+ * 
+ * @author Alberto Miranda <alberto@nextive.com>
+ * @author Esteban Abait <esteban.abait@nextive.com>
+ */
 define("app/twitter/models/Twitter.class", ["jQuery"], function ($) {
-	var lastId = 0;
-	
+
 	/**
 	 * This method makes a JSONP call to the
 	 * Twitter's API, and then calls a callback on the results.
 	 * 
-	 * @method 	ajaxCall
 	 * @param 	String url
 	 * @param 	Function callback
 	 * @return 	applies the callback to the results of the twitter call or
@@ -34,7 +39,6 @@ define("app/twitter/models/Twitter.class", ["jQuery"], function ($) {
 	 * Search arguments must be specified as following
 	 * searchConfig = {q: query, sinceId: tweetId}
 	 * 
-	 * @method 	getTweets
 	 * @param 	Object searchConfig
 	 * @param 	Function callback
 	 * @return  Applies a callback to a list of tweets.
@@ -54,7 +58,6 @@ define("app/twitter/models/Twitter.class", ["jQuery"], function ($) {
 	 * Search arguments must be specified as following
 	 * searchConfig = {q: [userID | username | both] }
 	 * 
-	 * @method 	getTweets
 	 * @param 	Object searchConfig
 	 * @param 	Function callback
 	 * @return  Applies a callback to a list of tweets.
