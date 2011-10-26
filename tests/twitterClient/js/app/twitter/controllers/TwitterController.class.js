@@ -22,11 +22,14 @@ define(["app/twitter/models/Twitter.class",
         var html = '';
         var template = Voxine.templates.twitt;
         $.each(tweets, function(i, twitt){
+        	var created_at = new Date(twitt.created_at);
+        	twitt.created_at = created_at.getFullYear() + '/' + created_at.getMonth() + '/' + created_at.getDay();
             html+=Mustache.to_html(template, twitt);
         });
-        $('#getTwitts').hide();
-        $('#twitts').html(html);
         
+        $('#getTwitts').hide();
+        $('#twitts').html("<ul data-role='listview' data-theme='g' id='twittList'>" + html + "</ul>");
+        $('#twittList').listview(); //apply jquery mobile's styles to the list
         //attach events
         $('.twitt').click(function(){
             alert("Selected Twitt ID: " + this.id);
