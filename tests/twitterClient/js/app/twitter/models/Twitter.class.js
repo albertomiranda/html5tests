@@ -46,7 +46,7 @@ define("app/twitter/models/Twitter.class", ["jQuery"], function ($) {
 	var getTweets = function(searchConfig, callback) {
 		var q = searchConfig.q;
 		var sinceId = searchConfig.sinceId;
-		var url = "http://search.twitter.com/search.json?q=%40" + q + "&since_id=" + sinceId;
+		var url = "http://search.twitter.com/search.json?q=%20" + q + "&since_id=" + sinceId;
 		ajaxCall(url, callback);
 	};
 	
