@@ -1,3 +1,7 @@
+<?php 
+    $title = "HTML5 Tests";
+    $subtitle = "Twitter Client";
+?>
 <!doctype html>
 <html lang="en" manifest="appcache.php">
     <head>
@@ -10,7 +14,7 @@
         <link rel="apple-touch-icon" href="images/identity/HTML5_Badge_64.png" />
         <link rel="apple-touch-icon-precomposed" href="images/identity/HTML5_Badge_64.png" />
         
-        <title>HTML5 Tests: Twitter Client</title>
+        <title><?php echo "$title: $subtitle"; ?></title>
         
         <!-- TODO Update cache manifest with this as well -->
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0rc2/jquery.mobile-1.0rc2.min.css" />
@@ -19,7 +23,7 @@
     	<div data-role="page">
     	
     		<div data-role="header">
-				<h1>HTML5 Tests: Twitter Client</h1>
+				<h1><?php echo $title . ": " . $subtitle; ?></h1>
 				<a href="../../index.html" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
 			</div>
 
