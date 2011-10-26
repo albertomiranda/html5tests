@@ -28,7 +28,7 @@
 			</div>
 
 			<div data-role="content">
-				<a href="index.html" id="getTwitts" data-role="button">Get Twitts!</a>
+				<a href="javascript:void(0)" id="getTwitts" data-role="button">Get Twitts!</a>
 			   	<div id="twitts">
 				</div>
         	</div>
