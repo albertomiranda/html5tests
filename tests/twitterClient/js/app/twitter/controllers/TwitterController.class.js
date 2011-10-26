@@ -12,7 +12,7 @@ define(["app/twitter/models/Twitter.class",
         "jQueryMobile"], function(Twitter, Twitt) {
     var getTweets = function(){
         $.mobile.showPageLoadingMsg();
-        Twitter.getTweets({q:"Handball"}, function(data) { Voxine.TwitterController.render(data); $.mobile.hidePageLoadingMsg(); });
+        Twitter.getTweets({q:"HTML5"}, function(data) { Voxine.TwitterController.render(data); $.mobile.hidePageLoadingMsg(); });
     };
     
     var render = function(data){
