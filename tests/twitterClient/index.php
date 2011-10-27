@@ -30,7 +30,7 @@
 			<div data-role="content">
 				<div data-role="fieldcontain" class="ui-hide-label">
 		         	<label for="search">Search twitter:</label>
-		         	<input type="search" name="searchTwitter" id="searchTwitter" value=""  />
+		         	<input type="search" name="searchTwitter" id="searchTwitter" value="HTML5"  />
 		         	<a href="javascript:void(0)" id="getTwitts" data-role="button">Get Twitts!</a>
 				</div>
 				
