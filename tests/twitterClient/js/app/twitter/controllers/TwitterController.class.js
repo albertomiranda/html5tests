@@ -32,8 +32,15 @@ define(["app/twitter/models/Twitter.class",
         $('#twitts').html("<ul data-role='listview' data-theme='g' id='twittList'>" + html + "</ul>");
         $('#twittList').listview(); //apply jquery mobile's styles to the list
         //attach events
-        $('.twitt').click(function(){
-            alert("Selected Twitt ID: " + this.id);
+        $('.twitt').click(function() {
+        	var id = this.id, i;
+        	
+        	for (i=0; i<tweets.length; i++) {
+        		if (tweets[i].id == id) {
+        			$('#twitt-dialog-content').html('<p>' + tweets[i].text + '</p>');
+        		}
+        	}
+        	$.mobile.changePage($('#twitt-dialog'), {transition: 'pop', role: 'dialog'});
         });
     }
     

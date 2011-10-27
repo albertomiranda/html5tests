@@ -8,8 +8,6 @@ define(['app/twitter/controllers/TwitterController.class'], function(TwitterCont
         "apply": function(){
             //define bindings here
             $('#getTwitts').click(function(){
-                //alert('Loading Twitts...');
-                
                 //load twitts
                 TwitterController.getTweets($('#searchTwitter').val());
             });

@@ -43,6 +43,15 @@
 	            <h6>@author Esteban Abait <a href="mailto:esteban.abait@nextive.com">&lt;esteban.abait@nextive.com&gt;</a></h6>
 	        </div>
         </div>
+       	<!-- DIALOGS -->
+	    <div data-role="dialog" role="dialog" id="twitt-dialog">
+			<div data-role="header" data-theme="b">
+				<h1 id="twitt-dialog-header">Tweet</h1>
+			</div>
+			<div data-role="content">
+				<div id='twitt-dialog-content'></div>
+			</div>
+		</div>
         <!-- default javascript content -->
         <script data-main="js/main" src="js/lib/require.js"></script>
     </body>
