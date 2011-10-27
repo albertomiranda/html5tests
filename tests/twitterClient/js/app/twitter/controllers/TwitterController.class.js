@@ -33,13 +33,14 @@ define(["app/twitter/models/Twitter.class",
         $('#twittList').listview(); //apply jquery mobile's styles to the list
         //attach events
         $('.twitt').click(function() {
-        	var id = this.id, i;
+        	var id = this.id, i, tweet;
         	
         	for (i=0; i<tweets.length; i++) {
         		if (tweets[i].id == id) {
-        			$('#twitt-dialog-content').html('<p>' + tweets[i].text + '</p>');
+        			tweet = tweets[i];
         		}
         	}
+        	$('#twitt-dialog-content').html('<p>' + tweet.text + '</p>');
         	$.mobile.changePage($('#twitt-dialog'), {transition: 'pop', role: 'dialog'});
         });
     }
