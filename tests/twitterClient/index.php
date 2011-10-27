@@ -28,7 +28,12 @@
 			</div>
 
 			<div data-role="content">
-				<a href="javascript:void(0)" id="getTwitts" data-role="button">Get Twitts!</a>
+				<div data-role="fieldcontain" class="ui-hide-label">
+		         	<label for="search">Search twitter:</label>
+		         	<input type="search" name="searchTwitter" id="searchTwitter" value=""  />
+		         	<a href="javascript:void(0)" id="getTwitts" data-role="button">Get Twitts!</a>
+				</div>
+				
 			   	<div id="twitts">
 				</div>
         	</div>

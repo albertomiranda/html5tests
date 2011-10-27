@@ -10,9 +10,10 @@ define(["app/twitter/models/Twitter.class",
         "app/twitter/models/Twitt.class", 
         "lib/mustache", 
         "jQueryMobile"], function(Twitter, Twitt) {
-    var getTweets = function(){
+	
+    var getTweets = function(query){
         $.mobile.showPageLoadingMsg();
-        Twitter.getTweets({q:"HTML5"}, function(data) { Voxine.TwitterController.render(data); $.mobile.hidePageLoadingMsg(); });
+        Twitter.getTweets({q:query}, function(data) { Voxine.TwitterController.render(data); $.mobile.hidePageLoadingMsg(); });
     };
     
     var render = function(data){
@@ -27,7 +28,7 @@ define(["app/twitter/models/Twitter.class",
             html+=Mustache.to_html(template, twitt);
         });
         
-        $('#getTwitts').hide();
+        //$('#getTwitts').hide();
         $('#twitts').html("<ul data-role='listview' data-theme='g' id='twittList'>" + html + "</ul>");
         $('#twittList').listview(); //apply jquery mobile's styles to the list
         //attach events
