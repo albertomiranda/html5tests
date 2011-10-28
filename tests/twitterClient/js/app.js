@@ -2,8 +2,8 @@
 define([
   'jQuery',
   'jQueryMobile',
-  "Voxine/tools/Tools.class",
-  "Voxine/core/Namespace.class",
+  "voxine/tools/Tools.class",
+  "voxine/core/Namespace.class",
   "app/twitter/models/Twitt.class",
   "app/twitter/controllers/TwitterController.class",
   "templates/twitt.template",
