@@ -3,14 +3,17 @@
  * 
  * @author Alberto Miranda <alberto@nextive.com>
  */
-define(['app/twitter/controllers/TwitterController.class'], function(TwitterController){
-    return {
-        "apply": function(){
-            //define bindings here
-            $('#getTwitts').click(function(){
-                //load twitts
-                TwitterController.getTweets($('#searchTwitter').val());
-            });
-        }
-    };
+define(['classHandler', 'app/twitter/controllers/TwitterController.class'], function(ClassHandler, TwitterController) {
+    return ClassHandler.Class(
+        'Bindings',
+        null,
+        {
+            apply: function(){
+                //define bindings here
+                $('#getTwitts').click(function(){
+                    //load twitts
+                    TwitterController.getTweets($('#searchTwitter').val());
+                });
+            }
+        })
 });

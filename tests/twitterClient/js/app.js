@@ -15,14 +15,14 @@ define([
         Voxine.namespace('Voxine.Tools', Tools);
         Voxine.namespace('Voxine.templates.twitt', twittTemplate);
         Voxine.namespace('Voxine.TwitterController', TwitterController);
-      
         //get tweets when loading app
         //TwitterController.getTweets();
       
         //start
         $(document).ready(function(){
             //set default bindings
-            Bindings.apply();
+            var bindingInstance = new Bindings();
+            bindingInstance.apply();
             
             //detect mobile
             if(Voxine.Tools.isMobile()) Voxine.Tools.welcomeMobile();
