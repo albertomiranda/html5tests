@@ -13,7 +13,8 @@ define(["app/twitter/models/Twitter.class",
 	
     var getTweets = function(query){
         $.mobile.showPageLoadingMsg();
-        Twitter.getTweets({q:query}, function(data) { Voxine.TwitterController.render(data); $.mobile.hidePageLoadingMsg(); });
+        var TwitterInstance = new Twitter();
+        TwitterInstance.getTweets({q:query}, function(data) { Voxine.TwitterController.render(data); $.mobile.hidePageLoadingMsg(); });
     };
     
     var render = function(data){
