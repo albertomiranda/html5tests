@@ -12,6 +12,8 @@ Voxine = {}; //we want Voxine to be globally accessible (one global to rule them
 //Require.js allows us to configure shortcut alias
 require.config({
     paths: {
+        dojo: 'lib/wrapper/dojo.module',
+        classHandler: 'voxine/core/ClassHandler.module',
         jQuery: 'lib/jquery/jquery-wrapper',
         jQueryMobile: 'lib/jquery-mobile/jquery-mobile-wrapper'
     }
