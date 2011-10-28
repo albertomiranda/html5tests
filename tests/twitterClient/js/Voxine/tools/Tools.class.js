@@ -5,9 +5,6 @@
  * @author Esteban Abait <esteban.abait@nextive.com>
  */
 define(["app/twitter/models/Twitt.class"], function(Twitt) {
-	
-	var m = '';
-	
     /**
      * Returns true if we are currently running in a mobile device.
      * 
@@ -21,6 +18,31 @@ define(["app/twitter/models/Twitt.class"], function(Twitt) {
     };
     
     /**
+     * Runs a display change to make evident you're on certain mobile device.
+     * 
+     * @author Alberto Miranda <alberto@nextive.com>
+     */
+    var welcomeSpecificMobile = function(){
+        var deviceAgent = navigator.userAgent.toLowerCase();
+        //var agentID = deviceAgent.match(/(iphone|ipod|ipad|android)/);
+        //if(agentID==null) return false;
+        alert("Detected agent : " + deviceAgent);
+        return false;
+        if(agentID.indexOf("iphone")>=0){
+            alert("Hello iPhone");
+        }
+        if(agentID.indexOf("ipod")>=0){
+            alert("Hello iPod");
+        }
+        if(agentID.indexOf("ipad")>=0){
+            alert("Hello iPad");
+        }
+        if(agentID.indexOf("android")>=0){
+            alert("Hello Android");
+        }
+    };
+    
+    /**
      * Runs a display change to make evident you're on a mobile device.
      * 
      * @author Alberto Miranda <alberto@nextive.com>
@@ -29,7 +51,7 @@ define(["app/twitter/models/Twitt.class"], function(Twitt) {
         alert('Enjoy your mobile experience!');
         // Hides mobile browser's address bar when page is done loading.
         window.addEventListener('load', function(e) {
-            setTimeout(function() {window.scrollTo(0, 1);}, 1);
+            setTimeout(function() {window.scrollTo(0, 3);}, 1);
         }, false);
     };
 
@@ -78,9 +100,6 @@ define(["app/twitter/models/Twitt.class"], function(Twitt) {
         console.log(Twitt1);
     };
     
-    var setM = function(m) { this.m = m; };
-    var getM = function() { return this.m; };
-    
     /**
      * Return public methods and properties
      */
@@ -89,7 +108,6 @@ define(["app/twitter/models/Twitt.class"], function(Twitt) {
     	checkCaheUpdate: checkCacheUpdate,
     	runTests: runTests,
         welcomeMobile: welcomeMobile,
-        setM : setM,
-        getM : getM
+        welcomeSpecificMobile: welcomeSpecificMobile
     };
 });
