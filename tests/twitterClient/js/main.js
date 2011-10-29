@@ -26,7 +26,8 @@ require(
      	"order!lib/jquery-mobile/1.0rc2/jquery-mobile-min"
     ], 
     function(App) {
-        App.initialize();
+        var Application = new App();
+        Application.initialize();
     }
 );
 //------------------------------------------------------------------------------
