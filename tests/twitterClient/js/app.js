@@ -11,23 +11,23 @@ define([
   "lib/mustache"
 ], function($, jQMobile, Tools, Voxine, Twitt, TwitterController, twittTemplate, Bindings){
     var initialize = function(){
+        var ToolsInstance;
+        
         //init Voxine namespaces	
+        //FIXME: This should be removed with Namespace class.
         Voxine.namespace('Voxine.Tools', Tools);
         Voxine.namespace('Voxine.templates.twitt', twittTemplate);
         Voxine.namespace('Voxine.TwitterController', TwitterController);
-        //get tweets when loading app
-        //TwitterController.getTweets();
-      
+
         //start
-        $(document).ready(function(){
+        $(document, this).ready(function(){
             //set default bindings
             var bindingInstance = new Bindings();
             bindingInstance.apply();
-            
             //detect mobile
-            if(Voxine.Tools.isMobile()) Voxine.Tools.welcomeMobile();
-           
-            //Voxine.Tools.runTests();
+            ToolsInstance = new Tools();
+            if(ToolsInstance.isMobile()) ToolsInstance.welcomeMobile();
+            //ToolsInstance.runTests();
         });
     }
 
