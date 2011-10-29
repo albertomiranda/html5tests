@@ -19,7 +19,7 @@ define(['classHandler', "jQuery"], function(ClassHandler) {
              * @return 	applies the callback to the results of the twitter call or
              * 		   	{error: errorThrown} in case of an error.
              */
-            ajaxCall: function (url, callback) {
+            ajaxCall: function (url, context, callback) {
                 //Workaround to the "error callback" not called for JSONP
                 $.ajaxSetup({"error":function(XMLHttpRequest,textStatus, errorThrown) {   
                     callback({error: errorThrown});
@@ -29,8 +29,9 @@ define(['classHandler', "jQuery"], function(ClassHandler) {
                         type: 'GET',
                         url: url, 
                         crossDomain: true,
+                        context: context,
                         success: function (data) {
-                                callback(data);
+                            context[callback](data);
                         },
                         dataType: 'jsonp'
                 });
@@ -46,28 +47,11 @@ define(['classHandler', "jQuery"], function(ClassHandler) {
              * @param 	Function callback
              * @return  Applies a callback to a list of tweets.
              */
-            getTweets: function(searchConfig, callback) {
+            getTweets: function(searchConfig, context, callback) {
                 var q = searchConfig.q;
                 var sinceId = searchConfig.sinceId;
                 var url = "http://search.twitter.com/search.json?q=%20" + q + "&since_id=" + sinceId;
-                this.ajaxCall(url, callback);
-            },
-            
-            /** 
-             * Get tweets from Twitter's real-time search API
-             * 
-             * Search arguments must be specified as following
-             * searchConfig = {q: query, sinceId: tweetId}
-             * 
-             * @param 	Object searchConfig
-             * @param 	Function callback
-             * @return  Applies a callback to a list of tweets.
-             */
-            getTweets: function(searchConfig, callback) {
-                var q = searchConfig.q;
-                var sinceId = searchConfig.sinceId;
-                var url = "http://search.twitter.com/search.json?q=%20" + q + "&since_id=" + sinceId;
-                this.ajaxCall(url, callback);
+                this.ajaxCall(url, context, callback);
             },
             
              /** 

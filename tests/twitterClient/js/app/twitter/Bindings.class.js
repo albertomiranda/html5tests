@@ -12,7 +12,8 @@ define(['classHandler', 'app/twitter/controllers/TwitterController.class'], func
                 //define bindings here
                 $('#getTwitts').click(function(){
                     //load twitts
-                    TwitterController.getTweets($('#searchTwitter').val());
+                    var TwitterControllerInstance = new TwitterController();
+                    TwitterControllerInstance.getTweets($('#searchTwitter').val());
                 });
             }
         })
