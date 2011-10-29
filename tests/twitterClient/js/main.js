@@ -15,7 +15,8 @@ require.config({
         dojo: 'lib/wrapper/dojo.module',
         classHandler: 'voxine/core/ClassHandler.module',
         jQuery: 'lib/jquery/jquery-wrapper',
-        jQueryMobile: 'lib/jquery-mobile/jquery-mobile-wrapper'
+        jQueryMobile: 'lib/jquery-mobile/jquery-mobile-wrapper',
+        mustache: 'lib/wrapper/mustache.module'
     }
 });
 
