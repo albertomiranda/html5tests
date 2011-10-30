@@ -6,12 +6,13 @@
  * @author Esteban Abait <esteban.abait@nextive.com>
  */
 
-define(['classHandler'], function(ClassHandler) {
+define(['classHandler', "templates/twitt.template", 'mustache'], function(ClassHandler, TwittTemplate) {
     return ClassHandler.Class(
         'Twitt',
         null,
         {
             constructor: function(data) {
+                this.data = data;
                 this.created_at = data.created_at;
                 this.profile_image_url = data.profile_image_url;
                 this.from_user_id_str = data.from_user_id_str;
@@ -35,8 +36,8 @@ define(['classHandler'], function(ClassHandler) {
              * @return string
              */
             getHtml: function() {
-                var template = Voxine.templates.twitt;
-                return Mustache.to_html(template, this.data);
+                var template = new TwittTemplate();
+                return Mustache.to_html(template.getTwitt(), this.data);
             }
         })
 });
