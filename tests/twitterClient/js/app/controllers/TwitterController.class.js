@@ -8,8 +8,8 @@
  */
 define([    
         'classHandler',
-        'app/twitter/models/Twitter.class', 
-        'app/twitter/models/Twitt.class',
+        'app/models/Twitter.class', 
+        'app/models/Twitt.class',
         'templates/twitt.template',
         'mustache', 
         'jQueryMobile'

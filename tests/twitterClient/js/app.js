@@ -3,7 +3,7 @@ define([
   'classHandler',
   'jQuery',
   "voxine/tools/Tools.class",
-  "app/twitter/Bindings.class",
+  "app/Bindings.class",
   "lib/mustache"
 ], function(ClassHandler, $, Tools, Bindings) {
     return ClassHandler.Class(

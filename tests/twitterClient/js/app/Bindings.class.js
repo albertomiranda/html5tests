@@ -3,7 +3,7 @@
  * 
  * @author Alberto Miranda <alberto@nextive.com>
  */
-define(['classHandler', 'app/twitter/controllers/TwitterController.class'], function(ClassHandler, TwitterController) {
+define(['classHandler', 'app/controllers/TwitterController.class'], function(ClassHandler, TwitterController) {
     return ClassHandler.Class(
         'Bindings',
         null,
