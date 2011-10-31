@@ -7,15 +7,15 @@
  * @author Esteban Abait <esteban.abait@nextive.com>
  */
 define([    
-        'classHandler',
+        'VoxClass',
         'app/twitter/models/Twitter.class', 
         'app/twitter/models/Twitt.class',
         'templates/twitt.template',
         'mustache', 
         'jQueryMobile'
     ], 
-    function(ClassHandler, TwitterModel, Twitt, TwittTemplate) {
-        return ClassHandler.Class(
+    function(VoxClass, TwitterModel, Twitt, TwittTemplate) {
+        return VoxClass.Class(
             'TwitterController',
             null,
             {

@@ -6,8 +6,8 @@
  * @author Esteban Abait <esteban.abait@nextive.com>
  */
 
-define(['classHandler', "templates/twitt.template", 'mustache'], function(ClassHandler, TwittTemplate) {
-    return ClassHandler.Class(
+define(['VoxClass', "templates/twitt.template", 'mustache'], function(VoxClass, TwittTemplate) {
+    return VoxClass.Class(
         'Twitt',
         null,
         {

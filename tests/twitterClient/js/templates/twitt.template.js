@@ -1,5 +1,5 @@
-define(['classHandler'], function(ClassHandler) {
-    return ClassHandler.Class(
+define(['VoxClass'], function(VoxClass) {
+    return VoxClass.Class(
         'TwittTemplate',
         null,
         {

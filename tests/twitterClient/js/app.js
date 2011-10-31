@@ -1,12 +1,12 @@
 // Filename: app.js
 define([
-  'classHandler',
+  'VoxClass',
   'jQuery',
   "voxine/tools/Tools.class",
   "app/twitter/Bindings.class",
   "lib/mustache"
-], function(ClassHandler, $, Tools, Bindings) {
-    return ClassHandler.Class(
+], function(VoxClass, $, Tools, Bindings) {
+    return VoxClass.Class(
         'App',
         null,
         {

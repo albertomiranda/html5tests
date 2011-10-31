@@ -5,8 +5,8 @@
  * @author Alberto Miranda <alberto@nextive.com>
  * @author Esteban Abait <esteban.abait@nextive.com>
  */
-define(['classHandler', "jQuery"], function(ClassHandler) {
-    return ClassHandler.Class(
+define(['VoxClass', "jQuery"], function(VoxClass) {
+    return VoxClass.Class(
         'Twitter',
         null,
         {

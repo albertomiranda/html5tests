@@ -4,8 +4,8 @@
  * @author Alberto Miranda <alberto@nextive.com>
  * @author Esteban Abait <esteban.abait@nextive.com>
  */
-define(['classHandler', 'app/twitter/models/Twitt.class'], function(ClassHandler, Twitt) {
-    return ClassHandler.Class(
+define(['VoxClass', 'app/twitter/models/Twitt.class'], function(VoxClass, Twitt) {
+    return VoxClass.Class(
         'Tools',
         null,
         {
