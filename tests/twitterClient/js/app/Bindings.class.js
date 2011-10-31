@@ -3,7 +3,7 @@
  * 
  * @author Alberto Miranda <alberto@nextive.com>
  */
-define(['VoxClass', 'app/twitter/controllers/TwitterController.class'], function(VoxClass, TwitterController) {
+define(['VoxClass', 'app/controllers/TwitterController.class'], function(VoxClass, TwitterController) {
     return VoxClass.Class(
         'Bindings',
         null,

@@ -3,7 +3,7 @@ define([
   'VoxClass',
   'jQuery',
   "voxine/tools/Tools.class",
-  "app/twitter/Bindings.class",
+  "app/Bindings.class",
   "lib/mustache"
 ], function(VoxClass, $, Tools, Bindings) {
     return VoxClass.Class(
