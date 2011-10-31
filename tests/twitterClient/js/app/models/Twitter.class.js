@@ -29,7 +29,6 @@ define(['VoxClass', "jQuery"], function(VoxClass) {
                         type: 'GET',
                         url: url, 
                         crossDomain: true,
-                        context: context,
                         success: function (data) {
                             context[callback](data);
                         },
