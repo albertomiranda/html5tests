@@ -39,6 +39,7 @@ define(['VoxClass'], function(VoxClass) {
              * You can obtain the json filter by getJsonFilter getter.
              */
             parseFilter: function() {
+                var undefined;
                 for (var filterName in this.jsonFilter) {
                     var setterName = "set" + capitalize(filterName);
                     if (this[setterName] !== undefined) {
