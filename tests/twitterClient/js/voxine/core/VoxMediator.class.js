@@ -29,95 +29,95 @@
  * @author Esteban Abait <esteban.abait@nextive.com>
  */
 define([    
-        'VoxClass'
+    'VoxClass'
     ], 
     function(VoxClass) {
 
-		/**
-		 * PRIVATE METHODS----------------------------------------------------------
-		 */
-		/**
-		 * Binds an event to a callback.
-		 * 
-		 * @param {string} channel the event to bind.
-		 * @param {function} the callback to be executed when the event is triggered.
-		 * @param {object} context if specified the callback will be called on this object
-		 * 			if not it will be called on 'this'
-		 * @return {object} the 'this' object. 
-		 */
-		var bind = function(channel, fn, context) {
-			this.channels = this.channels || {};
-			
-			if (!this.channels[channel]) {
-				this.channels[channel] = [];
-			}
-			this.channels[channel].push({ context: (context || this), callback: fn });
+        /**
+         * PRIVATE METHODS----------------------------------------------------------
+         */
+        /**
+         * Binds an event to a callback.
+         * 
+         * @param {string} channel the event to bind.
+         * @param {function} the callback to be executed when the event is triggered.
+         * @param {object} context if specified the callback will be called on this object
+         * 			if not it will be called on 'this'
+         * @return {object} the 'this' object. 
+         */
+        var bind = function(channel, fn, context) {
+            this.channels = this.channels || {};
 		    
-			return this;
-		};
+            if (!this.channels[channel]) {
+                this.channels[channel] = [];
+            }
+		    this.channels[channel].push({ context: (context || this), callback: fn });
+		    
+            return this;
+        };
 		
-		var unbind = function(channel, fn) {
-			var i, l, elem, list;
+        var unbind = function(channel, fn) {
+            var i, l, elem, list;
 			
-			if (!this.channels) {
-				return false;
+            if (!this.channels) {
+                return false;
 			};
 			
-			list = this.channels[channel];
+            list = this.channels[channel];
 			
-			if (!list) {
-				return false;
+            if (!list) {
+                return false;
 			};
 			
-			for (i = 0, l = list.length; i < l; i++) {
-				elem = list[i].callback;
-				if (elem === fn) {
-					list.splice(i);
-					break;
-				}
-			};
+            for (i = 0, l = list.length; i < l; i++) {
+                elem = list[i].callback;
+                if (elem === fn) {
+                    list.splice(i);
+                    break;
+                }
+            };
 			
-			return this;
-		};
+            return this;
+        };
 		 
-		/**
-		 * Triggers a new event.
-		 * 
-		 * @param {string} channel the event to trigger.
-		 * @param {string | object | function} extra parameters that will be used 
-		 * 			by the callback specified in the bind function @see #bind.
-		 * @return {(boolean | object)} false if it cant't trigger the event or 'this'
-		 * 			if it can. 
-		 */
-		var trigger = function(channel){
-			if (!this.channels || !this.channels[channel]) {
-				return false;
-			}
+        /**
+         * Triggers a new event.
+         * 
+         * @param {string} channel the event to trigger.
+         * @param {string | object | function} extra parameters that will be used 
+         * 			by the callback specified in the bind function @see #bind.
+         * @return {(boolean | object)} false if it cant't trigger the event or 'this'
+         * 			if it can. 
+         */
+        var trigger = function(channel){
+            if (!this.channels || !this.channels[channel]) {
+                return false;
+            }
 			
-			//to get any additional parameter passed to the function
-			var args = Array.prototype.slice.call(arguments, 1);
+            //to get any additional parameter passed to the function
+            var args = Array.prototype.slice.call(arguments, 1);
 		    
-			for (var i = 0, l = this.channels[channel].length; i < l; i++) {
-				var subscription = this.channels[channel][i];
-		        subscription.callback.apply(subscription.context, args);
-		    };
+            for (var i = 0, l = this.channels[channel].length; i < l; i++) {
+                var subscription = this.channels[channel][i];
+                subscription.callback.apply(subscription.context, args);
+            };
 		        
-		    return this;    
-		};
+            return this;    
+        };
 		
-		/**
-		 * PUBLIC INTERFACE--------------------------------------------------------------
-		 */
+        /**
+         * PUBLIC INTERFACE--------------------------------------------------------------
+         */
         return VoxClass.Class(
             'VoxMediator',
             null,
             {
-            	mixin: function(obj){
+                mixin: function(obj) {
             		obj.bind = bind;
-            		obj.unbind = unbind;
+                    obj.unbind = unbind;
                     obj.trigger = trigger;
                 }
             }
         );
-	}
+    }
 );
