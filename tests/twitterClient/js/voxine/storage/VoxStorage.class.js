@@ -47,6 +47,18 @@ define(['VoxClass'], function(VoxClass) {
 
             //TODO virtual: redefine for specific storage
             persist: function(key, securedObject) {
+                
+                /**
+                 * (Posible) Mecanismo para recuperar el tipo de storage:
+                 *  var persistanceType = arguments.callee.getPersistanceType(); 
+                 *  
+                 *  y con ese type resolver que objeto usar, si local, remoto...
+                 *  
+                 *  ver diagrama
+                 *  
+                 *  Esteban (idea de Alberto).
+                 */
+                
             },
 
             //TODO virtual: redefine for specific storage
