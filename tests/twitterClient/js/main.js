@@ -12,8 +12,10 @@ Voxine = {}; //we want Voxine to be globally accessible (one global to rule them
 //Require.js allows us to configure shortcut alias
 require.config({
     paths: {
+        VoxClass: 'voxine/core/VoxClass.module',
         jQuery: 'lib/jquery/jquery-wrapper',
-        jQueryMobile: 'lib/jquery-mobile/jquery-mobile-wrapper'
+        jQueryMobile: 'lib/jquery-mobile/jquery-mobile-wrapper',
+        mustache: 'lib/wrapper/mustache.module'
     }
 });
 
@@ -24,7 +26,8 @@ require(
      	"order!lib/jquery-mobile/1.0rc2/jquery-mobile-min"
     ], 
     function(App) {
-        App.initialize();
+        var Application = new App();
+        Application.initialize();
     }
 );
 //------------------------------------------------------------------------------
