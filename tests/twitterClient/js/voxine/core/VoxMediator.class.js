@@ -5,6 +5,7 @@
  * a Publish-Subscribe event system.
  * 
  * Usage:
+ * <pre>
  *		var pub = {}, sub = {name: 'Pedro'};
  *      var mediator = new VoxMediator();
  *                 
@@ -25,6 +26,7 @@
  *      
  *      //this shoudn't trigger anything
  *      pub.trigger('helloworld');
+ * </pre>
  * 
  * @author Esteban Abait <esteban.abait@nextive.com>
  */
@@ -118,6 +120,6 @@ define([
                     obj.trigger = trigger;
                 }
             }
-        );
+        );  
     }
 );
