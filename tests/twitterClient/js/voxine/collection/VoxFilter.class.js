@@ -19,7 +19,7 @@ define(['VoxClass'], function(VoxClass) {
         return string.replace(/\w+/g, function(a) {
             return a.charAt(0).toUpperCase() + a.substr(1).toLowerCase();
         });
-    }
+    };
     
     /* Public Methods */
     return VoxClass.Class(
@@ -39,6 +39,7 @@ define(['VoxClass'], function(VoxClass) {
              * You can obtain the json filter by getJsonFilter getter.
              */
             parseFilter: function() {
+                var undefined;
                 for (var filterName in this.jsonFilter) {
                     var setterName = "set" + capitalize(filterName);
                     if (this[setterName] !== undefined) {
