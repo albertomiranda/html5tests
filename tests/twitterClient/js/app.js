@@ -30,11 +30,11 @@ define([
                     mediator.mixin(pub);
                     
                     //bind (event, callback, context)
-                    var callback = function(){alert(this.name);};
+                    var callback = function(lastname) {alert(this.name + " " + lastname);};
                     pub.bind('helloworld', callback, sub);
                     
                     //trigger(event)
-                    pub.trigger('helloworld');
+                    pub.trigger('helloworld', 'Sanchez');
                     
                     pub.unbind('helloworld', callback);
                     pub.trigger('helloworld');

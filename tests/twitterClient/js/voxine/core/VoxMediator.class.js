@@ -4,6 +4,28 @@
  * Core class to handle all module interactions through
  * a Publish-Subscribe event system.
  * 
+ * Usage:
+ *		var pub = {}, sub = {name: 'Pedro'};
+ *      var mediator = new VoxMediator();
+ *                 
+ *      //mix mediator into pub object
+ *      mediator.mixin(pub);
+ *                  
+ *      //callback, receives a parameter
+ *      var callback = function(lastname) {alert(this.name + " " + lastname);};
+ *      
+ *      //bind the 'helloworld' event to callback on the sub object
+ *      pub.bind('helloworld', callback, sub);
+ *                 
+ *      //triggers the 'helloworld' event, specify an optional parameter
+ *      pub.trigger('helloworld', 'Sanchez');
+ *      
+ *      //unregisters the callback from the 'helloworld' event
+ *      pub.unbind('helloworld', callback);
+ *      
+ *      //this shoudn't trigger anything
+ *      pub.trigger('helloworld');
+ * 
  * @author Esteban Abait <esteban.abait@nextive.com>
  */
 define([    
@@ -13,6 +35,15 @@ define([
 
 		/**
 		 * PRIVATE METHODS----------------------------------------------------------
+		 */
+		/**
+		 * Binds an event to a callback.
+		 * 
+		 * @param {string} channel the event to bind.
+		 * @param {function} the callback to be executed when the event is triggered.
+		 * @param {object} context if specified the callback will be called on this object
+		 * 			if not it will be called on 'this'
+		 * @return {object} the 'this' object. 
 		 */
 		var bind = function(channel, fn, context) {
 			this.channels = this.channels || {};
@@ -49,14 +80,22 @@ define([
 			return this;
 		};
 		 
+		/**
+		 * Triggers a new event.
+		 * 
+		 * @param {string} channel the event to trigger.
+		 * @param {string | object | function} extra parameters that will be used 
+		 * 			by the callback specified in the bind function @see #bind.
+		 * @return {(boolean | object)} false if it cant't trigger the event or 'this'
+		 * 			if it can. 
+		 */
 		var trigger = function(channel){
 			if (!this.channels || !this.channels[channel]) {
 				return false;
 			}
 			
-			//'arguments' is the name of a local, array-like object 
-			//available inside every function
-			var args = Array.prototype.slice.call(arguments, 1); //converts arguments into an array
+			//to get any additional parameter passed to the function
+			var args = Array.prototype.slice.call(arguments, 1);
 		    
 			for (var i = 0, l = this.channels[channel].length; i < l; i++) {
 				var subscription = this.channels[channel][i];
