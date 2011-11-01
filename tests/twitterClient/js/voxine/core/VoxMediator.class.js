@@ -111,9 +111,9 @@ define([
         return VoxClass.Class(
             'VoxMediator',
             null,
-            {
+            {   
                 mixin: function(obj) {
-            		obj.bind = bind;
+            	    obj.bind = bind;
                     obj.unbind = unbind;
                     obj.trigger = trigger;
                 }
