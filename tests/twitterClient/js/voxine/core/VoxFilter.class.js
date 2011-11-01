@@ -19,7 +19,7 @@ define(['VoxClass'], function(VoxClass) {
         return string.replace(/\w+/g, function(a) {
             return a.charAt(0).toUpperCase() + a.substr(1).toLowerCase();
         });
-    }
+    };
     
     /* Public Methods */
     return VoxClass.Class(
