@@ -5,8 +5,11 @@
  * @author Esteban Abait <esteban.abait@nextive.com>
  */
 define(
-    ['Voxine/view/VoxView.class'],
-    function(VoxView) {
+    [
+        'Voxine/view/VoxView.class',
+        'voxine/model/VoxObject.class'
+    ],
+    function(VoxView, VoxObject) {
     /**
      * Mediator test.
      * Mixins mediator functionality with a test object.
@@ -67,15 +70,13 @@ define(
      * @author Alberto Miranda <alberto@nextive.com>
      * @return string
      */
-    var view2 = function(){
-        var view = new VoxView('testView1.view', '#tweets');
-        view.render({
+    var view2 = new VoxView('testView1.view.php', 'two');
+        view2.render({
             "testName": "VoxView test 2",
             "subtitle": "This test worked just fine. Enjoy!",
             "url": "albertomiranda.com.ar/html5",
             "urlName": "HTML5 Tests"
-        });
-    };
+    });
     
     /**
      * Test multiple creations of View.
@@ -88,21 +89,24 @@ define(
             "url": "albertomiranda.com.ar/html5",
             "urlName": "HTML5 Tests"
         });
-        
-        var view2 = new VoxView('testView1.view.php', 'two');
-        view2.render({
-            "testName": "VoxView test 2",
-            "subtitle": "This test worked just fine. Enjoy!",
-            "url": "albertomiranda.com.ar/html5",
-            "urlName": "HTML5 Tests"
-        });
-    }
+    };
+    
+    /**
+     * Test VoxObject Creation.
+     */
+    var voxObjectTest = function() {
+        var instance1 = VoxObject.getInstance('remote', 'AD82KLM20EFN');
+        var instance2 = VoxObject.getInstance('local', 'Asf3efdfasdf');
+        console.log('VoxObject instance created: ID->' + instance1.getObjectId());
+        console.log('VoxObject instance created: ID->' + instance2.getObjectId());
+    };
     
     return  {
         testProp: "OIEA!",
         mediator: mediator,
         view1: view1,
         view2: view2,
-        view3: view3
+        view3: view3,
+        voxObjectTest: voxObjectTest
     };
 });
