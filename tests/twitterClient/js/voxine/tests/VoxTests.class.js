@@ -70,30 +70,19 @@ define(
      * @author Alberto Miranda <alberto@nextive.com>
      * @return string
      */
-    var view2 = function(){
-        var view = new VoxView('testView1.view', '#tweets');
-        view.render({
+    var view2 = new VoxView('testView1.view.php', 'two');
+        view2.render({
             "testName": "VoxView test 2",
             "subtitle": "This test worked just fine. Enjoy!",
             "url": "albertomiranda.com.ar/html5",
             "urlName": "HTML5 Tests"
-        });
-    };
+    });
     
     /**
      * Test multiple creations of View.
      */
     var view3 = function(){
-        var view1 = new VoxView('testView1.view', 'one', this);
-        view1.test = 'test 1';
-        
-        var view2 = new VoxView('testView1.view', 'two', this);
-        view2.test = 'test 2';
-        
-        console.log(view1.test);
-        console.log(view2.test);
-        console.log(view1.test);
-        
+        var view1 = new VoxView('testView1.view.php', 'one');
         view1.render({
             "testName": "VoxView test 1",
             "subtitle": "This test worked just fine. Enjoy!",
@@ -110,7 +99,7 @@ define(
         var instance2 = VoxObject.getInstance('local', 'Asf3efdfasdf');
         console.log('VoxObject instance created: ID->' + instance1.getObjectId());
         console.log('VoxObject instance created: ID->' + instance2.getObjectId());
-    }
+    };
     
     return  {
         testProp: "OIEA!",

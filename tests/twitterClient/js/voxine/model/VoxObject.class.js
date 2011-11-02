@@ -93,7 +93,7 @@ define([
                 remove: remove
             }
         );
-            
+
         /*
          * Set static mehtod
          */
@@ -103,5 +103,6 @@ define([
             myclass.objectId = objectId;
             return myclass;
         };
+        
         return createdClass;
 });
