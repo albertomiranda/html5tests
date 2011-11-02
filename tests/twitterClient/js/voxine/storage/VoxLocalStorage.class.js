@@ -20,6 +20,10 @@ define([
      * un wrapper así podés usar sus funciones acá adentro.
      * En caso de que el dispositivo/browser no soporte localStorage podríamos degradar a
      * cookies, o algo así. Investigar más sobre este punto.
+     * 
+     * Polyfills: https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-Browser-Polyfills
+     * 
+     * Esteban.
      */
     
         var persist = function(key, securedObject) {
