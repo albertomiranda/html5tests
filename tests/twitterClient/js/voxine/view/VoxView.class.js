@@ -59,10 +59,22 @@ define(
             }
 
             var target = private.target; //we need it in the context of this function!
+            var caller = private.caller;
             var viewLoaded = function(template){
-                console.log("TARGET: " + target);
+                console.log('TARGET: ' + target);
                 var output = Mustache.to_html(template, data);
                 
+                //assign to target if set
+                if (target !== null && target !== void 0) {
+                    console.log('+ assign to target');
+                    $(target).html(output);
+                    return true;
+                }
+                
+                //theres no target, trigger event passing template to listener
+                if (caller.trigger !== void 0) {
+                    caller.trigger('parsed', output);
+                }
             };
 
             //view assync loading
