@@ -44,8 +44,7 @@ define(
             
             //add mediator
             var Mediator = new VoxMediator();
-            Mediator.mixin(this);
-            var View = this;
+            Mediator.mixin(this); 
             this.bind('viewLoaded', function(template){
                 console.log(private); return false;
                 var output = Mustache.to_html(template, this.data);
