@@ -100,7 +100,7 @@ define(
     }
     
     var storage = function(){
-        
+        alarm("entre a Test.storage");
         var st = new VoxLocalStorage();
         st.save("key", "data_lb_0001");
         alarm(st.load("key"));

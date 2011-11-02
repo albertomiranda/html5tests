@@ -7,7 +7,9 @@ define([
   'app/Bindings.class',
   'app/controllers/TwitterController.class',
   'voxine/tests/VoxTests.class',
-  'lib/mustache'
+  'lib/mustache',
+  'voxine/storage/VoxStorage.class',
+  'voxine/storage/VoxLocalStorage.class'
 ], function(VoxClass, VoxMediator, $, Tools, Bindings, TwitterController, VoxTests) {
     return VoxClass.Class(
         'App',
