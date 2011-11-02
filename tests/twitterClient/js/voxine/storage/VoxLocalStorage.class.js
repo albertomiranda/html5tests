@@ -15,11 +15,11 @@ define([
  */
         
     /**
-     * Una de las cosas que tenŽs que hacer es testear si el dispositivo
-     * soporta localStorage, para eso tenŽs que usar Modernizer, yo despuŽs hago
-     * un wrapper as’ podŽs usar sus funciones ac‡ adentro.
-     * En caso de que el dispositivo/browser no soporte localStorage podr’amos degradar a
-     * cookies, o algo as’. Investigar m‡s sobre este punto.
+     * Una de las cosas que tenï¿½s que hacer es testear si el dispositivo
+     * soporta localStorage, para eso tenï¿½s que usar Modernizer, yo despuï¿½s hago
+     * un wrapper asï¿½ podï¿½s usar sus funciones acï¿½ adentro.
+     * En caso de que el dispositivo/browser no soporte localStorage podrï¿½amos degradar a
+     * cookies, o algo asï¿½. Investigar mï¿½s sobre este punto.
      * 
      * Polyfills: https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-Browser-Polyfills
      * 
@@ -27,10 +27,12 @@ define([
      */
     
         var persist = function(key, securedObject) {
+        alarm("entre a persist heredado, bueno, bueno");
             window.localStorage.setItem(key, securedObject);
         };
         
         var recover = function(key) {
+        alarm("entre a recover heredado, bueno, bueno");
             return window.localStorage.getItem(key);
         };
                 

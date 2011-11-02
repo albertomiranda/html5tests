@@ -99,11 +99,20 @@ define(
         });
     }
     
+    var storage = function(){
+        
+        var st = new VoxLocalStorage();
+        st.save("key", "data_lb_0001");
+        alarm(st.load("key"));
+        
+    }
+    
     return  {
         testProp: "OIEA!",
         mediator: mediator,
         view1: view1,
         view2: view2,
-        view3: view3
+        view3: view3,
+        storage: storage
     };
 });
