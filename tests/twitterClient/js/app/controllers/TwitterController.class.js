@@ -45,7 +45,7 @@ define([
                         var template = new TwittTemplate();
                         html += Mustache.to_html(template.getTwitt(), this.TwittModel);
                     }
-                    $('#twitts').html("<ul data-role='listview' data-theme='g' id='twittList'>" + html + "</ul>");
+                    $('#tweets').html("<ul data-role='listview' data-theme='g' id='twittList'>" + html + "</ul>");
                     $('#twittList').listview(); //apply jquery mobile's styles to the list
                     //attach events
                     $('.twitt').bind('click', {context: this}, function(event) {

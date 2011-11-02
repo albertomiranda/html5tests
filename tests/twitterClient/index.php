@@ -34,7 +34,7 @@
 		         	<a href="javascript:void(0)" id="getTwitts" data-role="button">Get Twitts!</a>
 				</div>
 				
-			   	<div id="twitts">
+			   	<div id="tweets">
 				</div>
         	</div>
 	        <div data-role="footer">

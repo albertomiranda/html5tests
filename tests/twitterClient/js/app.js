@@ -1,12 +1,14 @@
 // Filename: app.js
 define([
   'VoxClass',
-  "voxine/core/VoxMediator.class",
+  'voxine/core/VoxMediator.class',
   'jQuery',
-  "voxine/tools/Tools.class",
-  "app/Bindings.class",
-  "lib/mustache"
-], function(VoxClass, VoxMediator, $, Tools, Bindings) {
+  'voxine/tools/Tools.class',
+  'app/Bindings.class',
+  'app/controllers/TwitterController.class',
+  'voxine/tests/VoxTests.class',
+  'lib/mustache'
+], function(VoxClass, VoxMediator, $, Tools, Bindings, TwitterController, VoxTests) {
     return VoxClass.Class(
         'App',
         null,
@@ -18,26 +20,19 @@ define([
                     //set default bindings
                     var bindingInstance = new Bindings();
                     bindingInstance.apply();
+                    
                     //detect mobile
                     ToolsInstance = new Tools();
                     if(ToolsInstance.isMobile()) ToolsInstance.welcomeMobile();
                     //ToolsInstance.runTests();
                     
-                    var pub = {}, sub = {name: 'Pedro'};
-                    var mediator = new VoxMediator();
-                    
-                    //mix mediator into pub object
-                    mediator.mixin(pub);
-                    
-                    //bind (event, callback, context)
-                    var callback = function(lastname) {alert(this.name + " " + lastname);};
-                    pub.bind('helloworld', callback, sub);
-                    
-                    //trigger(event)
-                    pub.trigger('helloworld', 'Sanchez');
-                    
-                    pub.unbind('helloworld', callback);
-                    pub.trigger('helloworld');
+                    //----------------------------------------------------------
+                    //run tests
+                    //VoxTests.mediator();
+                    //VoxTests.view1();
+                    //VoxTests.view2();
+                    VoxTests.view3();
+                    //----------------------------------------------------------
                 });
             }
         })
