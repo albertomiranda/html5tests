@@ -99,5 +99,6 @@ define([
                 load: load,
                 remove: remove
             }
-    );
+        );
 });
+

@@ -27,15 +27,6 @@ define([
                     //detect mobile
                     ToolsInstance = new Tools();
                     if(ToolsInstance.isMobile()) ToolsInstance.welcomeMobile();
-                    //ToolsInstance.runTests();
-
-                    //----------------------------------------------------------
-                    //run tests
-                    //VoxTests.mediator();
-                    //VoxTests.view1();
-                    //VoxTests.view2();
-                    VoxTests.view3();
-                    //----------------------------------------------------------
                 });
             }
         })
