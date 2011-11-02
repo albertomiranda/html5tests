@@ -81,18 +81,17 @@ define(
      * Test multiple creations of View.
      */
     var view3 = function(){
-        var view1 = new VoxView('testView1.view', 'one', this);
-        view1.test = 'test 1';
-        
-        var view2 = new VoxView('testView1.view', 'two', this);
-        view2.test = 'test 2';
-        
-        console.log(view1.test);
-        console.log(view2.test);
-        console.log(view1.test);
-        
+        var view1 = new VoxView('testView1.view', 'one');
         view1.render({
             "testName": "VoxView test 1",
+            "subtitle": "This test worked just fine. Enjoy!",
+            "url": "albertomiranda.com.ar/html5",
+            "urlName": "HTML5 Tests"
+        });
+        
+        var view2 = new VoxView('testView1.view', 'two');
+        view2.render({
+            "testName": "VoxView test 2",
             "subtitle": "This test worked just fine. Enjoy!",
             "url": "albertomiranda.com.ar/html5",
             "urlName": "HTML5 Tests"
