@@ -45,8 +45,20 @@ define(
             //add mediator
             var Mediator = new VoxMediator();
             Mediator.mixin(this); 
-            this.bind('viewLoaded', function(template){
-                console.log(private); return false;
+            this.bind('viewLoaded', this.makeRender, private);
+            
+            var View = this;
+            $.ajax({
+                url: 'js/app/views/' + private.template + '.php',
+                success: function(template){
+                    //console.log(private);
+                    View.trigger('viewLoaded', template);
+                }
+            });
+        };
+        
+        var makeRender = function(template){
+                console.log(this); return false;
                 var output = Mustache.to_html(template, this.data);
                     
                 console.log(this.data.testName + ": TARGET: " + this.target);
@@ -62,17 +74,7 @@ define(
 
                 //assign output to target element
                 $(private.target).html(output);
-            }, private);
-            
-            var View = this;
-            $.ajax({
-                url: 'js/app/views/' + private.template,
-                success: function(template){
-                    //console.log(private);
-                    View.trigger('viewLoaded', template);
-                }
-            });
-        };
+            };
         
         //Return the Class
         return VoxClass.Class(
@@ -103,6 +105,7 @@ define(
 
                     //public methods
                     this.render = render;
+                    this.makeRender = makeRender;
                 }
             }
         ); 
