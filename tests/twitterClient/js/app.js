@@ -1,3 +1,5 @@
+Vox = {};
+
 // Filename: app.js
 define([
   'VoxClass',
@@ -9,6 +11,7 @@ define([
   'voxine/tests/VoxTests.class',
   'lib/mustache'
 ], function(VoxClass, VoxMediator, $, Tools, Bindings, TwitterController, VoxTests) {
+    Vox.tests = VoxTests;
     return VoxClass.Class(
         'App',
         null,
