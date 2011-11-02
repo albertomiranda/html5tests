@@ -65,6 +65,6 @@ define([
 				view.render(data);
 				
 				this.attachEvents(template);
-            },
+            }
         });
 });
