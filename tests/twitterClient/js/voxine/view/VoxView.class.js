@@ -47,7 +47,7 @@ define(
             Mediator.mixin(this);
             var View = this;
             this.bind('viewLoaded', function(template){
-                console.log(this); return false;
+                console.log(private); return false;
                 var output = Mustache.to_html(template, this.data);
                     
                 console.log(this.data.testName + ": TARGET: " + this.target);
@@ -69,8 +69,8 @@ define(
             $.ajax({
                 url: 'js/app/views/' + private.template,
                 success: function(template){
-                    console.log(private);
-                    //View.trigger('viewLoaded', template);
+                    //console.log(private);
+                    View.trigger('viewLoaded', template);
                 }
             });
         };
@@ -89,13 +89,6 @@ define(
                  * @param object caller Object instantiating VoxView. Used for bindings.
                  */
                 constructor: function(template, target, caller) {
-                    //add mediator
-                    var Mediator = new VoxMediator();
-                    Mediator.mixin(this);
-                    this.bind('viewLoaded', function(template){
-                        renderTemplate(template);
-                    });
-                    
                     console.log("NEW VoxView: TARGET: " + target);
                     if (template === undefined) {
                         return "VIEW ERROR: NO TEMPLATE"; //TODO: implement error handling system
