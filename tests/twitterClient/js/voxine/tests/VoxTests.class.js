@@ -36,7 +36,7 @@ define(
                 console.group('Running tests for ' + tests[i]);
                 var objectData = this[tests[i]];
                 for (var t in objectData) {
-                    if (typeof objectData[t] == "function") {
+                    if (Object.prototype.toString.call(objectData[t]) == '[object Function]') {
                         console.info('----Running test case "' + t + '"');
                         try {
                             objectData[t]();
