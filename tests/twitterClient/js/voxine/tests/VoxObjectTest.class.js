@@ -5,7 +5,7 @@
  * @author Esteban Abait <esteban.abait@nextive.com>
  */
 define(
-    ['Voxine/model/VoxObject.class'],
+    ['voxine/model/VoxObject.class'],
     function(VoxObject) {
         /**
          * Test VoxObject Creation.

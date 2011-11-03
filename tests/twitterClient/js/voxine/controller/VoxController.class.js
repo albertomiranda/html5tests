@@ -10,15 +10,39 @@ define([
     'jQuery'
 ], function(VoxClass, $) {
     /**
-     * PRIVATE METHODS----------------------------------------------------------
+     * PRIVATE METHODS AND PROPERTIES ------------------------------------------
      */
+    var private = {
+        /**
+         * On the child controller this should be defined as follows:
+         * 
+         * bindingsMap = {
+         *    "templateName": {
+         *        "elementId": {
+         *            "event": "action",
+         *            "event2": "action2"
+         *        }
+         *    },
+         *    "templateName2": {
+         *        "elementId": {
+         *            "event": "action"
+         *        },
+         *        "elementId2": {
+         *            "event": "action"
+         *        }
+         *    }
+         *  }
+         */
+        bindingsMap: {},
+    };
+    
     /**
      * Attaches events to actions (callbacks) for the template.
      * 
      * @param template string
      */
     var attachEvents = function (template) {
-        var bindings = this.bindingsMap[template];
+        var bindings = private.bindingsMap[template];
 
         for (var key in bindings) {
             var actions = bindings[key];
@@ -26,6 +50,10 @@ define([
                 $('#'+key).bind(event, actions[event]);
             }
         };
+    };
+    
+    var setBindingsMap = function(bindingsMap) {
+        private.bindingsMap = bindingsMap;
     };
     
     /**
@@ -39,7 +67,7 @@ define([
         var view = new VoxView(template, target);
         view.render(data);
         
-        this.attachEvents(template);
+        attachEvents(template);
     };
 
     /**
@@ -49,27 +77,7 @@ define([
         'VoxController',
         null,
         {
-            /**
-             * On the child controller this should be defined as follows:
-             * 
-             * bindingsMap = {
-             *	  "templateName": {
-             *        "elementId": {
-             *	          "event": "action",
-             *            "event2": "action2"
-             *	      }
-             *	  },
-             *    "templateName2": {
-             *	      "elementId": {
-             *	          "event": "action"
-             *	      },
-             *		  "elementId2": {
-             *	          "event": "action"
-             *	      }
-             *	  }
-             *	}
-             */
-            bindingsMap: {},
+            bindingsMap: setBindingsMap,
         	render: render
         });
 });

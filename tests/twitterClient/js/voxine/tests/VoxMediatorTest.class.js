@@ -5,7 +5,7 @@
  * @author Esteban Abait <esteban.abait@nextive.com>
  */
 define(
-    ['Voxine/core/VoxMediator.class'],
+    ['voxine/core/VoxMediator.class'],
     function(VoxMediator) {
         
         function makePublisher() {

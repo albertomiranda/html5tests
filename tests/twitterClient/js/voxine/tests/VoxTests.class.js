@@ -12,14 +12,16 @@ define(
         'voxine/tests/VoxViewTest.class',
         'voxine/tests/VoxMediatorTest.class',
         'voxine/tests/VoxObjectTest.class',
-        'voxine/tests/VoxStorageTest.class'
+        'voxine/tests/VoxStorageTest.class',
+        'voxine/tests/VoxControllerTest.class'
     ],
     function (
         $,
         VoxViewTest,
         VoxMediatorTest,
         VoxObjectTest,
-        VoxStorageTest
+        VoxStorageTest,
+        VoxControllerTest
     ) {
         /**
 * Runs the collection of tests specified by parameter
@@ -52,7 +54,8 @@ define(
             this.runTest(["VoxView",
                           "VoxMediator",
                           "VoxObject",
-                          "VoxStorage"
+                          "VoxStorage",
+                          "VoxController"
                           ]);
         }
         return {
@@ -61,7 +64,8 @@ define(
             VoxView: VoxViewTest,
             VoxMediator: VoxMediatorTest,
             VoxObject: VoxObjectTest,
-            VoxStorage: VoxStorageTest
+            VoxStorage: VoxStorageTest,
+            VoxController: VoxControllerTest
         };
     }
 );
