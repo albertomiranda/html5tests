@@ -67,7 +67,7 @@ define(['VoxClass'], function(VoxClass) {
     //TODO virtual: redefine for specific storage
     var recover = function(key) {
         alarm("entre a recover virtual, malo, malo");
-    }
+    };
 
 /**
  * PUBLIC INTERFACE--------------------------------------------------------------
@@ -78,8 +78,9 @@ define(['VoxClass'], function(VoxClass) {
         'VoxStorage',
         null,
         {
-            load: this.load,
-            save: this.save
+            constructor: function() {},
+            load: load,
+            save: save
         }
         
         

@@ -7,7 +7,7 @@
  */
 define([    
         'VoxClass',
-        'VoxStorage'
+        'voxine/storage/VoxStorage.class'
     ], 
     function(VoxClass) {
 
@@ -42,7 +42,7 @@ define([
  */
         return VoxClass.Class(
             'VoxLocalStorage',
-            'VoxStorage',
+            VoxStorage,
             {
             	load: this.load,
                 save: this.save
