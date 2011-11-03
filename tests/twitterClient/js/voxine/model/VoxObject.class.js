@@ -4,14 +4,43 @@
  */
 define([
     'VoxClass', 
-    'voxine/storage/VoxStorage.class',
-    'voxine/core/VoxMediator.class'
+    'voxine/storage/VoxStorage.class'
     ], 
-    function(VoxClass, VoxStorage, VoxMediator) {
+    function(VoxClass, VoxStorage) {
+
         var validStorages = ["memory", "local", "remote"];
         var validStoragesCount = validStorages.length;
+        var objectId = 0;
 
-        /* Private Methods */
+        /**
+         * Class Constructor.
+         * Singleton.
+         * @private
+         */
+        var constructor = function(storageType, storageKey) {
+            var storageLowered = storageType.toLowerCase();
+            if (isValidStorage(storageLowered)) {
+                this.storageType = storageLowered;
+            }
+            this.storageKey = storageKey;
+            this.voxStorage = new VoxStorage();
+            var mediator = new VoxMediator();
+            mediator.mixin(this);
+        };
+        
+        
+        /**
+         * Returns the object instance id
+         * @public
+         */
+        var getObjectId = function() {
+            return this.objectId;
+        };
+        
+        /**
+         * Check if the storage is valid.
+         * @private
+         */
         var isValidStorage = function(storageType) {
             for (var i = 0; i < validStoragesCount; ++i) {
                 if (validStorages[i] === storageType) {
@@ -19,63 +48,61 @@ define([
                 }
             }
             return false;
-        }
+        };
+        
+        /**
+         * @public
+         */
+        var getStorageKey = function() {
+            return this.storageKey;
+        };
 
-        //FIXME: Remove this method to an object which handle it.
-        var throwException = function(message) {
-            var customEvent = jQuery.Event("exception");
-            customEvent.errorMessage = message;
-            $(document).trigger(customEvent);
-        }
+        /**
+         * Saves the object calling VoxStorage Class.
+         * @public
+         */
+        var save = function() {
+            this.voxStorage.save(this.storageKey, this);
+        };
 
+        /**
+         * Loads the object calling VoxStorage Class.
+         * @public
+         */
+         var load = function() {
+            this.voxStorate.load(this.storageKey);
+        };
+
+        /**
+         * Removes the object calling VoxStorage Class.
+         * @public
+         */
+        var remove = function() {
+            this.voxStorage.remove(this.storageKey);
+        };
+        
         /* Public Methods */
-        return VoxClass.Class(
+        var createdClass = VoxClass.Class(
             'VoxObject',
             null,
             {
-                constructor: function(storageType, storageKey) {
-                    var storageLowered = storageType.toLowerCase();
-
-                    if (isValidStorage(storageLowered)) {
-                        this.storageType = storageLowered;
-                    } else {
-                        //FIXME: Use it with object who handles exceptions.
-                        throwException("Storage type not supported yet.");
-                    }
-
-                    this.storageKey = storageKey;
-                    this.voxStorage = new VoxStorage();
-
-                    var mediator = new VoxMediator();
-                    mediator.mixin(this);
-                },
-
-                getStorageKey: function() {
-                    return this.storageKey;
-                },
-
-                /**
-                 * Saves the object calling VoxStorage Class.
-                 */
-                save: function() {
-                    this.voxStorage.save(this.storageKey, this);
-                },
-
-                /**
-                 * Loads the object calling VoxStorage Class.
-                 */
-                load: function() {
-                    this.voxStorate.load(this.storageKey);
-                },
-
-                /**
-                 * Removes the object calling VoxStorage Class.
-                 */
-                remove: function() {
-                    this.voxStorage.remove(this.storageKey);
-                }
-
+                getObjectId: getObjectId,
+                getStorageKey: getStorageKey,
+                save: save,
+                load: load,
+                remove: remove
             }
-    );
-});
+        );
 
+        /*
+         * Set static mehtod
+         */
+        createdClass.getInstance =  function(storageType, storageKey) {
+            var myclass = new VoxObject(storageType, storageKey);
+            objectId++;
+            myclass.objectId = objectId;
+            return myclass;
+        };
+        
+        return createdClass;
+});

@@ -1,3 +1,5 @@
+Vox = {};
+
 // Filename: app.js
 define([
   'VoxClass',
@@ -11,6 +13,7 @@ define([
   'voxine/storage/VoxStorage.class',
   'voxine/storage/VoxLocalStorage.class'
 ], function(VoxClass, VoxMediator, $, Tools, Bindings, TwitterController, VoxTests) {
+    Vox.tests = VoxTests;
     return VoxClass.Class(
         'App',
         null,
@@ -27,14 +30,15 @@ define([
                     ToolsInstance = new Tools();
                     if(ToolsInstance.isMobile()) ToolsInstance.welcomeMobile();
                     //ToolsInstance.runTests();
-                    
+
                     //----------------------------------------------------------
                     //run tests
                     //VoxTests.mediator();
                     //VoxTests.view1();
                     //VoxTests.view2();
                     //VoxTests.view3();
-                    VoxTests.storage();
+                    //VoxTests.storage();
+                    VoxTests.voxObjectTest();
                     //----------------------------------------------------------
                 });
             }

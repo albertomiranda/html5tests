@@ -15,7 +15,8 @@ require.config({
         VoxClass: 'voxine/core/VoxClass.module',
         jQuery: 'lib/jquery/jquery-wrapper',
         jQueryMobile: 'lib/jquery-mobile/jquery-mobile-wrapper',
-        mustache: 'lib/wrapper/mustache.module'
+        mustache: 'lib/wrapper/mustache.module',
+        Modernizr: 'lib/modernizr/modernizr-wrapper'
     }
 });
 
