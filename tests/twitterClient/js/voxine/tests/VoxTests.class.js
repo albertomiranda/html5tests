@@ -34,6 +34,8 @@ define(
         var runTest = function(tests) {
             var i, l, test;
             
+            console.group('New test run: ' + new Date());
+            
             for (i=0, l = tests.length; i < l; ++i) {
                 console.group('Running tests for ' + tests[i]);
                 var objectData = this[tests[i]];
@@ -51,6 +53,8 @@ define(
                 };
                 console.groupEnd();
             };
+            
+            console.groupEnd();
         };
         var runAll = function() {
             this.runTest(["VoxView",
