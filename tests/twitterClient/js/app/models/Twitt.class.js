@@ -6,7 +6,7 @@
  * @author Esteban Abait <esteban.abait@nextive.com>
  */
 
-define(['VoxClass', "templates/twitt.template", 'mustache'], function(VoxClass, TwittTemplate) {
+define(['VoxClass', "app/views/templates/twitt.template", 'mustache'], function(VoxClass, TwittTemplate) {
     return VoxClass.Class(
         'Twitt',
         null,

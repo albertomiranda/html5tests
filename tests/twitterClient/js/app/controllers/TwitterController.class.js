@@ -10,7 +10,7 @@ define([
         'VoxClass',
         'app/models/Twitter.class', 
         'app/models/Twitt.class',
-        'templates/twitt.template',
+        'app/views/templates/twitt.template',
         'mustache', 
         'jQueryMobile'
     ], 

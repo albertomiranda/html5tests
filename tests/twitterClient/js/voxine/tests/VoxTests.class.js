@@ -14,7 +14,8 @@ define(
         'voxine/tests/VoxObjectTest.class',
         'voxine/tests/VoxObjectCollectionTest.class',
         'voxine/tests/VoxStorageTest.class',
-        'voxine/tests/VoxControllerTest.class'
+        'voxine/tests/VoxControllerTest.class',
+        'voxine/tests/VoxConfigTest.class'
     ],
     function (
         $,
@@ -23,16 +24,19 @@ define(
         VoxObjectTest,
         VoxObjectCollectionTest,
         VoxStorageTest,
-        VoxControllerTest
+        VoxControllerTest,
+        VoxConfigTest
     ) {
         /**
-* Runs the collection of tests specified by parameter
-*
-* @param {array} tests
-* @author Esteban S. Abait <esteban.abait@nextive.com>
-*/
+         * Runs the collection of tests specified by parameter
+         *
+         * @param {array} tests
+         * @author Esteban S. Abait <esteban.abait@nextive.com>
+        */
         var runTest = function(tests) {
             var i, l, test;
+            
+            console.group('New test run: ' + new Date());
             
             for (i=0, l = tests.length; i < l; ++i) {
                 console.group('Running tests for ' + tests[i]);
@@ -51,6 +55,8 @@ define(
                 };
                 console.groupEnd();
             };
+            
+            console.groupEnd();
         };
         var runAll = function() {
             this.runTest(["VoxView",
@@ -58,7 +64,8 @@ define(
                           "VoxObject",
                           "VoxObjectCollectionTest",
                           "VoxStorage",
-                          "VoxController"
+                          "VoxController",
+                          "VoxConfig"
                           ]);
         }
         return {
@@ -69,8 +76,8 @@ define(
             VoxObject: VoxObjectTest,
             VoxObjectCollection: VoxObjectCollectionTest,
             VoxStorage: VoxStorageTest,
-            VoxController: VoxControllerTest
+            VoxController: VoxControllerTest,
+            VoxConfig: VoxConfigTest
         };
     }
 );
-
