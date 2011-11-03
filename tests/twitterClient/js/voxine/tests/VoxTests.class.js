@@ -24,7 +24,7 @@ define(
          * @author Esteban S. Abait <esteban.abait@nextive.com>
          */
         var runTest = function(tests) {
-            var i, l, test, filter, isUndef, isFunct;
+            var i, l, test, isUndef, isFunct;
             
             for (i=0, l = tests.length; i < l; ++i) {
                 test = tests[i];
