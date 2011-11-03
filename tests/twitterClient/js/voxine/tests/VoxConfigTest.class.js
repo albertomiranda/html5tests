@@ -9,7 +9,7 @@ define(
         
         var getHostTest = function() {
             var config = new VoxConfig();
-            console.log(config);
+            console.log(config.getHostInfo('esteban'));
         };
     
         return  {
