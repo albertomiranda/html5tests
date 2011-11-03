@@ -30,7 +30,6 @@ define([
             'VoxConfig',
             null,
             {   
-                constructor : constructor,
                 getVoxineInfo : getVoxineInfo,
                 getHostInfo : getHostInfo
             }
