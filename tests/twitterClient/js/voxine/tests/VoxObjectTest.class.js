@@ -18,7 +18,7 @@ define(
         };
         
         return  {
-            default: voxObjectTest
+            "default": voxObjectTest
         };
     }
 );

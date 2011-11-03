@@ -28,38 +28,35 @@ define(
 * @author Esteban S. Abait <esteban.abait@nextive.com>
 */
         var runTest = function(tests) {
-            var i, l, test, isUndef, isFunct;
+            var i, l, test;
             
             for (i=0, l = tests.length; i < l; ++i) {
-                test = tests[i];
-                
-                if (test == void 0) continue;
-                
-                for (var t in test) {
-                    isUndef = (t == void 0);
-                    isFunct = Object.prototype.toString.call(test[t]) == '[object Function]';
-                    if (!isUndef && isFunct) {
-                        console.log('----Running test case "' + t + '"');
-                        test[t].call(test);
-                        console.log('----Finished test case "' + t + '"');
+                console.group('Running tests for ' + tests[i]);
+                var objectData = this[tests[i]];
+                for (var t in objectData) {
+                    if (typeof objectData[t] == "function") {
+                        console.info('----Running test case "' + t + '"');
+                        objectData[t]();
+                        console.log('-----------------------------------');
                     }
                 };
+                console.groupEnd();
             };
         };
         var runAll = function() {
-            this.runTest([VoxViewTest,
-                          VoxMediatorTest,
-                          VoxObjectTest,
-                          VoxStorageTest
+            this.runTest(["VoxView",
+                          "VoxMediator",
+                          "VoxObject",
+                          "VoxStorage"
                           ]);
         }
         return {
             runTest : runTest,
             runAll : runAll,
-            View: VoxViewTest,
-            Mediator: VoxMediatorTest,
-            Object: VoxObjectTest,
-            Storage: VoxStorageTest
+            VoxView: VoxViewTest,
+            VoxMediator: VoxMediatorTest,
+            VoxObject: VoxObjectTest,
+            VoxStorage: VoxStorageTest
         };
     }
 );
