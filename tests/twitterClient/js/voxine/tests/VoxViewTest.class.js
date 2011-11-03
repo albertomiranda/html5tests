@@ -5,7 +5,7 @@
  * @author Esteban Abait <esteban.abait@nextive.com>
  */
 define(
-    ['Voxine/view/VoxView.class'],
+    ['voxine/view/VoxView.class'],
     function(VoxView) {
         /**
          * View test.

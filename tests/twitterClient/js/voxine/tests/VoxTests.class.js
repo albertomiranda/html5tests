@@ -12,14 +12,16 @@ define(
         'voxine/tests/VoxViewTest.class',
         'voxine/tests/VoxMediatorTest.class',
         'voxine/tests/VoxObjectTest.class',
-        'voxine/tests/VoxStorageTest.class'
+        'voxine/tests/VoxStorageTest.class',
+        'voxine/tests/VoxControllerTest.class'
     ],
     function (
         $,
         VoxViewTest,
         VoxMediatorTest,
         VoxObjectTest,
-        VoxStorageTest
+        VoxStorageTest,
+        VoxControllerTest
     ) {
         /**
 * Runs the collection of tests specified by parameter
@@ -34,9 +36,14 @@ define(
                 console.group('Running tests for ' + tests[i]);
                 var objectData = this[tests[i]];
                 for (var t in objectData) {
-                    if (typeof objectData[t] == "function") {
+                    if (Object.prototype.toString.call(objectData[t]) == '[object Function]') {
                         console.info('----Running test case "' + t + '"');
-                        objectData[t]();
+                        try {
+                            objectData[t]();
+                        } catch (e) {
+                            console.error("There was an error executing the function " + t, e);
+                        }
+                        
                         console.log('-----------------------------------');
                     }
                 };
@@ -47,7 +54,8 @@ define(
             this.runTest(["VoxView",
                           "VoxMediator",
                           "VoxObject",
-                          "VoxStorage"
+                          "VoxStorage",
+                          "VoxController"
                           ]);
         }
         return {
@@ -56,7 +64,8 @@ define(
             VoxView: VoxViewTest,
             VoxMediator: VoxMediatorTest,
             VoxObject: VoxObjectTest,
-            VoxStorage: VoxStorageTest
+            VoxStorage: VoxStorageTest,
+            VoxController: VoxControllerTest
         };
     }
 );
