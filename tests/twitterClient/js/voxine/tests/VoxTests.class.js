@@ -36,7 +36,12 @@ define(
                 for (var t in objectData) {
                     if (typeof objectData[t] == "function") {
                         console.info('----Running test case "' + t + '"');
-                        objectData[t]();
+                        try {
+                            objectData[t]();
+                        } catch (e) {
+                            console.error("There was an error executing the function " + t, e);
+                        }
+                        
                         console.log('-----------------------------------');
                     }
                 };
