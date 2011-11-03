@@ -23,7 +23,7 @@ define(
             mediator.mixin(pub);
 
             //bind (event, callback, context)
-            var callback = function(lastname) {alert(this.name + " " + lastname);};
+            var callback = function(lastname) {console.log(this.name + " " + lastname);};
             pub.bind('helloworld', callback, sub);
 
             //trigger(event)
