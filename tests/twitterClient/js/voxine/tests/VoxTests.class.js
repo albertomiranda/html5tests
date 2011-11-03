@@ -8,11 +8,13 @@
  */
 define(
     [
+        'jQuery',
         'voxine/tests/VoxViewTest.class',
         'voxine/tests/VoxMediatorTest.class',
         'voxine/tests/VoxObjectTest.class'
     ],
     function (
+        $,
         VoxViewTest,
         VoxMediatorTest,
         VoxObjectTest
@@ -34,8 +36,11 @@ define(
                 for (var t in test) {
                     isUndef = (t == void 0);
                     isFunct = Object.prototype.toString.call(test[t]) == '[object Function]';
-                    if (!isUndef && isFunct)
+                    if (!isUndef && isFunct) {
+                        console.log('----Running test case "' + t + '"');
                         test[t].call(test);
+                        console.log('----Finished test case "' + t + '"');
+                    }
                 };
             };
         };
