@@ -6,7 +6,8 @@
  * @author Leo Bianchi <leonardo.bianchi@nextive.com>
  */
 define([    
-        'VoxClass'
+        'VoxClass',
+        'VoxStorage'
     ], 
     function(VoxClass) {
 
