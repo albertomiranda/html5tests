@@ -13,7 +13,8 @@ define(
         'voxine/tests/VoxMediatorTest.class',
         'voxine/tests/VoxObjectTest.class',
         'voxine/tests/VoxStorageTest.class',
-        'voxine/tests/VoxControllerTest.class'
+        'voxine/tests/VoxControllerTest.class',
+        'voxine/tests/VoxConfigTest.class'
     ],
     function (
         $,
@@ -21,14 +22,15 @@ define(
         VoxMediatorTest,
         VoxObjectTest,
         VoxStorageTest,
-        VoxControllerTest
+        VoxControllerTest,
+        VoxConfigTest
     ) {
         /**
-* Runs the collection of tests specified by parameter
-*
-* @param {array} tests
-* @author Esteban S. Abait <esteban.abait@nextive.com>
-*/
+         * Runs the collection of tests specified by parameter
+         *
+         * @param {array} tests
+         * @author Esteban S. Abait <esteban.abait@nextive.com>
+        */
         var runTest = function(tests) {
             var i, l, test;
             
@@ -55,7 +57,8 @@ define(
                           "VoxMediator",
                           "VoxObject",
                           "VoxStorage",
-                          "VoxController"
+                          "VoxController",
+                          "VoxConfig"
                           ]);
         }
         return {
@@ -65,7 +68,8 @@ define(
             VoxMediator: VoxMediatorTest,
             VoxObject: VoxObjectTest,
             VoxStorage: VoxStorageTest,
-            VoxController: VoxControllerTest
+            VoxController: VoxControllerTest,
+            VoxConfig: VoxConfigTest
         };
     }
 );
