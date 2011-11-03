@@ -12,6 +12,7 @@ define(
         'voxine/tests/VoxViewTest.class',
         'voxine/tests/VoxMediatorTest.class',
         'voxine/tests/VoxObjectTest.class',
+        'voxine/tests/VoxObjectCollectionTest.class',
         'voxine/tests/VoxStorageTest.class',
         'voxine/tests/VoxControllerTest.class'
     ],
@@ -20,6 +21,7 @@ define(
         VoxViewTest,
         VoxMediatorTest,
         VoxObjectTest,
+        VoxObjectCollectionTest,
         VoxStorageTest,
         VoxControllerTest
     ) {
@@ -54,6 +56,7 @@ define(
             this.runTest(["VoxView",
                           "VoxMediator",
                           "VoxObject",
+                          "VoxObjectCollectionTest",
                           "VoxStorage",
                           "VoxController"
                           ]);
@@ -64,6 +67,7 @@ define(
             VoxView: VoxViewTest,
             VoxMediator: VoxMediatorTest,
             VoxObject: VoxObjectTest,
+            VoxObjectCollection: VoxObjectCollectionTest,
             VoxStorage: VoxStorageTest,
             VoxController: VoxControllerTest
         };
