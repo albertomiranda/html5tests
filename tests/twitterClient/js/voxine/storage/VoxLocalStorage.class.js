@@ -9,7 +9,7 @@ define([
         'VoxClass',
         'voxine/storage/VoxStorage.class'
     ], 
-    function(VoxClass) {
+    function(VoxClass, VoxStorage) {
 
 /**
  * PRIVATE----------------------------------------------------------
