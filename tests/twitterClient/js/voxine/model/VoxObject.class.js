@@ -21,12 +21,31 @@ define([
             var storageLowered = storageType.toLowerCase();
             if (isValidStorage(storageLowered)) {
                 this.storageType = storageLowered;
+            } else {
+                throw "Invalid Storage Type";
             }
             this.storageKey = storageKey;
             this.voxStorage = new VoxStorage();
             var mediator = new VoxMediator();
             mediator.mixin(this);
         };
+        
+        /**
+         * Return object options. Ex. {silentMode: false}
+         * @public
+         * @return Object
+         */
+        var getOptions = function() {
+            return this.options;
+        }
+        
+        /**
+         * Set object options. Ex. {silentMode: false}
+         * @public
+         */
+        var setOptions = function(options) {
+            this.options = (options === null || options === void 0) ? {} : options;
+        }
         
         
         /**
@@ -55,6 +74,13 @@ define([
          */
         var getStorageKey = function() {
             return this.storageKey;
+        };
+        
+        /**
+         * @public
+         */
+        var getStorageType = function() {
+            return this.storageType;
         };
 
         /**
@@ -86,8 +112,12 @@ define([
             'VoxObject',
             null,
             {
+                constructor: constructor,
+                getOptions: getOptions,
+                setOptions: setOptions,
                 getObjectId: getObjectId,
                 getStorageKey: getStorageKey,
+                getStorageType: getStorageType,
                 save: save,
                 load: load,
                 remove: remove
@@ -97,8 +127,9 @@ define([
         /*
          * Set static mehtod
          */
-        createdClass.getInstance =  function(storageType, storageKey) {
+        createdClass.getInstance =  function(storageType, storageKey, options) {
             var myclass = new VoxObject(storageType, storageKey);
+            myclass.setOptions(options);
             objectId++;
             myclass.objectId = objectId;
             return myclass;
