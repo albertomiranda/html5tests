@@ -30,7 +30,7 @@ define(
          * @coverage: addItem
          */
         var addItem = function() {
-            var objInstance = VoxObject.getInstance('local', 'key1234', {silentMode: false});
+            var objInstance = new VoxObject('local', 'key1234', {silentMode: false});
 
             //Test adding a new element.
             collection.addItem(objInstance);
@@ -53,7 +53,7 @@ define(
          * @coverage: getItem
          */
         var getItem = function() {
-            var objInstance = VoxObject.getInstance('remote', 'key5678', {silentMode: false});
+            var objInstance = new VoxObject('remote', 'key5678', {silentMode: false});
             collection.addItem(objInstance);
             
             //Test existing item.
