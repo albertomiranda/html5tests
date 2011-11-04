@@ -68,18 +68,18 @@ define([
         /**
          * Checks if the object belongs to a collection (by key)
          * @param String: Collection Key
-         * @return boolean: 
+         * @return boolean or element position: 
          */
         var belongsToCollection = function(collectionKey) {
             var i, size;
             size = this.associatedCollectionKeys.length;
             for (i = 0; i < size; ++i) {
                 if (this.associatedCollectionKeys[i] === collectionKey) {
-                    return true;
+                    return i;
                 }
             }
             return false;
-        }
+        };
         
         /**
          * Used when you need check if the object has been associated to a collection.
@@ -87,8 +87,8 @@ define([
          * @public
          */
         var hasCollectionAssociation = function() {
-            return this.associatedCollectionKeys.length === 0;
-        }
+            return this.associatedCollectionKeys.length !== 0;
+        };
         
         /**
          * Associates the object with a collection key.
@@ -107,7 +107,45 @@ define([
                  //Received an string with a key.
                  this.associatedCollectionKeys.push(associatedKey);
              }
-         }
+         };
+         
+       /**
+        * Remove a dependence with a collection.
+        * @param String | Array: Association/s
+        * @return boolean: true if all elements were removed.
+        * @public
+        */
+        var removeAssociation = function(associatedKey) {
+            var i, size, element;
+            var elementsRemoved = 0;
+            if (Object.prototype.toString.call(associatedKey) == '[object Array]') {
+                size = associatedKey.length;
+                for (i = 0; i < size; ++i) {
+                    element = this.belongsToCollection(associatedKey[i]);
+                    if (Object.prototype.toString.call(element) == '[object Number]') {
+                        this.associatedCollectionKeys.splice(element, 1);
+                        elementsRemoved++;
+                    }
+                }
+                return (elementsRemoved === size);
+            } else {
+                element = this.belongsToCollection(associatedKey);
+                if (Object.prototype.toString.call(element) == '[object Number]') {
+                    this.associatedCollectionKeys.splice(element, 1);
+                    return true;
+                }
+            }
+            return false;
+        };
+        
+        /**
+         * Removes all associations.
+         * @public
+         */
+        
+        var removeAllAssociations = function() {
+            this.associatedCollectionKeys = [];
+        };
         
         /**
          * Returns the object instance id
@@ -180,10 +218,12 @@ define([
                 belongsToCollection: belongsToCollection,
                 setCollection: setCollection,
                 hasCollectionAssociation: hasCollectionAssociation,
+                removeAssociation: removeAssociation,
+                removeAllAssociations: removeAllAssociations,
                 getId: getId,
                 getStorageKey: getStorageKey,
                 getStorageType: getStorageType,
-                save: save,
+                save: save, 
                 load: load,
                 remove: remove
             }

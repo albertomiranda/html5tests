@@ -40,7 +40,7 @@ define(
             try {
                 collection.addItem(objInstance);
             } catch (e) {
-                console.assert(e === "Duplicate object. Object with Id = 6 already exists.");
+                console.assert(e === "Duplicate object. Object with Id = " + objInstance.getId() + " already exists.");
             }
             
             //TODO: Test silentMode false and true
