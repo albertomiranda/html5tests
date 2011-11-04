@@ -8,31 +8,51 @@
  */
 define([    
     'VoxClass',
-    'app/config/AppConfig'
+    'app/config/AppConfig',
+    'voxine/tools/VoxTools.class'
     ], 
-    function(VoxClass, Config) {
-
+    function(VoxClass, AppConfig, VoxTools) {
+        //----------------------------------------------------------------------
         /**
-         * PRIVATE METHODS----------------------------------------------------------
+         * PRIVATE
          */
-        var getVoxineInfo = function(key) {
-            return Config.config.voxine[key];
+        //init configs
+        var voxineConfig = {};
+        var appConfig = {};
+        
+        //default config
+        var voxineDefaultConfig = {
+            "gatewayUrl": "index.php",
+            "default": "test"
         };
         
-        var getHostInfo = function(host) {
-            return getVoxineInfo(host);    
+        //voxine custom hosts config
+        var voxineHostsConfig = {
+            "localhost": {
+                "gatewayUrl": "index.custom.php",
+                "host": "localhost"
+            }
         };
         
+        //MERGE CONFIGS
+        var host = 'localhost'; //test
+        var tools = new VoxTools;
+        var voxineConfig = tools.mergeObject(voxineDefaultConfig, voxineHostsConfig[host]);
+        console.log(voxineConfig);
+        //----------------------------------------------------------------------
+        
+        //----------------------------------------------------------------------
         /**
-         * PUBLIC INTERFACE--------------------------------------------------------------
+         * PUBLIC INTERFACE
          */
         return VoxClass.Class(
             'VoxConfig',
             null,
             {   
-                getVoxineInfo : getVoxineInfo,
-                getHostInfo : getHostInfo
+                voxine: voxineConfig,
+                app: appConfig
             }
-        );  
+        );
+        //----------------------------------------------------------------------
     }
 );
