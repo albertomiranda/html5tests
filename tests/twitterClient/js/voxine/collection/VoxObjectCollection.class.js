@@ -107,6 +107,16 @@ define([
             //TODO
         };
         
+        /**
+         * Parses a json object and load a collection.
+         * @param Object: Json to parse.
+         * @public
+         */
+        var loadCollectionFromJson = function(json) {
+            //TODO
+        }
+        
+        
         return VoxClass.Class(
             'VoxObjectCollection',
             VoxObject,
@@ -117,7 +127,8 @@ define([
                 getItem: getItem,
                 removeItem: removeItem,
                 reset: reset,
-                filter: filter
+                filter: filter,
+                loadCollectionFromJson: loadCollectionFromJson
             }
         );
 });
