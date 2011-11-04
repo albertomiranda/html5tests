@@ -10,9 +10,9 @@ define([
     'VoxClass'
     ], 
     function(VoxClass) {
-
+        //----------------------------------------------------------------------
         /**
-         * PRIVATE METHODS----------------------------------------------------------
+         * PRIVATE METHODS
          */
         var constructor = function() {
             
@@ -32,17 +32,25 @@ define([
             
         };
         
+        var send = function(){
+            console.log("BASE COMM SEND");
+        }
+        //----------------------------------------------------------------------
+        
+        //----------------------------------------------------------------------
         /**
-         * PUBLIC INTERFACE--------------------------------------------------------------
+         * PUBLIC INTERFACE
          */
         return VoxClass.Class(
-            'VoxComm',
+            'VoxBaseComm',
             null,
             {   
                 constructor : constructor,
                 onSuccess : onSuccess,
-                onError : onError
+                onError : onError,
+                send: send
             }
-        );  
+        );
+        //----------------------------------------------------------------------
     }
 );

@@ -17,13 +17,14 @@ define([
          */
         //default config
         var voxineDefaultConfig = {
+            "commLayer": "default",
             "gatewayUrl": "index.php"
         };
         
         //voxine custom hosts config
         var voxineHostsConfig = {
             "localhost": {
-                "gatewayUrl": "index.custom.php"
+                "gatewayUrl": "echo.php"
             }
         };
         
@@ -36,7 +37,6 @@ define([
             voxine: voxineConfig,
             app: appConfig
         };
-        console.log(config);
         //----------------------------------------------------------------------
         
         //----------------------------------------------------------------------
