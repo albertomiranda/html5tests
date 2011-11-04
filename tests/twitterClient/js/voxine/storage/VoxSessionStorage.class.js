@@ -24,6 +24,11 @@ define([
             return window.sessionStorage.getItem(key);
         };
                 
+        var remove = function(key) {
+            console.log('Eliminando "' + key + '"');
+            return window.sessionStorage.removeItem(key);
+        };
+                
 /**
  * PUBLIC INTERFACE--------------------------------------------------------------
  */
@@ -32,7 +37,8 @@ define([
             null,
             {
                 persist : persist,
-                recover : recover
+                recover : recover,
+                remove: remove
             }
         );
 		
