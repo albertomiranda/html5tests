@@ -10,7 +10,6 @@ define([
 
         var validStorages = ["memory", "local", "remote"];
         var validStoragesCount = validStorages.length;
-        var objectId = 0;
 
         /**
          * Class Constructor.

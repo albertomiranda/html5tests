@@ -68,15 +68,19 @@ function(VoxClass) {
         var storableObject = unsecure(securedObject);
         return unserialize(storableObject);
     };
+    
+    var erase = function(key){
+        remove(key);
+    }
 
-    //TODO to json
     var serialize = function(object) {
-        return object;
+        var str = JSON.stringify(object);
+        console.log("Serialized obj :" + str);
+        return str;
     };
 
-    //TODO from json
-    var unserialize = function(object) {
-        return object;
+    var unserialize = function(string) {
+        return JSON.parse(string);
     };
 
     //TODO VoxSecurity.encrypt(string)
@@ -89,6 +93,10 @@ function(VoxClass) {
         return object;
     };
 
+/**
+ * Virtual methods----------------------------------------------------
+ */
+
     var persist = function(key, securedObject) {
         polymorphic("persist", key, securedObject);
     };
@@ -97,8 +105,12 @@ function(VoxClass) {
         return polymorphic("recover", key);
     };
 
+    var remove = function(key) {
+        polymorphic("remove", key);
+    };
+    
 /**
- * PUBLIC INTERFACE--------------------------------------------------------------
+ * PUBLIC INTERFACE-----------------------------------------------------------
  */
     
     
@@ -108,6 +120,7 @@ function(VoxClass) {
         {
             load: load,
             save: save,
+            erase: erase,
             setSubType : setSubType
         }
         
