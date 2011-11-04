@@ -6,9 +6,9 @@
 
 define([
     'VoxClass',
-    'voxine/core/VoxMediator.class'
+    'voxine/model/VoxObject.class'
     ], 
-    function(VoxClass, VoxMediator) {
+    function(VoxClass, VoxObject) {
 
         /* Private */
         var undefined;
@@ -17,13 +17,10 @@ define([
          * Class Constructor.
          * @public
          */
-        var constructor = function(filter, options) {
-            this.setOptions(options);
+        var constructor = function(storageType, storageKey, options, filter) {
             this.filter = filter;
             this.collection = [];
             this.length = 0;
-            var mediator = new VoxMediator();
-            mediator.mixin(this);
         };
         
         /**
@@ -128,7 +125,7 @@ define([
         
         return VoxClass.Class(
             'VoxObjectCollection',
-            null,
+            VoxObject,
             {
                 constructor: constructor,
                 getOptions: getOptions,

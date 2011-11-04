@@ -5,82 +5,123 @@
  * 
  * @author Leo Bianchi <leonardo.bianchi@nextive.com>
  */
-define(['VoxClass'], function(VoxClass) {
+define([
+    'VoxClass',
+    'voxine/storage/VoxLocalStorage.class',
+    'voxine/storage/VoxSessionStorage.class'
+], 
+function(VoxClass) {
+    
+
+/**
+* POLYMORPHISM------------------------------------------------------
+*/
+    /*
+     *
+     *TODO: move responsability for creating specific storage
+     *to factory if it requires more than just calling a constructor.
+     *e.g if RemoteStorage requires to set parameters to the class
+     *
+     **/
+    
+    var child = null;
+    var getChild = function(){
+        if(child === null){
+            child = new (window[childName])();
+        }
+        
+        return child;
+    }
+    
+    var className = 'VoxStorage';
+    var subTypeName;
+    var childName;
+    
+    var setSubType = function(tName){
+        subTypeName = tName;
+        childName = 'Vox' + ucfirststrict(tName) + className.slice(3);
+    }
+    
+    var polymorphic = function (functionName)
+    {
+        var instance = getChild();
+        var args = Array.prototype.slice.call(arguments).splice(1);
+        
+        return instance[functionName].apply(instance, args);
+    }
+    
+    var ucfirststrict = function(str){
+        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    }
+        
 /**
 * PRIVATE----------------------------------------------------------
 */
-    var save= function(key, object) {
-        alarm("entre a save");
-        var storableObject = this.serialize(object);
-        var securedObject = this.secure(storableObject);
-        this.persist(key, securedObject);
+    var save = function(key, object) {
+        var storableObject = serialize(object);
+        var securedObject = secure(storableObject);
+        persist(key, securedObject);
     };
 
-    var load= function(key) {
-        alarm("entre a load");
-        var securedObject = this.recover(key);
-        var storableObject = this.unsecure(securedObject);
-        return this.unserialize(storableObject);
+    var load = function(key) {
+        var securedObject = recover(key);
+        var storableObject = unsecure(securedObject);
+        return unserialize(storableObject);
     };
+    
+    var erase = function(key){
+        remove(key);
+    }
 
-    //TODO to json
     var serialize = function(object) {
-        alarm("entre a serialize");
-        return object;
+        var str = JSON.stringify(object);
+        console.log("Serialized obj :" + str);
+        return str;
     };
 
-    //TODO from json
-    var unserialize = function(object) {
-        alarm("entre a unserialize");
-        return object;
+    var unserialize = function(string) {
+        return JSON.parse(string);
     };
 
     //TODO VoxSecurity.encrypt(string)
     var secure = function(object) {
-        alarm("entre a secure");
         return object;
     };
 
     //TODO VoxSecurity.decrypt(string)
     var unsecure = function(object) {
-        alarm("entre a unsecure");
         return object;
     };
 
-    //TODO virtual: redefine for specific storage
-    var persist = function(key, securedObject) {
-        alarm("entre a persist virtual, malo, malo");
-
-        /**
-         * (Posible) Mecanismo para recuperar el tipo de storage:
-         *  var persistanceType = arguments.callee.getPersistanceType(); 
-         *  
-         *  y con ese type resolver que objeto usar, si local, remoto...
-         *  
-         *  ver diagrama
-         *  
-         *  Esteban (idea de Alberto).
-         */
-
-    };
-
-    //TODO virtual: redefine for specific storage
-    var recover = function(key) {
-        alarm("entre a recover virtual, malo, malo");
-    };
-
 /**
- * PUBLIC INTERFACE--------------------------------------------------------------
+ * Virtual methods----------------------------------------------------
+ */
+
+    var persist = function(key, securedObject) {
+        polymorphic("persist", key, securedObject);
+    };
+
+    var recover = function(key) {
+        return polymorphic("recover", key);
+    };
+
+    var remove = function(key) {
+        polymorphic("remove", key);
+    };
+    
+/**
+ * PUBLIC INTERFACE-----------------------------------------------------------
  */
     
     
     return VoxClass.Class(
-        'VoxStorage',
+        className,
         null,
         {
-            constructor: function() {},
             load: load,
-            save: save
+            save: save,
+            erase: erase,
+            setSubType : setSubType
         }
         
         

@@ -5,15 +5,25 @@
  */
 define(
     [
-        'voxine/storage/VoxStorage.class',
-        'voxine/storage/VoxLocalStorage.class'
+        'voxine/storage/VoxStorageFactory.class'
     ],
     function() {
         var voxStorageTest = function() {
-            var st = new VoxLocalStorage();
-            st.save("key", "value_001");
-            alarm(st.load("key"));
+            test('local');
+            test('session');
         };
+        
+        var test = function(type){
+            var key = type + '001';
+            
+            var stf = new VoxStorageFactory();
+            
+            var st = stf.getStorage(type);
+            st.save(key, {var1:'value 1',var2:{var21:'value 21', var22: null},var3:'value 3'});
+            console.log('recuperado: ' + JSON.stringify(st.load(key)));
+            st.erase(key);
+            console.log('recuperado: ' + JSON.stringify(st.load(key)));
+        }
         
         return  {
             voxStorageTest: voxStorageTest

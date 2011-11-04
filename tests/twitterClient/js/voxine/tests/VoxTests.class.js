@@ -88,7 +88,7 @@ define(
             this.runTest(["VoxView",
                           "VoxMediator",
                           "VoxObject",
-                          "VoxObjectCollectionTest",
+                          "VoxObjectCollection",
                           "VoxStorage",
                           "VoxController",
                           "VoxConfig"

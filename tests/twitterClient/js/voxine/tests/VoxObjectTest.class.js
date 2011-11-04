@@ -14,8 +14,8 @@ define(
          */
         var automaticUniqueObjectId = function() {
             
-            var instance1 = VoxObject.getInstance('remote', 'AD82KLM20EFN');
-            var instance2 = VoxObject.getInstance('local', 'Asf3efdfasdf');
+            var instance1 = new VoxObject('remote', 'AD82KLM20EFN');
+            var instance2 = new VoxObject('local', 'Asf3efdfasdf');
             console.assert(instance1.getId() === 1);
             console.assert(instance2.getId() === 2);
             
@@ -30,11 +30,11 @@ define(
         var optionsTests = function() {
             
             //Tests null options.
-            var testInstance = VoxObject.getInstance('local', 'key1234');
+            var testInstance = new VoxObject('local', 'key1234');
             console.assert(testInstance.getOptions() === Object(testInstance.getOptions()));
             
             //Tests with options
-            testInstance = VoxObject.getInstance('remote', 'key12345', {silentMode: true});
+            testInstance = new VoxObject('remote', 'key12345', {silentMode: true});
             console.assert(testInstance.getOptions().silentMode === true);
 
             console.log('%cFinished', 'color: green; font-weight:bold;');
@@ -49,23 +49,63 @@ define(
             
             //Check invalid type exception.
             try {
-                var testInstance = VoxObject.getInstance('invalidType', 'key000', {silentMode: false});
+                var testInstance = new VoxObject('invalidType', 'key000', {silentMode: false});
             } catch(e) {
                 console.assert(e === "Invalid Storage Type");
             }
             
             //Checks type and key.
-            testInstance = VoxObject.getInstance('local', 'key1234', {silentMode: false});
+            testInstance = new VoxObject('local', 'key1234', {silentMode: false});
             console.assert(testInstance.getStorageKey() === 'key1234');
             console.assert(testInstance.getStorageType() === 'local');
             
             console.log('%cFinished', 'color: green; font-weight:bold;');
-        }
+        };
+        
+        /**
+         * Tests for collection key associations.
+         * @coverage: setCollection, getAssociatedCollectionKeys,
+         *            belongsToCollection, removeAssociation,
+         *            removeAllAssociations, hasCollectionAssociation
+         */
+        var testKeyAssociation = function() {
+            var testInstance = new VoxObject('local', 'key1234', {silentMode: false});
+            testInstance.setCollection(['ck1', 'ck2', 'ck3']);
+            
+            //Test multiple key association
+            console.assert(testInstance.getAssociatedCollectionKeys().length === 3);
+            
+            //Test single key association
+            testInstance.setCollection('ck4');
+            console.assert(testInstance.getAssociatedCollectionKeys().length === 4);
+            
+            //Belongs to collection
+            console.assert(testInstance.belongsToCollection("ck3") === 2);
+            console.assert(testInstance.belongsToCollection("ck5") === false);
+            
+            //Remove one item
+            testInstance.removeAssociation("ck2");
+            console.assert(testInstance.belongsToCollection("ck2") === false);
+            
+            //Remove multiple items
+            console.assert(testInstance.removeAssociation(["ck1", "ck3"]) === true);
+            
+            //Remove no complete
+            testInstance.setCollection('ck11');
+            console.assert(testInstance.removeAssociation(["ck11", "ck33"]) === false);
+            
+            //remove all
+            testInstance.removeAllAssociations();
+            console.assert(testInstance.hasCollectionAssociation() === false);
+            
+            console.log('%cFinished', 'color: green; font-weight:bold;');
+        };
         
         return  {
             automaticUniqueObjectId: automaticUniqueObjectId,
             optionsTests: optionsTests,
-            initValues: initValues
+            initValues: initValues,
+            testKeyAssociation: testKeyAssociation
         };
     }
 );
