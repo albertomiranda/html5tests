@@ -19,7 +19,7 @@ define(
          */
         var createNewCollection = function() {
             var filter = new VoxFilter({id:"1", name: "Test"});
-            collection = new VoxObjectCollection(filter, {silentMode: false});
+            collection = new VoxObjectCollection('local', 'StKey123', {silentMode: false}, filter);
             console.assert(collection.getOptions().silentMode === false);
             console.assert(collection.getSize() === 0);
             console.log('%cFinished', 'color: green; font-weight:bold;');
