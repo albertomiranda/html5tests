@@ -13,7 +13,6 @@ define([
 
         /**
          * Class Constructor.
-         * Singleton.
          * @private
          */
         var constructor = function(storageType, storageKey, options) {
