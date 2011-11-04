@@ -4,29 +4,27 @@
  * @author Alberto Miranda <alberto@nextive.com>
  * @author Esteban Abait <esteban.abait@nextive.com>
  */
-define(['VoxClass', 'app/models/Twitt.class'], function(VoxClass, Twitt) {
-    return VoxClass.Class(
-        'Tools',
-        null,
-        {
-           /**
+define(
+    ['VoxClass'], 
+    function(VoxClass) {
+        /**
          * Returns true if we are currently running in a mobile device.
          * 
          * @author Alberto Miranda <alberto@nextive.com>
          * @return boolean
          */
-        isMobile: function() {
+        var isMobile = function() {
             //mobile detection
             var mobile = (/iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase()));  
             return mobile;
-        },
-        
+        };
+
         /**
          * Runs a display change to make evident you're on certain mobile device.
          * 
          * @author Alberto Miranda <alberto@nextive.com>
          */
-        welcomeSpecificMobile: function() {
+        var welcomeSpecificMobile = function() {
             var deviceAgent = navigator.userAgent.toLowerCase();
             //var agentID = deviceAgent.match(/(iphone|ipod|ipad|android)/);
             //if(agentID==null) return false;
@@ -44,28 +42,28 @@ define(['VoxClass', 'app/models/Twitt.class'], function(VoxClass, Twitt) {
             if(agentID.indexOf("android")>=0){
                 alert("Hello Android");
             }
-        },
-        
+        };
+
         /**
          * Runs a display change to make evident you're on a mobile device.
          * 
          * @author Alberto Miranda <alberto@nextive.com>
          */
-        welcomeMobile: function() {
+        var welcomeMobile = function() {
             alert('Enjoy your mobile experience!');
             // Hides mobile browser's address bar when page is done loading.
             window.addEventListener('load', function(e) {
                 setTimeout(function() {window.scrollTo(0, 3);}, 1);
             }, false);
-        },
-        
+        };
+
         /**
          * Checks if a appcache was updated.
          * If updated asks the user to reload the page.
          * 
          * @author Alberto Miranda <alberto@nextive.com>
          */
-        checkCacheUpdate: function() {
+        var checkCacheUpdate = function() {
             window.applicationCache.addEventListener('updateready', function(e) {
               if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
                 window.applicationCache.swapCache();
@@ -74,36 +72,47 @@ define(['VoxClass', 'app/models/Twitt.class'], function(VoxClass, Twitt) {
                 }
               }
             }, false);
-        },
+        };
         
         /**
-         * Runs a predefined set of tests.
+         * Merges object2 inside object1 overwriting properties already on
+         * object1.
          * 
          * @author Alberto Miranda <alberto@nextive.com>
+         * @param object obj1
+         * @param object obj2
+         * @return object
          */
-        runTests: function() {
-            var data = {
-                "created_at": "Wed, 19 Jan 2011 21:16:37 +0000",
-                "profile_image_url": "http://a2.twimg.com/sticky/default_profile_images/default_profile_1_normal.png",
-                "from_user_id_str": "191709163",
-                "id_str": "27836852555751424",
-                "from_user": "DanLabTesting",
-                "text": "Twitter api: 1234455",
-                "to_user_id": null,
-                "metadata": {
-                    "result_type": "recent"
-                },
-                "id": 27836852555751424,
-                "geo": null,
-                "from_user_id": 191709163,
-                "iso_language_code": "en",
-                "source": "&lt;a href=&quot;http://www.danlabgames.com/index.php?computer=ipad&quot; rel=&quot;nofollow&quot;&gt;Wacka Monsta&lt;/a&gt;",
-                "to_user_id_str": null
-            };
-            var Twitt1 = new Twitt(data);
-            console.log(Twitt1);
+        var mergeObject = function(obj1, obj2){
+            for (var attrname in obj2) { obj1[attrname] = obj2[attrname]; }
+            return obj1;
+        };
+        
+        // http://kevin.vanzonneveld.net
+        // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+        // +   bugfixed by: Onno Marsman
+        // +   improved by: Brett Zamir (http://brett-zamir.me)
+        // *     example 1: ucfirst('kevin van zonneveld');
+        // *     returns 1: 'Kevin van zonneveld'
+        var ucfirst = function ucfirst (str) {
+            str += '';
+            var f = str.charAt(0).toUpperCase();
+            return f + str.substr(1);
         }
-           
-           
-        })
+    
+        //----------------------------------------------------------------------
+        //PUBLIC INTERFACE
+        return VoxClass.Class(
+            'VoxTools',
+            null,
+            {
+                isMobile: isMobile,
+                welcomeSpecificMobile: welcomeSpecificMobile,
+                welcomeMobile: welcomeMobile,
+                checkCacheUpdate: checkCacheUpdate,
+                mergeObject: mergeObject,
+                ucfirst: ucfirst
+            }
+        //----------------------------------------------------------------------
+    )
 });

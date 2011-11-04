@@ -5,19 +5,18 @@ define([
   'VoxClass',
   'voxine/core/VoxMediator.class',
   'jQuery',
-  'voxine/tools/Tools.class',
+  'voxine/tools/VoxTools.class',
   'app/Bindings.class',
   'app/controllers/TwitterController.class',
   'voxine/tests/VoxTests.class',
   'lib/mustache'
-], function(VoxClass, VoxMediator, $, Tools, Bindings, TwitterController, VoxTests) {
+], function(VoxClass, VoxMediator, $, VoxTools, Bindings, TwitterController, VoxTests) {
     Vox.tests = VoxTests;
     return VoxClass.Class(
         'App',
         null,
         {
             initialize: function() {
-                var ToolsInstance;
                 //start
                 $(document, this).ready(function(){
                     //set default bindings
@@ -25,9 +24,8 @@ define([
                     bindingInstance.apply();
                     
                     //detect mobile
-                    ToolsInstance = new Tools();
-                    if(ToolsInstance.isMobile()) ToolsInstance.welcomeMobile();
-                    //ToolsInstance.runTests();
+                    var tools = new VoxTools;
+                    if(tools.isMobile()) tools.welcomeMobile();
                 });
             }
         })

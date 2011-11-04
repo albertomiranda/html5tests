@@ -12,55 +12,99 @@ define(
         'voxine/tests/VoxViewTest.class',
         'voxine/tests/VoxMediatorTest.class',
         'voxine/tests/VoxObjectTest.class',
-        'voxine/tests/VoxStorageTest.class'
+        'voxine/tests/VoxObjectCollectionTest.class',
+        'voxine/tests/VoxStorageTest.class',
+        'voxine/tests/VoxControllerTest.class',
+        'voxine/tests/VoxConfigTest.class',
+        'voxine/tests/VoxCommTest.class'
     ],
     function (
         $,
         VoxViewTest,
         VoxMediatorTest,
         VoxObjectTest,
-        VoxStorageTest
+        VoxObjectCollectionTest,
+        VoxStorageTest,
+        VoxControllerTest,
+        VoxConfigTest,
+        VoxCommTest
     ) {
+        
         /**
-* Runs the collection of tests specified by parameter
-*
-* @param {array} tests
-* @author Esteban S. Abait <esteban.abait@nextive.com>
-*/
+         * Count the elements into the object
+         */
+        var countObjectElements = function(object) {
+            var undefined;
+            var objectLength = 0;
+            if (object !== null && object !== undefined) {
+               for (var element in object) {
+                    objectLength++;
+               }
+            }
+            return objectLength
+        }
+        
+        /**
+         * Runs the collection of tests specified by parameter
+         *
+         * @param {array} tests
+         * @author Esteban S. Abait <esteban.abait@nextive.com>
+        */
         var runTest = function(tests) {
-            var i, l, test, isUndef, isFunct;
+            var i, l, testsLength, objectData, objectDataLength, groupLabel;
             
-            for (i=0, l = tests.length; i < l; ++i) {
-                test = tests[i];
+            console.group('New test run: ' + new Date());
+            testsLength = tests.length;
+            for (i=0, l = testsLength; i < l; ++i) {
+                groupLabel = 'Running tests for ' + tests[i];
+                objectData = this[tests[i]];
+                objectDataLength = countObjectElements(objectData);
                 
-                if (test == void 0) continue;
+                //Checks if there are many elements and many tests.
+                if (testsLength > 1 && testsLength * objectDataLength > 5 && i !== testsLength - 1) {
+                    console.groupCollapsed(groupLabel);
+                } else {
+                    console.group(groupLabel);
+                }
                 
-                for (var t in test) {
-                    isUndef = (t == void 0);
-                    isFunct = Object.prototype.toString.call(test[t]) == '[object Function]';
-                    if (!isUndef && isFunct) {
-                        console.log('----Running test case "' + t + '"');
-                        test[t].call(test);
-                        console.log('----Finished test case "' + t + '"');
+                for (var t in objectData) {
+                    if (Object.prototype.toString.call(objectData[t]) == '[object Function]') {
+                        console.info('----Running test case "' + t + '"');
+                        try {
+                            objectData[t]();
+                        } catch (e) {
+                            console.error("There was an error executing the function " + t, e);
+                        }
+                        
+                        console.log('-----------------------------------');
                     }
                 };
+                console.groupEnd();
             };
+            
+            console.groupEnd();
         };
         var runAll = function() {
-            this.runTest([VoxViewTest,
-                          VoxMediatorTest,
-                          VoxObjectTest,
-                          VoxStorageTest
+            this.runTest(["VoxView",
+                          "VoxMediator",
+                          "VoxObject",
+                          "VoxObjectCollectionTest",
+                          "VoxStorage",
+                          "VoxController",
+                          "VoxConfig"
                           ]);
         }
         return {
             runTest : runTest,
             runAll : runAll,
-            View: VoxViewTest,
-            Mediator: VoxMediatorTest,
-            Object: VoxObjectTest,
-            Storage: VoxStorageTest
+            VoxView: VoxViewTest,
+            VoxMediator: VoxMediatorTest,
+            VoxObject: VoxObjectTest,
+            VoxObjectCollection: VoxObjectCollectionTest,
+            VoxStorage: VoxStorageTest,
+            VoxController: VoxControllerTest,
+            VoxConfig: VoxConfigTest,
+            VoxComm: VoxCommTest
         };
     }
 );
-
