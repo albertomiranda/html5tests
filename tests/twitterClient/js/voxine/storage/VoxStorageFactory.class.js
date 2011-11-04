@@ -7,10 +7,12 @@
  */
 define([    
         'VoxClass',
+        'voxine/tools/VoxTools.class',
         'Modernizr',
         'voxine/storage/VoxStorage.class'
+        
     ], 
-    function(VoxClass) {
+    function(VoxClass, VoxTools) {
 
 /**
  * PRIVATE----------------------------------------------------------
@@ -20,11 +22,6 @@ define([
          *TODO: obviamente esto deberia ser singleton, ver como implementar
          *
          **/
-        
-        
-        var ucfirststrict = function(str){
-            return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-        };
         
         var getLocalStorage = function(){
             var st = new VoxStorage();
@@ -50,7 +47,8 @@ define([
         }
         
         var getStorage = function(type) {
-            var functionName = 'get' + ucfirststrict(type) + 'Storage';
+            var tools = new VoxTools();
+            var functionName = 'get' + tools.ucfirst(type) + 'Storage';
             return getSpecificStorage[functionName]();
         };
                         
