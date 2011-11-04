@@ -16,7 +16,8 @@ define(
         'voxine/tests/VoxStorageTest.class',
         'voxine/tests/VoxControllerTest.class',
         'voxine/tests/VoxConfigTest.class',
-        'voxine/tests/VoxCommTest.class'
+        'voxine/tests/VoxCommTest.class',
+        'voxine/tests/VoxFilterTest.class'
     ],
     function (
         $,
@@ -27,7 +28,8 @@ define(
         VoxStorageTest,
         VoxControllerTest,
         VoxConfigTest,
-        VoxCommTest
+        VoxCommTest,
+        VoxFilterTest
     ) {
         
         /**
@@ -91,7 +93,8 @@ define(
                           "VoxObjectCollection",
                           "VoxStorage",
                           "VoxController",
-                          "VoxConfig"
+                          "VoxConfig",
+                          "VoxFilter"
                           ]);
         }
         return {
@@ -104,7 +107,8 @@ define(
             VoxStorage: VoxStorageTest,
             VoxController: VoxControllerTest,
             VoxConfig: VoxConfigTest,
-            VoxComm: VoxCommTest
+            VoxComm: VoxCommTest,
+            VoxFilter: VoxFilterTest
         };
     }
 );
