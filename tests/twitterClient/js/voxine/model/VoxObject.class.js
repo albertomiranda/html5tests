@@ -41,6 +41,7 @@ define([
         
         /**
          * Set object options. Ex. {silentMode: false}
+         * @param Object options : {silentMode: true/false} used for event triggering.
          * @public
          */
         var setOptions = function(options) {
@@ -52,7 +53,7 @@ define([
          * Returns the object instance id
          * @public
          */
-        var getObjectId = function() {
+        var getId = function() {
             return this.objectId;
         };
         
@@ -115,7 +116,7 @@ define([
                 constructor: constructor,
                 getOptions: getOptions,
                 setOptions: setOptions,
-                getObjectId: getObjectId,
+                getId: getId,
                 getStorageKey: getStorageKey,
                 getStorageType: getStorageType,
                 save: save,

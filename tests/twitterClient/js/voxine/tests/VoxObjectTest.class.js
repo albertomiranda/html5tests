@@ -16,8 +16,8 @@ define(
             
             var instance1 = VoxObject.getInstance('remote', 'AD82KLM20EFN');
             var instance2 = VoxObject.getInstance('local', 'Asf3efdfasdf');
-            console.assert(instance1.getObjectId() === 1);
-            console.assert(instance2.getObjectId() === 2);
+            console.assert(instance1.getId() === 1);
+            console.assert(instance2.getId() === 2);
             
             console.log('%cFinished', 'color: green; font-weight:bold;');
         };
