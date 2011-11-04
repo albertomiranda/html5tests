@@ -6,9 +6,8 @@
  * @author Alberto Miranda <alberto@nextive.com>
  * @author Esteban Abait <esteban.abait@nextive.com>
  */
+
 //------------------------------------------------------------------------------
-Voxine = {}; //we want Voxine to be globally accessible (one global to rule them all!)
-    
 //Require.js allows us to configure shortcut alias
 require.config({
     paths: {

@@ -3,24 +3,21 @@ Vox = {};
 // Filename: app.js
 define([
   'VoxClass',
-  'voxine/core/VoxMediator.class',
   'jQuery',
   'voxine/tools/VoxTools.class',
   'app/Bindings.class',
-  'app/controllers/TwitterController.class',
   'voxine/tests/VoxTests.class',
   'Modernizr',
-  'voxine/tools/VoxPolyfillsLoader.class',
-  'lib/mustache'
-], function(VoxClass, VoxMediator, $, VoxTools, Bindings, TwitterController, VoxTests, Modernizr, Polyfills) {
+  'voxine/tools/VoxPolyfillsLoader.class'
+], function(VoxClass, $, VoxTools, Bindings, VoxTests, Modernizr, Polyfills) {
     Vox.tests = VoxTests;
     
     //POLYFILL LOADING
     var loader = new Polyfills();
     loader.yepnope ([
         {
-            test : Modernizr.localstorage && Modernizr.sessionstorage,
-            nope : 'lib/storage_polyfill/sessionstorage.1.4',
+            test : Modernizr.localstorage,
+            nope : 'lib/storage_polyfill/sessionstorage.1.4'
         }               
     ]);
     
