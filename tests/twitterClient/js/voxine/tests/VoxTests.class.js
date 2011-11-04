@@ -12,6 +12,7 @@ define(
         'voxine/tests/VoxViewTest.class',
         'voxine/tests/VoxMediatorTest.class',
         'voxine/tests/VoxObjectTest.class',
+        'voxine/tests/VoxObjectCollectionTest.class',
         'voxine/tests/VoxStorageTest.class',
         'voxine/tests/VoxControllerTest.class',
         'voxine/tests/VoxConfigTest.class',
@@ -22,11 +23,27 @@ define(
         VoxViewTest,
         VoxMediatorTest,
         VoxObjectTest,
+        VoxObjectCollectionTest,
         VoxStorageTest,
         VoxControllerTest,
         VoxConfigTest,
         VoxCommTest
     ) {
+        
+        /**
+         * Count the elements into the object
+         */
+        var countObjectElements = function(object) {
+            var undefined;
+            var objectLength = 0;
+            if (object !== null && object !== undefined) {
+               for (var element in object) {
+                    objectLength++;
+               }
+            }
+            return objectLength
+        }
+        
         /**
          * Runs the collection of tests specified by parameter
          *
@@ -34,11 +51,22 @@ define(
          * @author Esteban S. Abait <esteban.abait@nextive.com>
         */
         var runTest = function(tests) {
-            var i, l, test;
+            var i, l, testsLength, objectData, objectDataLength, groupLabel;
             
-            for (i=0, l = tests.length; i < l; ++i) {
-                console.group('Running tests for ' + tests[i]);
-                var objectData = this[tests[i]];
+            console.group('New test run: ' + new Date());
+            testsLength = tests.length;
+            for (i=0, l = testsLength; i < l; ++i) {
+                groupLabel = 'Running tests for ' + tests[i];
+                objectData = this[tests[i]];
+                objectDataLength = countObjectElements(objectData);
+                
+                //Checks if there are many elements and many tests.
+                if (testsLength > 1 && testsLength * objectDataLength > 5 && i !== testsLength - 1) {
+                    console.groupCollapsed(groupLabel);
+                } else {
+                    console.group(groupLabel);
+                }
+                
                 for (var t in objectData) {
                     if (Object.prototype.toString.call(objectData[t]) == '[object Function]') {
                         console.info('----Running test case "' + t + '"');
@@ -53,11 +81,14 @@ define(
                 };
                 console.groupEnd();
             };
+            
+            console.groupEnd();
         };
         var runAll = function() {
             this.runTest(["VoxView",
                           "VoxMediator",
                           "VoxObject",
+                          "VoxObjectCollectionTest",
                           "VoxStorage",
                           "VoxController",
                           "VoxConfig"
@@ -69,6 +100,7 @@ define(
             VoxView: VoxViewTest,
             VoxMediator: VoxMediatorTest,
             VoxObject: VoxObjectTest,
+            VoxObjectCollection: VoxObjectCollectionTest,
             VoxStorage: VoxStorageTest,
             VoxController: VoxControllerTest,
             VoxConfig: VoxConfigTest,
