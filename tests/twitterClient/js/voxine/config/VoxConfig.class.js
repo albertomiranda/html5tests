@@ -7,52 +7,43 @@
  * @author Alberto Miranda <alberto@nextive.com>
  */
 define([    
-    'VoxClass',
     'app/config/AppConfig',
     'voxine/tools/VoxTools.class'
     ], 
-    function(VoxClass, AppConfig, VoxTools) {
+    function(appConfig, VoxTools) {
         //----------------------------------------------------------------------
         /**
          * PRIVATE
          */
-        //init configs
-        var voxineConfig = {};
-        var appConfig = {};
-        
         //default config
         var voxineDefaultConfig = {
-            "gatewayUrl": "index.php",
-            "default": "test"
+            "gatewayUrl": "index.php"
         };
         
         //voxine custom hosts config
         var voxineHostsConfig = {
             "localhost": {
-                "gatewayUrl": "index.custom.php",
-                "host": "localhost"
+                "gatewayUrl": "index.custom.php"
             }
         };
         
         //MERGE CONFIGS
-        var host = 'localhost'; //test
+        var host = 'localhost'; //test, TODO: obtain actual hostname
         var tools = new VoxTools;
         var voxineConfig = tools.mergeObject(voxineDefaultConfig, voxineHostsConfig[host]);
-        console.log(voxineConfig);
+        
+        var config = {   
+            voxine: voxineConfig,
+            app: appConfig
+        };
+        console.log(config);
         //----------------------------------------------------------------------
         
         //----------------------------------------------------------------------
         /**
          * PUBLIC INTERFACE
          */
-        return VoxClass.Class(
-            'VoxConfig',
-            null,
-            {   
-                voxine: voxineConfig,
-                app: appConfig
-            }
-        );
+        return config;
         //----------------------------------------------------------------------
     }
 );
