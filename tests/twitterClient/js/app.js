@@ -19,8 +19,8 @@ define([
     var loader = new Polyfills();
     loader.yepnope ([
         {
-            test : Modernizr.localstorage && Modernizr.sessionstorage,
-            nope : 'lib/storage_polyfill/sessionstorage.1.4',
+            test : Modernizr.localstorage,
+            nope : 'lib/storage_polyfill/sessionstorage.1.4'
         }               
     ]);
     
