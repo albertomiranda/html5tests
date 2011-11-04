@@ -22,24 +22,6 @@ define([
             this.collection = [];
             this.length = 0;
         };
-        
-        /**
-         * Return collection options. Ex. {silentMode: false}
-         * @public
-         * @return Object
-         */
-        var getOptions = function() {
-            return this.options;
-        }
-        
-        /**
-         * Set collection options. Ex. {silentMode: false}
-         * @param Object options : {silentMode: true/false} used for event triggering.
-         * @public
-         */
-        var setOptions = function(options) {
-            this.options = (options === null || options === void 0) ? {} : options;
-        }
 
         /**
          * Collection - Add method.
@@ -128,8 +110,6 @@ define([
             VoxObject,
             {
                 constructor: constructor,
-                getOptions: getOptions,
-                setOptions: setOptions,
                 addItem: addItem,
                 getSize: getSize,
                 getItem: getItem,
