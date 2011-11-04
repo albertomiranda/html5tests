@@ -10,14 +10,13 @@ define([
 
         var validStorages = ["memory", "local", "remote"];
         var validStoragesCount = validStorages.length;
-        var objectId = 0;
 
         /**
          * Class Constructor.
          * Singleton.
          * @private
          */
-        var constructor = function(storageType, storageKey) {
+        var constructor = function(storageType, storageKey, options) {
             var storageLowered = storageType.toLowerCase();
             if (isValidStorage(storageLowered)) {
                 this.storageType = storageLowered;
@@ -26,8 +25,15 @@ define([
             }
             this.storageKey = storageKey;
             this.voxStorage = new VoxStorage();
+            this.setOptions(options);
+            
+            //add Mediator methods
             var mediator = new VoxMediator();
             mediator.mixin(this);
+            
+            //update objectIds
+            ++this.statics.objectId;
+            this.objectId = this.statics.objectId;
         };
         
         /**
@@ -45,7 +51,7 @@ define([
          * @public
          */
         var setOptions = function(options) {
-            this.options = (options === null || options === void 0) ? {} : options;
+            this.options = (options == null) ? {} : options;
         }
         
         
@@ -107,13 +113,13 @@ define([
         var remove = function() {
             this.voxStorage.remove(this.storageKey);
         };
-        
-        /* Public Methods */
-        var createdClass = VoxClass.Class(
+
+        return VoxClass.Class(
             'VoxObject',
             null,
             {
                 constructor: constructor,
+                statics: { objectId : 0 },
                 getOptions: getOptions,
                 setOptions: setOptions,
                 getId: getId,
@@ -124,17 +130,4 @@ define([
                 remove: remove
             }
         );
-
-        /*
-         * Set static mehtod
-         */
-        createdClass.getInstance =  function(storageType, storageKey, options) {
-            var myclass = new VoxObject(storageType, storageKey);
-            myclass.setOptions(options);
-            objectId++;
-            myclass.objectId = objectId;
-            return myclass;
-        };
-        
-        return createdClass;
 });
