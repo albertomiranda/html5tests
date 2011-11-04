@@ -1,6 +1,6 @@
 /**
  * Modernizr wrapper
  */
-define(["lib/modernizr/2.0.6_custom/modernizr.min"], function() {
+define(["lib/modernizr/modernizr"], function() {
   return window.Modernizr;
 });
