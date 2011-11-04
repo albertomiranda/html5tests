@@ -27,22 +27,15 @@ define([
         };
         
         var getLocalStorage = function(){
-            var st = null
+            var st = new VoxStorage();
+            st.setSubType('local');
             
-            if(Modernizr.localstorage){
-                console.log('Local Storage soportado, creando...');
-                
-                st = new VoxStorage();
-                st.setSubType('local');
-            }else if(Modernizr.sessionStorage){
-                console.log('Session Storage soportado, creando...');
-                
-                st = new VoxStorage();
-                st.setSubType('session');
-            }
-            else{
-                console.log('Ninguna clase de local storage disponible es soportado, buhh erns...');
-            }
+            return st;
+        };
+        
+        var getSessionStorage = function(){
+            var st = new VoxStorage();
+            st.setSubType('session');
             
             return st;
         };
@@ -52,7 +45,8 @@ define([
  *NO OLVIDARSE DE ACTUALIZAR AL AGREGAR TIPOS NUEVOS
  *
  **/    var getSpecificStorage = {
-            'getLocalStorage' : getLocalStorage
+            'getLocalStorage' : getLocalStorage,
+            'getSessionStorage' : getSessionStorage
         }
         
         var getStorage = function(type) {

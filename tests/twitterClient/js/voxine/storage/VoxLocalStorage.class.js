@@ -23,6 +23,11 @@ define([
             return window.localStorage.getItem(key);
         };
                 
+        var remove = function(key) {
+            console.log('Eliminando "' + key + '"');
+            return window.localStorage.removeItem(key);
+        };
+                
 /**
  * PUBLIC INTERFACE--------------------------------------------------------------
  */
@@ -31,7 +36,8 @@ define([
             null,
             {
                 persist : persist,
-                recover : recover
+                recover : recover,
+                remove: remove
             }
         );
 		
