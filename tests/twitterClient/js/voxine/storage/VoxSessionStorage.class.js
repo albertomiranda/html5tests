@@ -1,7 +1,7 @@
 /**
- * VoxLocalStorage.class
+ * VoxSessionStorage.class
  * 
- * Handle local storage operations using localstorage methods
+ * Handle local storage operations using session methods
  * 
  * @author Leo Bianchi <leonardo.bianchi@nextive.com>
  */
@@ -13,21 +13,22 @@ define([
 /**
  * PRIVATE----------------------------------------------------------
  */
+        
         var persist = function(key, securedObject) {
             console.log('Guardando "' + key + '"="' + securedObject + '"');
-            window.localStorage.setItem(key, securedObject);
+            window.sessionStorage.setItem(key, securedObject);
         };
         
         var recover = function(key) {
             console.log('Recuperando "' + key + '"');
-            return window.localStorage.getItem(key);
+            return window.sessionStorage.getItem(key);
         };
                 
 /**
  * PUBLIC INTERFACE--------------------------------------------------------------
  */
         return VoxClass.Class(
-            'VoxLocalStorage',
+            'VoxSessionStorage',
             null,
             {
                 persist : persist,
@@ -37,3 +38,5 @@ define([
 		
     }
 );
+
+
