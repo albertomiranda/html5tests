@@ -34,9 +34,10 @@ define([
                 throw "Duplicate object. Object with Id = " + object.getId() + " already exists.";
             }
             this.collection[object.getId()] = object;
+            object.setCollection(this.getStorageKey);
             this.length++;
-            if (!this.getOptions().silentMode) {
-                this.trigger('itemAdded');
+            if (!this.getOptions().silentMode && !object.getOptions().silentMode) {
+                this.trigger('collection:itemAdded', object.getStorageKey());
             }
             return true;
         };
@@ -48,7 +49,7 @@ define([
          */
         var getSize = function() {
             return this.length;
-        }
+        };
 
         /**
          * Get an item from the collection
@@ -66,15 +67,16 @@ define([
         /**
          * Removed an item from the collection.
          * @param id: Object Id
-         * @return boolean: true if the item is removed, false if a problem exists.
+         * @return boolean: true if the item was removed.
          * @public
          */
         var removeItem = function(id) {
-            if (this.collection[id] !== undefined) {
-                var item = this.collection[id];
-                this.collection[id] = undefined;
-                if (!item.getOptions().silentMode) {
-                    this.trigger('itemRemoved');
+            var item = this.getItem(id);
+            var itemStorageKey = item.getStorageKey();
+            if (item !== null) {
+                this.collection.splice(id, 1);
+                if (!this.getOptions().silentMode && !item.getOptions().silentMode) {
+                    this.trigger('collection:itemRemoved', itemStorageKey);
                 }
                 return true;
             }
@@ -90,8 +92,8 @@ define([
             this.collection = [];
             this.filter = null;
             //Collection silent mode.
-            if (!this.options.silentMode) {
-                this.trigger('collectionReseted');
+            if (!this.getOptions().silentMode) {
+                this.trigger('collection:reseted', this.getStorageKey());
             }
         };
 
