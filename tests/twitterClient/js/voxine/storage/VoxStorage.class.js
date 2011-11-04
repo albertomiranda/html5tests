@@ -7,49 +7,103 @@
  */
 define(['VoxClass'], function(VoxClass) {
 /**
+* POLYMORPHISM------------------------------------------------------
+*/
+    var child = null;
+    var getChild = function(){
+        if(child === null){
+            child = new (childName)();
+        }
+        
+        return child;
+    }
+    
+    var className = 'VoxStorage';
+    var subTypeName;
+    var childName;
+    
+    var setSubType = function(tName){
+        subTypeName = tName;
+        childName = 'Vox' + ucfirst(tName) + className.slice(3);
+    }
+    
+    var polymorphic = function (functionName)
+    {
+        var instance = getChild();
+        var args = Array.prototype.slice.call(arguments).splice(2);
+        return instance[functionName](args);
+    }
+    
+    var ucfirst = function(str){
+        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    }
+    
+    var executeFunction = function(object, functionName){
+        isFunct = Object.prototype.toString.call(object[functionName]) == '[object Function]';
+        if(isFunct){
+            return object[functionName].call(object);
+        }
+        else{
+            console.log('This is not an executable function');
+        }
+    }
+    
+    var executeFunctionByName = function (functionName, context /*, args */) {
+        var args = Array.prototype.slice.call(arguments).splice(2);
+        var namespaces = functionName.split(".");
+        var func = namespaces.pop();
+        for(var i = 0; i < namespaces.length; i++) {
+            context = context[namespaces[i]];
+        }
+        return context[func].apply(this, args);
+    }
+    
+/**
 * PRIVATE----------------------------------------------------------
 */
-    var save= function(key, object) {
-        alarm("entre a save");
-        var storableObject = this.serialize(object);
-        var securedObject = this.secure(storableObject);
-        this.persist(key, securedObject);
+    var save = function(key, object) {
+        console.log("entre a save");
+        var storableObject = serialize(object);
+        var securedObject = secure(storableObject);
+        persist(key, securedObject);
     };
 
-    var load= function(key) {
-        alarm("entre a load");
-        var securedObject = this.recover(key);
-        var storableObject = this.unsecure(securedObject);
-        return this.unserialize(storableObject);
+    var load = function(key) {
+        console.log("entre a load");
+        var securedObject = recover(key);
+        var storableObject = unsecure(securedObject);
+        return unserialize(storableObject);
     };
 
     //TODO to json
     var serialize = function(object) {
-        alarm("entre a serialize");
+        console.log("entre a serialize");
         return object;
     };
 
     //TODO from json
     var unserialize = function(object) {
-        alarm("entre a unserialize");
+        console.log("entre a unserialize");
         return object;
     };
 
     //TODO VoxSecurity.encrypt(string)
     var secure = function(object) {
-        alarm("entre a secure");
+        console.log("entre a secure");
         return object;
     };
 
     //TODO VoxSecurity.decrypt(string)
     var unsecure = function(object) {
-        alarm("entre a unsecure");
+        console.log("entre a unsecure");
         return object;
     };
 
     //TODO virtual: redefine for specific storage
     var persist = function(key, securedObject) {
-        alarm("entre a persist virtual, malo, malo");
+        polymorphic("persist", key, securedObject);
+        
+        console.log("entre a persist virtual, malo, malo");
 
         /**
          * (Posible) Mecanismo para recuperar el tipo de storage:
@@ -66,7 +120,7 @@ define(['VoxClass'], function(VoxClass) {
 
     //TODO virtual: redefine for specific storage
     var recover = function(key) {
-        alarm("entre a recover virtual, malo, malo");
+        console.log("entre a recover virtual, malo, malo");
     };
 
 /**
@@ -75,10 +129,9 @@ define(['VoxClass'], function(VoxClass) {
     
     
     return VoxClass.Class(
-        'VoxStorage',
+        className,
         null,
         {
-            constructor: function() {},
             load: load,
             save: save
         }

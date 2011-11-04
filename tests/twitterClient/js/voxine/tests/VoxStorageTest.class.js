@@ -10,9 +10,11 @@ define(
     ],
     function() {
         var voxStorageTest = function() {
-            var st = new VoxLocalStorage();
+            var st = new VoxStorage();
+            st.setSubType('local');
+            
             st.save("key", "value_001");
-            alarm(st.load("key"));
+            console.log(st.load("key"));
         };
         
         return  {

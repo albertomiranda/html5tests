@@ -28,12 +28,12 @@ define([
      */
     
         var persist = function(key, securedObject) {
-        alarm("entre a persist heredado, bueno, bueno");
+        console.log("entre a persist redefinido, bueno, bueno");
             window.localStorage.setItem(key, securedObject);
         };
         
         var recover = function(key) {
-        alarm("entre a recover heredado, bueno, bueno");
+        console.log("entre a recover redefinido, bueno, bueno");
             return window.localStorage.getItem(key);
         };
                 
@@ -44,8 +44,6 @@ define([
             'VoxLocalStorage',
             VoxStorage,
             {
-            	load: this.load,
-                save: this.save
             }
         );
 		
