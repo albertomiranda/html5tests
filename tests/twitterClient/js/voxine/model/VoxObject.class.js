@@ -75,6 +75,15 @@ define([
         }
         
         /**
+         * Used when you need check if the object has been associated to a collection.
+         * @return boolean
+         * @public
+         */
+        var hasCollectionAssociation = function() {
+            return this.associatedCollectionKeys.length === 0;
+        }
+        
+        /**
          * Associates the object with a collection key.
          * @param String or Array : Collection key/s value/s.
          * @public
@@ -163,6 +172,7 @@ define([
                 getAssociatedCollectionKeys: getAssociatedCollectionKeys,
                 belongsToCollection: belongsToCollection,
                 setCollection: setCollection,
+                hasCollectionAssociation: hasCollectionAssociation,
                 getId: getId,
                 getStorageKey: getStorageKey,
                 getStorageType: getStorageType,
