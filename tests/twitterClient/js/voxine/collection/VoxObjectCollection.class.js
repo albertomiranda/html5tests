@@ -6,9 +6,9 @@
 
 define([
     'VoxClass',
-    'voxine/model/VoxObject.class'
+    'voxine/core/VoxMediator.class'
     ], 
-    function(VoxClass, VoxObject) {
+    function(VoxClass, VoxMediator) {
 
         /* Private */
         var undefined;
@@ -18,15 +18,31 @@ define([
          * @public
          */
         var constructor = function(filter, options) {
-            if (options !== undefined && options !== null) {
-                this.options = options;
-            } else {
-                this.options = {};
-            }
+            this.setOptions(options);
             this.filter = filter;
             this.collection = [];
             this.length = 0;
+            var mediator = new VoxMediator();
+            mediator.mixin(this);
         };
+        
+        /**
+         * Return collection options. Ex. {silentMode: false}
+         * @public
+         * @return Object
+         */
+        var getOptions = function() {
+            return this.options;
+        }
+        
+        /**
+         * Set collection options. Ex. {silentMode: false}
+         * @param Object options : {silentMode: true/false} used for event triggering.
+         * @public
+         */
+        var setOptions = function(options) {
+            this.options = (options === null || options === void 0) ? {} : options;
+        }
 
         /**
          * Collection - Add method.
@@ -35,18 +51,12 @@ define([
          * @public
          */
         var addItem = function(/* VoxObject */ object) {
-           console.log(object.getOptions());
-           var objectId, objectOptions;
-            if (this.getItem(objectId)) {
-                //Throw new error!!!
-                //Duplicate object. [objectId] already exists.
-                return false;
+            if (this.getItem(object.getId())) {
+                throw "Duplicate object. Object with Id = " + object.getId() + " already exists.";
             }
-            this.collection.push(objectId);
-            this.collection[objectId] = object;
+            this.collection[object.getId()] = object;
             this.length++;
-            console.log(object.getOptions(), "remove");
-            if (!objectOptions.silentMode) {
+            if (!this.getOptions().silentMode) {
                 this.trigger('itemAdded');
             }
             return true;
@@ -73,7 +83,7 @@ define([
             }
             return null;
         };
-
+        
         /**
          * Removed an item from the collection.
          * @param id: Object Id
@@ -118,9 +128,11 @@ define([
         
         return VoxClass.Class(
             'VoxObjectCollection',
-            VoxObject,
+            null,
             {
                 constructor: constructor,
+                getOptions: getOptions,
+                setOptions: setOptions,
                 addItem: addItem,
                 getSize: getSize,
                 getItem: getItem,
