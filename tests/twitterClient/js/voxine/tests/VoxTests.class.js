@@ -14,7 +14,8 @@ define(
         'voxine/tests/VoxObjectTest.class',
         'voxine/tests/VoxStorageTest.class',
         'voxine/tests/VoxControllerTest.class',
-        'voxine/tests/VoxConfigTest.class'
+        'voxine/tests/VoxConfigTest.class',
+        'voxine/tests/VoxCommTest.class'
     ],
     function (
         $,
@@ -23,7 +24,8 @@ define(
         VoxObjectTest,
         VoxStorageTest,
         VoxControllerTest,
-        VoxConfigTest
+        VoxConfigTest,
+        VoxCommTest
     ) {
         /**
          * Runs the collection of tests specified by parameter
@@ -69,7 +71,8 @@ define(
             VoxObject: VoxObjectTest,
             VoxStorage: VoxStorageTest,
             VoxController: VoxControllerTest,
-            VoxConfig: VoxConfigTest
+            VoxConfig: VoxConfigTest,
+            VoxComm: VoxCommTest
         };
     }
 );
