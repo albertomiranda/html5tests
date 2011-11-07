@@ -33,9 +33,9 @@ define([
             if (this.getItem(object.getId())) {
                 throw "Duplicate object. Object with Id = " + object.getId() + " already exists.";
             }
-            this.collection[object.getId()] = object;
-            object.setCollection(this.getStorageKey);
-            this.length++;
+            this.collection.push(object);
+            object.setCollection(this.getStorageKey());
+            //this.length++;
             if (!this.getOptions().silentMode && !object.getOptions().silentMode) {
                 this.trigger('collection:itemAdded', object.getStorageKey());
             }
@@ -48,9 +48,26 @@ define([
          * @public
          */
         var getSize = function() {
-            return this.length;
+            return this.collection.length;
         };
 
+        /**
+         * Gives the position of an item.
+         * @param int : id
+         * @return integer or null
+         * @public
+         */
+        var getItemPosition = function(id) {
+            var i;
+            var size = this.getSize();
+            for (i = 0; i < size; ++i) {
+                if (this.collection[i].getId() === id) {
+                    return i;
+                }
+            }
+            return null
+        };
+        
         /**
          * Get an item from the collection
          * @param id:  Object Id
@@ -58,11 +75,12 @@ define([
          * @public
          */
         var getItem = function(id) {
-            if (this.collection[id] !== undefined) {
-                return this.collection[id];
+            var position = this.getItemPosition(id);
+            if (position !== null) {
+                return this.collection[position];
             }
             return null;
-        };
+        }
         
         /**
          * Removed an item from the collection.
@@ -71,10 +89,11 @@ define([
          * @public
          */
         var removeItem = function(id) {
-            var item = this.getItem(id);
-            var itemStorageKey = item.getStorageKey();
-            if (item !== null) {
-                this.collection.splice(id, 1);
+            var itemPosition = this.getItemPosition(id);
+            if (itemPosition !== null) {
+                var item = this.getItem(id);
+                var itemStorageKey = item.getStorageKey();
+                this.collection.splice(itemPosition, 1);
                 if (!this.getOptions().silentMode && !item.getOptions().silentMode) {
                     this.trigger('collection:itemRemoved', itemStorageKey);
                 }
@@ -114,19 +133,33 @@ define([
          */
         var loadCollectionFromJson = function(json) {
             //TODO
-        }
+        };
         
+        /**
+         * @Override
+         * Persists the elements of the collection
+         * @public
+         */
+        var save = function() {
+            var i;
+            var size = this.getSize();
+            for (i = 0; i < size; ++i) {
+                this.collection[i].save();
+            }
+        };
         
         return VoxClass.Class(
             'VoxObjectCollection',
             VoxObject,
             {
                 constructor: constructor,
-                addItem: addItem,
                 getSize: getSize,
+                addItem: addItem,
                 getItem: getItem,
+                getItemPosition: getItemPosition,
                 removeItem: removeItem,
                 reset: reset,
+                save: save,
                 filter: filter,
                 loadCollectionFromJson: loadCollectionFromJson
             }
