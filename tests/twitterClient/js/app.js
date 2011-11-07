@@ -8,7 +8,7 @@ define([
   'app/Bindings.class',
   'voxine/tests/VoxTests.class',
   'Modernizr',
-  'voxine/tools/VoxPolyfillsLoader.class'
+  'voxine/core/VoxPolyfillsLoader.class'
 ], function(VoxClass, $, VoxTools, Bindings, VoxTests, Modernizr, Polyfills) {
     Vox.tests = VoxTests;
     
@@ -18,7 +18,7 @@ define([
         {
             test : Modernizr.localstorage,
             nope : 'lib/storage_polyfill/sessionstorage.1.4'
-        }               
+        }
     ]);
     
     return VoxClass.Class(
