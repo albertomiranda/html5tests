@@ -4,9 +4,10 @@
  */
 define(
     [
-        'voxine/model/VoxObject.class'
+        'voxine/model/VoxObject.class',
+        'voxine/storage/VoxStorageFactory.class'
     ],
-    function(VoxObject) {
+    function(VoxObject, VoxStorageFactory) {
         
         /**
          * Automatic unique id creation test.
@@ -14,7 +15,7 @@ define(
          */
         var automaticUniqueObjectId = function() {
             
-            var instance1 = new VoxObject('remote', 'AD82KLM20EFN');
+            var instance1 = new VoxObject('session', 'AD82KLM20EFN');
             var instance2 = new VoxObject('local', 'Asf3efdfasdf');
             console.assert(instance1.getId() === 1);
             console.assert(instance2.getId() === 2);
@@ -34,7 +35,7 @@ define(
             console.assert(testInstance.getOptions() === Object(testInstance.getOptions()));
             
             //Tests with options
-            testInstance = new VoxObject('remote', 'key12345', {silentMode: true});
+            testInstance = new VoxObject('session', 'key12345', {silentMode: true});
             console.assert(testInstance.getOptions().silentMode === true);
 
             console.log('%cFinished', 'color: green; font-weight:bold;');
@@ -101,11 +102,78 @@ define(
             console.log('%cFinished', 'color: green; font-weight:bold;');
         };
         
+        /**
+         * Object storage save test.
+         * @coverage: save
+         */
+        var saveTest = function() {
+            //Local Storage
+            var testInstance = new VoxObject('local', 'key1234', {silentMode: false});
+            testInstance.save();
+            
+            //Remote Storage
+            //** TODO **
+            
+            console.log('%cFinished', 'color: green; font-weight:bold;');
+        };
+        
+        /**
+         * Object storage load test.
+         * @coverage: load
+         */
+        var loadTest = function() {
+            var factory = new VoxStorageFactory();
+            
+            //Local Storage
+            var storage = factory.getStorage('local');
+            
+            //Existing stored object.
+            var object = storage.load("key1234");
+            var voxObjectInstance = new VoxObject(object.storageType, object.storageKey, object.options);
+            voxObjectInstance.setId(object.objectId);
+            voxObjectInstance.setCollection(object.associatedCollectionKeys);
+            console.assert(voxObjectInstance.getStorageKey() === 'key1234');
+            
+            //Non existing stored object
+            object = storage.load("keyNonExisting");
+            console.assert(object == null);
+            
+            
+            //Remote Storage
+            // ** TODO **
+            
+            console.log('%cFinished', 'color: green; font-weight:bold;');
+        };
+        
+        /**
+         * Object remove test
+         * @coverage: remove
+         * 
+         */
+        var removeTest = function() {
+            var factory = new VoxStorageFactory();
+            var storage = factory.getStorage('local');
+            var object = storage.load("key1234");
+            console.assert(object === Object(object));
+            
+            var voxObjectInstance = new VoxObject(object.storageType, object.storageKey, object.options);
+            voxObjectInstance.setId(object.objectId);
+            voxObjectInstance.setCollection(object.associatedCollectionKeys);
+            voxObjectInstance.remove();
+            object = storage.load("key1234");
+            console.assert(object == null); //was removed.
+            
+            console.log('%cFinished', 'color: green; font-weight:bold;');
+        };
+        
         return  {
             automaticUniqueObjectId: automaticUniqueObjectId,
             optionsTests: optionsTests,
             initValues: initValues,
-            testKeyAssociation: testKeyAssociation
+            testKeyAssociation: testKeyAssociation,
+            saveTest: saveTest,
+            loadTest: loadTest,
+            removeTest: removeTest
         };
     }
 );

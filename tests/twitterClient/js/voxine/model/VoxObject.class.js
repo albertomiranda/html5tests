@@ -4,11 +4,11 @@
  */
 define([
     'VoxClass', 
-    'voxine/storage/VoxStorage.class'
+    'voxine/storage/VoxStorageFactory.class'
     ], 
-    function(VoxClass, VoxStorage) {
+    function(VoxClass, VoxStorageFactory) {
 
-        var validStorages = ["memory", "local", "remote"];
+        var validStorages = ["local", "session"];
         var validStoragesCount = validStorages.length;
 
         /**
@@ -16,24 +16,25 @@ define([
          * @private
          */
         var constructor = function(storageType, storageKey, options) {
-            var storageLowered = storageType.toLowerCase();
             this.associatedCollectionKeys = [];
-            if (isValidStorage(storageLowered)) {
-                this.storageType = storageLowered;
-            } else {
-                throw "Invalid Storage Type";
-            }
-            this.storageKey = storageKey;
-            this.voxStorage = new VoxStorage();
+            this.setStorageType(storageType);
+            this.setStorageKey(storageKey);
             this.setOptions(options);
+            
+            //Storage loaded.
+            var factory = new VoxStorageFactory();
+            this.storage = factory.getStorage(this.getStorageType());
             
             //add Mediator methods
             var mediator = new VoxMediator();
             mediator.mixin(this);
             
             //update objectIds
-            ++this.statics.objectId;
-            this.objectId = this.statics.objectId;
+            if (!options.loadedFromStorage) {
+                ++this.statics.objectId;
+                this.setId(this.statics.objectId);
+            }
+            
         };
         
         /**
@@ -155,6 +156,15 @@ define([
         };
         
         /**
+         * Sets object id.
+         * @param integer: Id
+         * @public
+         */
+        var setId = function(id) {
+            this.objectId = id;
+        };
+        
+        /**
          * Check if the storage is valid.
          * @private
          */
@@ -177,6 +187,15 @@ define([
         };
         
         /**
+         * Set storage key value.
+         * @param String : Key
+         * @public
+         */
+        var setStorageKey = function(key) {
+            this.storageKey = key;
+        };
+        
+        /**
          * Get storage type
          * @return String
          * @public
@@ -185,12 +204,27 @@ define([
             return this.storageType;
         };
 
+
+        /**
+         * Set storage type value
+         * @param [local | session]
+         * @public
+         */
+        var setStorageType = function(storageType) {
+            var storageLowered = storageType.toLowerCase();
+            if (isValidStorage(storageLowered)) {
+                this.storageType = storageLowered;
+            } else {
+                throw "Invalid Storage Type";
+            }
+        };
+        
         /**
          * Saves the object calling VoxStorage Class.
          * @public
          */
         var save = function() {
-            this.voxStorage.save(this.storageKey, this);
+            this.storage.save(this.getStorageKey(), this);
         };
 
         /**
@@ -198,7 +232,7 @@ define([
          * @public
          */
          var load = function() {
-            this.voxStorate.load(this.storageKey);
+            this.storage.load(this.getStorageeKey());
         };
 
         /**
@@ -206,15 +240,15 @@ define([
          * @public
          */
         var remove = function() {
-            this.voxStorage.remove(this.storageKey);
+            this.storage.erase(this.getStorageKey());
         };
-
+        
         return VoxClass.Class(
             'VoxObject',
             null,
             {
                 constructor: constructor,
-                statics: { objectId : 0 },
+                statics: {objectId : 0},
                 getOptions: getOptions,
                 setOptions: setOptions,
                 getAssociatedCollectionKeys: getAssociatedCollectionKeys,
@@ -224,8 +258,11 @@ define([
                 removeAssociation: removeAssociation,
                 removeAllAssociations: removeAllAssociations,
                 getId: getId,
+                setId: setId,
                 getStorageKey: getStorageKey,
+                setStorageKey: setStorageKey,
                 getStorageType: getStorageType,
+                setStorageType: setStorageType,
                 save: save, 
                 load: load,
                 remove: remove
