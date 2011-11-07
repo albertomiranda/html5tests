@@ -34,7 +34,6 @@ define([
                 ++this.statics.objectId;
                 this.setId(this.statics.objectId);
             }
-            
         };
         
         /**

@@ -11,7 +11,7 @@ define(
     ],
     function(VoxObjectCollection, VoxFilter, VoxObject) {
         
-        var collection = null;
+        var collection;
         
         /**
          * Creation and init values.
@@ -44,7 +44,6 @@ define(
          */
         var addItem = function() {
             var objInstance = new VoxObject('local', 'key1234', {silentMode: false});
-
             //Test adding a new element.
             collection.addItem(objInstance);
             console.assert(collection.getSize() === 1);
@@ -63,9 +62,8 @@ define(
          * @coverage: getItem
          */
         var getItem = function() {
-            var objInstance = new VoxObject('remote', 'key5678', {silentMode: false});
+            var objInstance = new VoxObject('session', 'key5678', {silentMode: false});
             collection.addItem(objInstance);
-            
             //Test existing item.
             console.assert(objInstance === collection.getItem(objInstance.getId()));
             
@@ -94,6 +92,18 @@ define(
             console.log('%cFinished', 'color: green; font-weight:bold;');
         };
         
+        var saveTest = function() {
+            var objInstance = new VoxObject('local', '123ABC', {silentMode: false});
+            collection.addItem(objInstance);
+            objInstance = new VoxObject('local', '456ABC', {silentMode: false});
+            collection.addItem(objInstance);
+            objInstance = new VoxObject('local', '789ABC', {silentMode: false});
+            collection.addItem(objInstance);
+            
+            collection.save();
+
+            console.log('%cFinished', 'color: green; font-weight:bold;');
+        };
         
         /**
          * Test reset and getSize functions
@@ -120,7 +130,8 @@ define(
             addItem: addItem,
             getItem: getItem,
             removeItem: removeItem,
-            resetCollection: resetCollection
+            resetCollection: resetCollection,
+            saveTest: saveTest
         };
     }
 );
