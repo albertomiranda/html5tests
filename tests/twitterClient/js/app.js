@@ -18,7 +18,7 @@ define([
         {
             test : Modernizr.localstorage,
             nope : 'lib/storage_polyfill/sessionstorage.1.4'
-        }               
+        }
     ]);
     
     return VoxClass.Class(
