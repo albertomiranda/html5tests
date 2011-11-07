@@ -17,6 +17,7 @@ define(
         'voxine/tests/VoxControllerTest.class',
         'voxine/tests/VoxConfigTest.class',
         'voxine/tests/VoxCommTest.class',
+        'voxine/tests/VoxDefaultCommTest.class',
         'voxine/tests/VoxFilterTest.class'
     ],
     function (
@@ -29,6 +30,7 @@ define(
         VoxControllerTest,
         VoxConfigTest,
         VoxCommTest,
+        VoxDefaultCommTest,
         VoxFilterTest
     ) {
         
@@ -108,6 +110,7 @@ define(
             VoxController: VoxControllerTest,
             VoxConfig: VoxConfigTest,
             VoxComm: VoxCommTest,
+            VoxDefaultComm: VoxDefaultCommTest,
             VoxFilter: VoxFilterTest
         };
     }

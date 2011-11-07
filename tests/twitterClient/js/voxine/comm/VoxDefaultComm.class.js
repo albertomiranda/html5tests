@@ -26,29 +26,47 @@ define([
         /**
          * PRIVATE METHODS
          */
-        var constructor = function(config) {
+        
+        /**
+         * Singleton Pattern
+         * Wraps the constructor in an immediate function
+         */
+        var constructor;
+        
+        (function(config) {
             
-            if (config.gatewayUrl != null) {
-                private.gatewayUrl = config.gatewayUrl;
-            }
-            else {
-                throw Error('The URL propertie is not defined');
-            }
+            var instance;
             
-            if (config.type != null) {
-                private.type = config.type;
-            }
+            constructor = function constructor(config) {
+                
+                if (instance) {
+                    return instance;
+                };
+                
+                instance = this;
             
-            if (config.crossdomain != null) {
-                private.crossdomain = config.crossdomain;
-            }
-            
-            if (config.dataType != null) {
-                private.dataType = config.dataType;
-            }
-            
-            console.log("constructed VoxDefaultComm; Gateway URL: " + private.gatewayUrl);
-        };
+                if (config.gatewayUrl != null) {
+                    private.gatewayUrl = config.gatewayUrl;
+                }
+                else {
+                    throw Error('The gatewayUrl property is not defined');
+                }
+                
+                if (config.type != null) {
+                    private.type = config.type;
+                }
+                
+                if (config.crossdomain != null) {
+                    private.crossdomain = config.crossdomain;
+                }
+                
+                if (config.dataType != null) {
+                    private.dataType = config.dataType;
+                }
+                
+                console.log("constructed VoxDefaultComm; Gateway URL: " + private.gatewayUrl);
+            }      
+        }());
     
         /**
          * Sends passed data to gatewayUrl.
@@ -81,6 +99,10 @@ define([
                error: onError
             });
         };
+        
+        var getGatewayURL = function() {
+            return private.gatewayUrl;  
+        };
         //----------------------------------------------------------------------
         
         //----------------------------------------------------------------------
@@ -92,6 +114,7 @@ define([
             VoxBaseComm,
             {   
                 constructor : constructor,
+                getGatewayURL : getGatewayURL,
                 send : send
             }
         );
