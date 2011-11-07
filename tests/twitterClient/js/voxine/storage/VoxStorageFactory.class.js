@@ -9,29 +9,44 @@ define([
         'VoxClass',
         'voxine/tools/VoxTools.class',
         'Modernizr',
-        'voxine/storage/VoxStorage.class'
-        
+        'voxine/storage/VoxSingleStorage.class'
     ], 
     function(VoxClass, VoxTools) {
 
 /**
  * PRIVATE----------------------------------------------------------
  */
-        /*
-         *
-         *TODO: obviamente esto deberia ser singleton, ver como implementar
-         *
-         **/
+        /**
+         * Singleton Pattern
+         * Wraps the constructor in an immediate function
+         */
+        var constructor;
+        
+        (function() {
+            
+            var instance;
+            
+            constructor = function constructor() {
+                
+                if (instance) {
+                    return instance;
+                };
+                
+                instance = this;
+            
+            }      
+        }());
+        
         
         var getLocalStorage = function(){
-            var st = new VoxStorage();
+            var st = new VoxSingleStorage();
             st.setSubType('local');
             
             return st;
         };
         
         var getSessionStorage = function(){
-            var st = new VoxStorage();
+            var st = new VoxSingleStorage();
             st.setSubType('session');
             
             return st;

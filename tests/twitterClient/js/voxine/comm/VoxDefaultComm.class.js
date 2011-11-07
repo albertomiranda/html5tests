@@ -71,16 +71,16 @@ define([
         /**
          * Sends passed data to gatewayUrl.
          * 
-         * @author Alberto Miranda <alberto@nextive.com>
          * @param object data
+         * @author Alberto Miranda <alberto@nextive.com>
          */
         var send = function(data, caller){
-            console.log("ON VoxDefaultComm Layer");
-            console.log(data);
+            //console.log("ON VoxDefaultComm Layer");
+            //console.log(data);
             
             var onSuccess = function(response){
-                console.log('VoxDefaultComm: RECEIVED RESPONSE: ' + response);
-                console.log(caller);
+                //console.log('VoxDefaultComm: RECEIVED RESPONSE: ' + response);
+                //console.log(caller);
                 if (caller !== undefined && caller.onSuccess !== undefined) {
                     caller.onSuccess(response);
                 }
@@ -89,15 +89,20 @@ define([
                 console.log('VoxDefaultComm: RECEIVED ERROR: ' + response);
             };
             
-            $.ajax({
-               url: private.gatewayUrl,
-               type: private.type,
-               crossDomain: private.crossdomain,
-               dataType: private.dataType,
-               data: data,
-               success: onSuccess,
-               error: onError
-            });
+            var ajaxConfig = {
+                url: private.gatewayUrl,
+                type: private.type,
+                crossDomain: private.crossdomain,
+                dataType: private.dataType,
+                success: onSuccess,
+                error: onError
+            };
+            
+            if (data) {
+                config.data = data;
+            }
+            
+            $.ajax(ajaxConfig);
         };
         
         var getGatewayURL = function() {

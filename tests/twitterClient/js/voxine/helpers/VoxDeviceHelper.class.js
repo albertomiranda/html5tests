@@ -1,5 +1,5 @@
 /**
- * Mobile helper. All mobile related methods should be here!
+ * Device helper. All device related methods should be here!
  * 
  * @author Alberto Miranda <alberto@nextive.com>
  * @author Esteban Abait <esteban.abait@nextive.com>
@@ -60,7 +60,7 @@ define(
         //----------------------------------------------------------------------
         //PUBLIC INTERFACE
         return VoxClass.Class(
-            'VoxTools',
+            'VoxDeviceHelper',
             null,
             {
                 isMobile: isMobile,
