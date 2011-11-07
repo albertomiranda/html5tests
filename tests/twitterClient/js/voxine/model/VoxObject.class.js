@@ -30,7 +30,7 @@ define([
             mediator.mixin(this);
             
             //update objectIds
-            if (!options.loadedFromStorage) {
+            if (!this.options.loadedFromStorage) {
                 ++this.statics.objectId;
                 this.setId(this.statics.objectId);
             }
@@ -52,7 +52,7 @@ define([
          * @public
          */
         var setOptions = function(options) {
-            this.options = (options == null) ? {} : options;
+            this.options = options || {};
         };
         
         /**
@@ -232,7 +232,7 @@ define([
          * @public
          */
          var load = function() {
-            this.storage.load(this.getStorageeKey());
+            this.storage.load(this.getStorageKey());
         };
 
         /**
