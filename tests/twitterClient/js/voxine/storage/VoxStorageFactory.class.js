@@ -16,11 +16,27 @@ define([
 /**
  * PRIVATE----------------------------------------------------------
  */
-        /*
-         *
-         *TODO: obviamente esto deberia ser singleton, ver como implementar
-         *
-         **/
+        /**
+         * Singleton Pattern
+         * Wraps the constructor in an immediate function
+         */
+        var constructor;
+        
+        (function() {
+            
+            var instance;
+            
+            constructor = function constructor() {
+                
+                if (instance) {
+                    return instance;
+                };
+                
+                instance = this;
+            
+            }      
+        }());
+        
         
         var getLocalStorage = function(){
             var st = new VoxSingleStorage();
