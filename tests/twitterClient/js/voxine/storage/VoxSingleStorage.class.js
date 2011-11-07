@@ -1,17 +1,17 @@
 /**
- * VoxStorage.class
+ * VoxSingleStorage.class
  * 
- * Handle generic storage operations
+ * Handle generic storage operations to one target
  * 
  * @author Leo Bianchi <leonardo.bianchi@nextive.com>
  */
 define([
     'VoxClass',
     'voxine/tools/VoxTools.class',
-    'voxine/storage/VoxLocalStorage.class',
-    'voxine/storage/VoxSessionStorage.class'
+    'voxine/storage/VoxLocalSingleStorage.class',
+    'voxine/storage/VoxSessionSingleStorage.class'
 ], 
-function(VoxClass, VoxTools) {
+function(VoxClass) {
     
 
 /**
@@ -34,14 +34,13 @@ function(VoxClass, VoxTools) {
         return child;
     }
     
-    var className = 'VoxStorage';
+    var className = 'VoxSingleStorage';
     var subTypeName;
     var childName;
     
     var setSubType = function(tName){
-        var tools = new VoxTools();
         subTypeName = tName;
-        childName = 'Vox' + tools.ucfirst(tName) + className.slice(3);
+        childName = 'Vox' + ucfirststrict(tName) + className.slice(3);
     }
     
     var polymorphic = function (functionName)
@@ -50,6 +49,10 @@ function(VoxClass, VoxTools) {
         var args = Array.prototype.slice.call(arguments).splice(1);
         
         return instance[functionName].apply(instance, args);
+    }
+    
+    var ucfirststrict = function(str){
+        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
     }
         
 /**
