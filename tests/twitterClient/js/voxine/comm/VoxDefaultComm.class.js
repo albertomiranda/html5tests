@@ -18,8 +18,7 @@ define([
         var private = {
             gatewayUrl: null,
             type : 'GET',
-            crossdomain : false,
-            dataType : 'json'
+            crossdomain : false
         };
         
         //----------------------------------------------------------------------
@@ -37,6 +36,20 @@ define([
             
             var instance;
             
+            /**
+             * Private constructor.
+             * Receives the configuration options to make the requests
+             * 
+             * config is an object with the following attributes
+             * 
+             * {string}  gatewayUrl: request Url
+             * {string}  type: GET, POST
+             * {boolean} crossdomain
+             * {string}  dataType: json, jsonp, text, xml - if in doubt do not define this
+             *           atributte, and let jQuery make an intelligent guess  
+             * 
+             * @param {object} config
+             */
             constructor = function constructor(config) {
                 
                 if (instance) {
@@ -45,24 +58,24 @@ define([
                 
                 instance = this;
             
-                if (config.gatewayUrl != null) {
+                if (config.gatewayUrl) {
                     private.gatewayUrl = config.gatewayUrl;
                 }
                 else {
                     throw Error('The gatewayUrl property is not defined');
-                }
+                };
                 
-                if (config.type != null) {
+                if (config.type) {
                     private.type = config.type;
-                }
+                };
                 
-                if (config.crossdomain != null) {
+                if (config.crossdomain) {
                     private.crossdomain = config.crossdomain;
-                }
+                };
                 
-                if (config.dataType != null) {
+                if (config.dataType) {
                     private.dataType = config.dataType;
-                }
+                };
                 
                 console.log("constructed VoxDefaultComm; Gateway URL: " + private.gatewayUrl);
             }      
@@ -93,14 +106,17 @@ define([
                 url: private.gatewayUrl,
                 type: private.type,
                 crossDomain: private.crossdomain,
-                dataType: private.dataType,
                 success: onSuccess,
-                error: onError
+                error: onError //de ser un request JSONP no estoy seguro que tome este callback en caso de error
+            };
+            
+            if (private.dataType) {
+                ajaxConfig.dataType = private.dataType;
             };
             
             if (data) {
-                config.data = data;
-            }
+                ajaxConfig.data = data;
+            };
             
             $.ajax(ajaxConfig);
         };
