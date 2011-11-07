@@ -1,13 +1,12 @@
 /**
- * VoxSingleStorage.class
+ * VoxMultiStorage.class
  * 
- * Handle generic storage operations to one target
+ * Handle generic storage operations to multiple targets
  * 
  * @author Leo Bianchi <leonardo.bianchi@nextive.com>
  */
 define([
     'VoxClass',
-    'voxine/tools/VoxTools.class',
     'voxine/storage/VoxLocalSingleStorage.class',
     'voxine/storage/VoxSessionSingleStorage.class'
 ], 
@@ -34,7 +33,7 @@ function(VoxClass) {
         return child;
     }
     
-    var className = 'VoxSingleStorage';
+    var className = 'VoxMultiStorage';
     var subTypeName;
     var childName;
     
@@ -59,40 +58,13 @@ function(VoxClass) {
 * PRIVATE----------------------------------------------------------
 */
     var save = function(key, object) {
-        var storableObject = serialize(object);
-        var securedObject = secure(storableObject);
-        persist(key, securedObject);
     };
 
     var load = function(key) {
-        var securedObject = recover(key);
-        var storableObject = unsecure(securedObject);
-        return unserialize(storableObject);
     };
     
     var erase = function(key){
-        remove(key);
     }
-
-    var serialize = function(object) {
-        var str = JSON.stringify(object);
-        console.log("Serialized obj :" + str);
-        return str;
-    };
-
-    var unserialize = function(string) {
-        return JSON.parse(string);
-    };
-
-    //TODO VoxSecurity.encrypt(string)
-    var secure = function(object) {
-        return object;
-    };
-
-    //TODO VoxSecurity.decrypt(string)
-    var unsecure = function(object) {
-        return object;
-    };
 
 /**
  * Virtual methods----------------------------------------------------
