@@ -7,10 +7,11 @@
  */
 define([
     'VoxClass',
+    'voxine/tools/VoxTools.class',
     'voxine/storage/VoxLocalStorage.class',
     'voxine/storage/VoxSessionStorage.class'
 ], 
-function(VoxClass) {
+function(VoxClass, VoxTools) {
     
 
 /**
@@ -38,8 +39,9 @@ function(VoxClass) {
     var childName;
     
     var setSubType = function(tName){
+        var tools = new VoxTools();
         subTypeName = tName;
-        childName = 'Vox' + ucfirststrict(tName) + className.slice(3);
+        childName = 'Vox' + tools.ucfirst(tName) + className.slice(3);
     }
     
     var polymorphic = function (functionName)
@@ -48,10 +50,6 @@ function(VoxClass) {
         var args = Array.prototype.slice.call(arguments).splice(1);
         
         return instance[functionName].apply(instance, args);
-    }
-    
-    var ucfirststrict = function(str){
-        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
     }
         
 /**

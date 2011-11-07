@@ -13,7 +13,6 @@ define([
 
         /**
          * Class Constructor.
-         * Singleton.
          * @private
          */
         var constructor = function(storageType, storageKey, options) {
@@ -57,7 +56,7 @@ define([
         
         /**
          * If the object belongs to a collection it will return the key associated.
-         * @return String/null
+         * @return String | Array if is not empty. Otherwise, null.
          * @public
          */
         var getAssociatedCollectionKeys = function() {
@@ -67,7 +66,7 @@ define([
         /**
          * Checks if the object belongs to a collection (by key)
          * @param String: Collection Key
-         * @return boolean or element position: 
+         * @return Boolean | Integer: Element position if exists. Otherwise false. 
          */
         var belongsToCollection = function(collectionKey) {
             var i, size;
@@ -148,6 +147,7 @@ define([
         
         /**
          * Returns the object instance id
+         * @return Integer: VoxObject id.
          * @public
          */
         var getId = function() {
@@ -168,6 +168,8 @@ define([
         };
         
         /**
+         * Get storage key
+         * @return String
          * @public
          */
         var getStorageKey = function() {
@@ -175,6 +177,8 @@ define([
         };
         
         /**
+         * Get storage type
+         * @return String
          * @public
          */
         var getStorageType = function() {

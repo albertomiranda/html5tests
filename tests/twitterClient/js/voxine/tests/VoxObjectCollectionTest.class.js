@@ -19,11 +19,24 @@ define(
          */
         var createNewCollection = function() {
             var filter = new VoxFilter({id:"1", name: "Test"});
-            collection = new VoxObjectCollection(filter, {silentMode: false});
+            collection = new VoxObjectCollection('local', 'StKey123', {silentMode: false}, filter);
             console.assert(collection.getOptions().silentMode === false);
             console.assert(collection.getSize() === 0);
             console.log('%cFinished', 'color: green; font-weight:bold;');
         };
+        
+        
+        var bindEvents = function() {
+            collection.bind('collection:itemAdded', function(addedKey){
+                console.warn("Item with key " + addedKey + " added");
+            });
+            collection.bind('collection:itemRemoved', function(removedKey){
+                console.warn("Item with key " + removedKey + " removed");
+            });
+            collection.bind('collection:reseted', function(collectionKey){
+                console.warn("Collection with key " + collectionKey + " reseted");
+            });
+        }
         
         /**
          * Add items test
@@ -42,9 +55,6 @@ define(
             } catch (e) {
                 console.assert(e === "Duplicate object. Object with Id = " + objInstance.getId() + " already exists.");
             }
-            
-            //TODO: Test silentMode false and true
-            
             console.log('%cFinished', 'color: green; font-weight:bold;');
         };
         
@@ -65,10 +75,52 @@ define(
             console.log('%cFinished', 'color: green; font-weight:bold;');
         };
         
+        /**
+         * Test remove item function.
+         * @coverage removeItem
+         */
+        var removeItem = function() {
+            //Silent mode off
+            var objInstance = new VoxObject('local', 'silentModeFalse', {silentMode: false});
+            console.log("%cSilent Mode -> False: Add and Remove actions should be showed", "color:#0000FF; font-weight:bold;");
+            collection.addItem(objInstance);
+            console.assert(collection.removeItem(objInstance.getId()) === true);
+            //Silent mode true
+            objInstance = new VoxObject('local', 'silentModeTrue', {silentMode: true});
+            console.log("%cSilent Mode -> True: Add and Remove actions shouldn't be showed", "color:#0000FF; font-weight:bold;");
+            collection.addItem(objInstance);
+            console.assert(collection.removeItem(objInstance.getId()) === true);
+            
+            console.log('%cFinished', 'color: green; font-weight:bold;');
+        };
+        
+        
+        /**
+         * Test reset and getSize functions
+         * @coverage reset, getSize
+         */
+        var resetCollection = function() {
+            var clonedCollection = Object();
+            jQuery.extend(clonedCollection, collection);
+            
+            console.log("%cSilent Mode -> False: Reset event should be showed", "color:#0000FF; font-weight:bold;");
+            collection.reset();
+            console.assert(collection.getSize() === 0);
+            
+            console.log("%cSilent Mode -> False: Reset event should be showed", "color:#0000FF; font-weight:bold;");
+            clonedCollection.setOptions({silentMode: true});
+            clonedCollection.reset();
+            
+            console.log('%cFinished', 'color: green; font-weight:bold;');
+        };
+        
         return  {
             createNewCollection: createNewCollection,
+            bindEvents: bindEvents,
             addItem: addItem,
-            getItem: getItem
+            getItem: getItem,
+            removeItem: removeItem,
+            resetCollection: resetCollection
         };
     }
 );

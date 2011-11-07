@@ -12,8 +12,14 @@ define([
     'jQuery'
     ], 
     function(VoxClass, VoxBaseComm, $) {
+        /**
+         * Ajax configuration default values
+         */
         var private = {
-            "gatewayUrl": null
+            gatewayUrl: null,
+            type : 'GET',
+            crossdomain : false,
+            dataType : 'json'
         };
         
         //----------------------------------------------------------------------
@@ -21,7 +27,26 @@ define([
          * PRIVATE METHODS
          */
         var constructor = function(config) {
-            private.gatewayUrl = config.gatewayUrl;
+            
+            if (config.gatewayUrl != null) {
+                private.gatewayUrl = config.gatewayUrl;
+            }
+            else {
+                throw Error('The URL propertie is not defined');
+            }
+            
+            if (config.type != null) {
+                private.type = config.type;
+            }
+            
+            if (config.crossdomain != null) {
+                private.crossdomain = config.crossdomain;
+            }
+            
+            if (config.dataType != null) {
+                private.dataType = config.dataType;
+            }
+            
             console.log("constructed VoxDefaultComm; Gateway URL: " + private.gatewayUrl);
         };
     
@@ -48,7 +73,9 @@ define([
             
             $.ajax({
                url: private.gatewayUrl,
-               type: 'POST',
+               type: private.type,
+               crossDomain: private.crossdomain,
+               dataType: private.dataType,
                data: data,
                success: onSuccess,
                error: onError

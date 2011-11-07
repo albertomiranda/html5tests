@@ -4,12 +4,7 @@
  * @author Juan Arribillaga <juan.arribillaga@globant.com>
  */
 
-define(['VoxClass'], function(VoxClass) {
-    var id = '';
-    var name = '';
-
-
-    /* Private Methods */
+define(['VoxClass', 'voxine/tools/VoxTools.class'], function(VoxClass, VoxTools) {
 
     /**
      * Class Constructor
@@ -22,27 +17,18 @@ define(['VoxClass'], function(VoxClass) {
         this.parseFilter(jsonFilter);
     };
     
-    /**
-     * Returns the string with capital letter.
-     * Used by getters and setters.
-     * @private
-     */
-    var capitalize = function(string) {
-        return string.replace(/\w+/g, function(a) {
-            return a.charAt(0).toUpperCase() + a.substr(1).toLowerCase();
-        });
-    };
-
+    
     /**
      * Parses a jsonFilter calling setters for each member.
      * If an object attribute does not have a setter it will be ignored.
      * You can obtain the json filter by getJsonFilter getter.
-     * @private
+     * @public
      */
     var parseFilter = function() {
         var undefined;
         for (var filterName in this.jsonFilter) {
-            var setterName = "set" + capitalize(filterName);
+            var tools = new VoxTools();
+            var setterName = "set" + tools.ucfirst(filterName);
             if (this[setterName] !== undefined) {
                 this[setterName](this.jsonFilter[filterName]);
             }
@@ -90,11 +76,13 @@ define(['VoxClass'], function(VoxClass) {
         'VoxFilter',
         null,
         {
+            constructor: constructor,
+            parseFilter: parseFilter,
             setId: setId,
             getId: getId,
             setName: setName,
             getName: getName,
-            getJsonFitler: getJsonFilter
+            getJsonFilter: getJsonFilter
         }
     );
 });

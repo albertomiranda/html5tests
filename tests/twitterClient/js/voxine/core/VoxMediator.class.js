@@ -6,7 +6,7 @@
  * 
  * Usage:
  * <pre>
- *		var pub = {}, sub = {name: 'Pedro'};
+ *      var pub = {}, sub = {name: 'Pedro'};
  *      var mediator = new VoxMediator();
  *                 
  *      //mix mediator into pub object

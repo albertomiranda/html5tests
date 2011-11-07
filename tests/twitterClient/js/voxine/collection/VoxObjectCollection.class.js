@@ -6,9 +6,9 @@
 
 define([
     'VoxClass',
-    'voxine/core/VoxMediator.class'
+    'voxine/model/VoxObject.class'
     ], 
-    function(VoxClass, VoxMediator) {
+    function(VoxClass, VoxObject) {
 
         /* Private */
         var undefined;
@@ -17,32 +17,11 @@ define([
          * Class Constructor.
          * @public
          */
-        var constructor = function(filter, options) {
-            this.setOptions(options);
+        var constructor = function(storageType, storageKey, options, filter) {
             this.filter = filter;
             this.collection = [];
             this.length = 0;
-            var mediator = new VoxMediator();
-            mediator.mixin(this);
         };
-        
-        /**
-         * Return collection options. Ex. {silentMode: false}
-         * @public
-         * @return Object
-         */
-        var getOptions = function() {
-            return this.options;
-        }
-        
-        /**
-         * Set collection options. Ex. {silentMode: false}
-         * @param Object options : {silentMode: true/false} used for event triggering.
-         * @public
-         */
-        var setOptions = function(options) {
-            this.options = (options === null || options === void 0) ? {} : options;
-        }
 
         /**
          * Collection - Add method.
@@ -55,9 +34,10 @@ define([
                 throw "Duplicate object. Object with Id = " + object.getId() + " already exists.";
             }
             this.collection[object.getId()] = object;
+            object.setCollection(this.getStorageKey);
             this.length++;
-            if (!this.getOptions().silentMode) {
-                this.trigger('itemAdded');
+            if (!this.getOptions().silentMode && !object.getOptions().silentMode) {
+                this.trigger('collection:itemAdded', object.getStorageKey());
             }
             return true;
         };
@@ -69,7 +49,7 @@ define([
          */
         var getSize = function() {
             return this.length;
-        }
+        };
 
         /**
          * Get an item from the collection
@@ -87,15 +67,16 @@ define([
         /**
          * Removed an item from the collection.
          * @param id: Object Id
-         * @return boolean: true if the item is removed, false if a problem exists.
+         * @return boolean: true if the item was removed.
          * @public
          */
         var removeItem = function(id) {
-            if (this.collection[id] !== undefined) {
-                var item = this.collection[id];
-                this.collection[id] = undefined;
-                if (!item.getOptions().silentMode) {
-                    this.trigger('itemRemoved');
+            var item = this.getItem(id);
+            var itemStorageKey = item.getStorageKey();
+            if (item !== null) {
+                this.collection.splice(id, 1);
+                if (!this.getOptions().silentMode && !item.getOptions().silentMode) {
+                    this.trigger('collection:itemRemoved', itemStorageKey);
                 }
                 return true;
             }
@@ -111,8 +92,8 @@ define([
             this.collection = [];
             this.filter = null;
             //Collection silent mode.
-            if (!this.options.silentMode) {
-                this.trigger('collectionReseted');
+            if (!this.getOptions().silentMode) {
+                this.trigger('collection:reseted', this.getStorageKey());
             }
         };
 
@@ -126,19 +107,28 @@ define([
             //TODO
         };
         
+        /**
+         * Parses a json object and load a collection.
+         * @param Object: Json to parse.
+         * @public
+         */
+        var loadCollectionFromJson = function(json) {
+            //TODO
+        }
+        
+        
         return VoxClass.Class(
             'VoxObjectCollection',
-            null,
+            VoxObject,
             {
                 constructor: constructor,
-                getOptions: getOptions,
-                setOptions: setOptions,
                 addItem: addItem,
                 getSize: getSize,
                 getItem: getItem,
                 removeItem: removeItem,
                 reset: reset,
-                filter: filter
+                filter: filter,
+                loadCollectionFromJson: loadCollectionFromJson
             }
         );
 });
