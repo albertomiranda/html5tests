@@ -8,7 +8,7 @@
 define([    
         'VoxClass',
         'Modernizr',
-        'voxine/storage/VoxStorage.class'
+        'voxine/storage/VoxSingleStorage.class'
     ], 
     function(VoxClass) {
 
@@ -27,14 +27,14 @@ define([
         };
         
         var getLocalStorage = function(){
-            var st = new VoxStorage();
+            var st = new VoxSingleStorage();
             st.setSubType('local');
             
             return st;
         };
         
         var getSessionStorage = function(){
-            var st = new VoxStorage();
+            var st = new VoxSingleStorage();
             st.setSubType('session');
             
             return st;
