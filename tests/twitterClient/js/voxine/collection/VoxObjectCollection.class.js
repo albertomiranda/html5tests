@@ -30,8 +30,8 @@ define([
          * @public
          */
         var addItem = function(/* VoxObject */ object) {
-            if (this.getItem(object.getId())) {
-                throw "Duplicate object. Object with Id = " + object.getId() + " already exists.";
+            if (this.getItem(object.getObjectId())) {
+                throw "Duplicate object. Object with Id = " + object.getObjectId() + " already exists.";
             }
             this.collection.push(object);
             object.setCollection(this.getStorageKey());
@@ -61,7 +61,7 @@ define([
             var i;
             var size = this.getSize();
             for (i = 0; i < size; ++i) {
-                if (this.collection[i].getId() === id) {
+                if (this.collection[i].getObjectId() === id) {
                     return i;
                 }
             }
