@@ -7,9 +7,7 @@
  */
 define([
     'VoxClass',
-    'voxine/tools/VoxTools.class',
-    'voxine/storage/VoxLocalSingleStorage.class',
-    'voxine/storage/VoxSessionSingleStorage.class'
+    'voxine/tools/VoxTools.class'
 ], 
 function(VoxClass) {
     
@@ -26,22 +24,8 @@ function(VoxClass) {
      **/
     
     var child = null;
-    var getChild = function(){
-        if(child === null){
-            child = new (window[childName])();
-        }
-        
-        return child;
-    }
-    
-    var className = 'VoxSingleStorage';
-    var subTypeName;
-    var childName;
-    
-    var setSubType = function(tName){
-        subTypeName = tName;
-        childName = 'Vox' + ucfirststrict(tName) + className.slice(3);
-    }
+    var getChild = function(){return child;}
+    var setChild = function(chld){child = chld;}
     
     var polymorphic = function (functionName)
     {
@@ -51,10 +35,6 @@ function(VoxClass) {
         return instance[functionName].apply(instance, args);
     }
     
-    var ucfirststrict = function(str){
-        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-    }
-        
 /**
 * PRIVATE----------------------------------------------------------
 */
@@ -116,13 +96,13 @@ function(VoxClass) {
     
     
     return VoxClass.Class(
-        className,
+        'VoxSingleStorage',
         null,
         {
             load: load,
             save: save,
             erase: erase,
-            setSubType : setSubType
+            setChild : setChild
         }
         
         

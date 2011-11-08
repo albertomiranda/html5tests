@@ -9,7 +9,10 @@ define([
         'VoxClass',
         'voxine/tools/VoxTools.class',
         'Modernizr',
-        'voxine/storage/VoxSingleStorage.class'
+        'voxine/storage/VoxSingleStorage.class',
+        'voxine/storage/VoxLocalSingleStorage.class',
+        'voxine/storage/VoxSessionSingleStorage.class',
+        'voxine/storage/VoxRemoteSingleStorage.class'
     ], 
     function(VoxClass, VoxTools) {
 
@@ -40,14 +43,24 @@ define([
         
         var getLocalStorage = function(){
             var st = new VoxSingleStorage();
-            st.setSubType('local');
+            var child = new VoxLocalSingleStorage();
+            st.setChild(child);
             
             return st;
         };
         
         var getSessionStorage = function(){
             var st = new VoxSingleStorage();
-            st.setSubType('session');
+            var child = new VoxSessionSingleStorage();
+            st.setChild(child);
+            
+            return st;
+        };
+        
+        var getRemoteStorage = function(caller){
+            var st = new VoxSingleStorage();
+            var child = new VoxRemoteSingleStorage(caller);
+            st.setChild(child);
             
             return st;
         };
@@ -58,13 +71,17 @@ define([
  *
  **/    var getSpecificStorage = {
             'getLocalStorage' : getLocalStorage,
-            'getSessionStorage' : getSessionStorage
+            'getSessionStorage' : getSessionStorage,
+            'getRemoteStorage' : getRemoteStorage
         }
         
         var getStorage = function(type) {
             var tools = new VoxTools();
+            
             var functionName = 'get' + tools.ucfirst(type) + 'Storage';
-            return getSpecificStorage[functionName]();
+            var args = Array.prototype.slice.call(arguments).splice(1);
+            
+            return getSpecificStorage[functionName].apply(null, args);
         };
                         
 /**
