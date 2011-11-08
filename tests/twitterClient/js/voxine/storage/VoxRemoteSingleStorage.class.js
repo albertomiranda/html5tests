@@ -19,15 +19,43 @@ define([
         var comm;
         
         var constructor = function(caller) {
+            setComm(caller);
+            enableEvents();
+        };
+        
+        var enableEvents = function(){
+            var Mediator = new VoxMediator();
+            Mediator.mixin(this);
+        }
+        
+        var setComm = function(caller){
             comm = new VoxComm(caller);
 
             //add mediator
             var Mediator = new VoxMediator();
             Mediator.mixin(comm);
-            comm.bind('onSuccess', onSuccess);
-            comm.bind('onError', onError);
-        };
+            comm.bind('onSuccess', commSuccess);
+            comm.bind('onError', commError);
+        }
         
+/**
+ * Event-----------------------------------------------
+ */
+        var commSuccess = function(response){
+            console.log("Comm layer Success!!! :" + response);
+            console.log("Let's tell to our subscribers");
+            this.trigger('onSuccess', response);
+        }
+
+        var commError = function(response){
+            console.log("Comm layer Error :( :" + response);
+            console.log("Let's tell to our subscribers");
+            this.trigger('onError', response);
+        }
+        
+/**
+ * -----------------------------------------------
+ */
         var persist = function(key, securedObject) {
             console.log('Guardando "' + key + '"="' + securedObject + '"');
             var packet = getPersistPacket(key, securedObject);
@@ -47,17 +75,6 @@ define([
         };
                 
 
-/**
- * Event-----------------------------------------------
- */
-        var onSuccess = function(response){
-            console.log("Success!!! :" + response);
-        }
-
-        var onError = function(response){
-            console.log("Error :( :" + response);
-        }
-        
 /**
  * Build communication packets-----------------------------------------------
  */
