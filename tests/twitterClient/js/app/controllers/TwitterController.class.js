@@ -39,23 +39,20 @@ define([
                     var tweetResults = data.results;
                     var tweetsSize = tweetResults.length;
                     for (var i = 0; i < tweetsSize; i++) {
-                        this.TwittModel = new Twitt(tweetResults[i]);
-                        var created_at = new Date(this.TwittModel.created_at);
-                        this.TwittModel.created_at = created_at.getFullYear() + '/' + created_at.getMonth() + '/' + created_at.getDay();
-                        var template = new TwittTemplate();
-                        html += Mustache.to_html(template.getTwitt(), this.TwittModel);
+                        var created_at = new Date(tweetResults[i].created_at);
+                        tweetResults[i].created_at = created_at.getFullYear() + '/' + created_at.getMonth() + '/' + created_at.getDay();
+                        html += Mustache.to_html(TwittTemplate, tweetResults[i]);
                     }
                     $('#tweets').html("<ul data-role='listview' data-theme='g' id='twittList'>" + html + "</ul>");
                     $('#twittList').listview(); //apply jquery mobile's styles to the list
                     //attach events
-                    $('.twitt').bind('click', {context: this}, function(event) {
-                            var context = event.data.context;
-                            var id = context.TwittModel.id, i, tweet;
+                    $('.twitt').bind('click', function(event) {
+                            var id = this.id, i, tweet;
                             for (var i = 0; i < tweetsSize; i++) {
                                     if (tweetResults[i].id == id) {
                                             tweet = tweetResults[i];
                                     }
-                            }
+                            };
                             $('#twitt-dialog-content').html('<p>' + tweet.text + '</p>');
                             $.mobile.changePage($('#twitt-dialog'), {transition: 'pop', role: 'dialog'});
                     });
