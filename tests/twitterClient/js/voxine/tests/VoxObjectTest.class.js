@@ -129,6 +129,7 @@ define(
             
             //Existing stored object.
             var object = storage.load("key1234");
+            object.options.loadedFromStorage = true;
             var voxObjectInstance = new VoxObject(object.storageType, object.storageKey, object.options);
             voxObjectInstance.setId(object.objectId);
             voxObjectInstance.setCollection(object.associatedCollectionKeys);
@@ -154,6 +155,7 @@ define(
             var factory = new VoxStorageFactory();
             var storage = factory.getStorage('local');
             var object = storage.load("key1234");
+            object.options.loadedFromStorage = true;
             console.assert(object === Object(object));
             
             var voxObjectInstance = new VoxObject(object.storageType, object.storageKey, object.options);
