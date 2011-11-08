@@ -135,19 +135,6 @@ define([
             //TODO
         };
         
-        /**
-         * @Override
-         * Persists the elements of the collection
-         * @public
-         */
-        var save = function() {
-            var i;
-            var size = this.getSize();
-            for (i = 0; i < size; ++i) {
-                this.collection[i].save();
-            }
-        };
-        
         return VoxClass.Class(
             'VoxObjectCollection',
             VoxObject,
@@ -159,7 +146,6 @@ define([
                 getItemPosition: getItemPosition,
                 removeItem: removeItem,
                 reset: reset,
-                save: save,
                 filter: filter,
                 loadCollectionFromJson: loadCollectionFromJson
             }
