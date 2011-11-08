@@ -123,7 +123,7 @@ define([
          * @public
          */
         var filter = function(/* VoxFilter */ filter) {
-            //TODO
+            console.log(filter);
         };
         
         /**

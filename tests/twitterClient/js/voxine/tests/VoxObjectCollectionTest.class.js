@@ -6,10 +6,11 @@
 define(
     [
         'voxine/collection/VoxObjectCollection.class',
-        'voxine/collection/VoxFilter.class',
-        'voxine/model/VoxObject.class'
+        'app/models/filter/UserFilter.class',
+        'voxine/model/VoxObject.class',
+        'app/models/User.class'
     ],
-    function(VoxObjectCollection, VoxFilter, VoxObject) {
+    function(VoxObjectCollection, UserFilter, VoxObject, UserModel) {
         
         var collection;
         
@@ -18,7 +19,7 @@ define(
          * @coverage: constructor, getOptions, setOptions, getSize
          */
         var createNewCollection = function() {
-            var filter = new VoxFilter({id:"1", name: "Test"});
+            var filter = new UserFilter({id:"1", name: "Test", email:"youremail@mailify.com"});
             collection = new VoxObjectCollection('local', 'StKey123', {silentMode: false}, filter);
             console.assert(collection.getOptions().silentMode === false);
             console.assert(collection.getSize() === 0);
@@ -52,7 +53,7 @@ define(
             try {
                 collection.addItem(objInstance);
             } catch (e) {
-                console.assert(e === "Duplicate object. Object with Id = " + objInstance.getId() + " already exists.");
+                console.assert(e === "Duplicate object. Object with Id = " + objInstance.getObjectId() + " already exists.");
             }
             console.log('%cFinished', 'color: green; font-weight:bold;');
         };
@@ -65,7 +66,7 @@ define(
             var objInstance = new VoxObject('session', 'key5678', {silentMode: false});
             collection.addItem(objInstance);
             //Test existing item.
-            console.assert(objInstance === collection.getItem(objInstance.getId()));
+            console.assert(objInstance === collection.getItem(objInstance.getObjectId()));
             
             //Test non existing item.
             console.assert(collection.getItem(0) === null);
@@ -82,12 +83,12 @@ define(
             var objInstance = new VoxObject('local', 'silentModeFalse', {silentMode: false});
             console.log("%cSilent Mode -> False: Add and Remove actions should be showed", "color:#0000FF; font-weight:bold;");
             collection.addItem(objInstance);
-            console.assert(collection.removeItem(objInstance.getId()) === true);
+            console.assert(collection.removeItem(objInstance.getObjectId()) === true);
             //Silent mode true
             objInstance = new VoxObject('local', 'silentModeTrue', {silentMode: true});
             console.log("%cSilent Mode -> True: Add and Remove actions shouldn't be showed", "color:#0000FF; font-weight:bold;");
             collection.addItem(objInstance);
-            console.assert(collection.removeItem(objInstance.getId()) === true);
+            console.assert(collection.removeItem(objInstance.getObjectId()) === true);
             
             console.log('%cFinished', 'color: green; font-weight:bold;');
         };
@@ -124,6 +125,24 @@ define(
             console.log('%cFinished', 'color: green; font-weight:bold;');
         };
         
+        var filterTest = function() {
+            var filter = {
+                id: '12',
+                name: 'Sapo Pepe',
+                email: 'testyoursapo@sapopepe.wtr'
+            };
+            var myFilter = new UserFilter(filter);
+            console.log(myFilter);
+            collection.reset();
+            collection.addItem(new UserModel('local', 'stum1', {silentMode: false}, 1, "Juan Arribillaga", "juan.arribillaga@globant.com"));
+            collection.addItem(new UserModel('local', 'stum2', {silentMode: false}, 2, "Ricardo Noir", "ricky@nob.com"));
+            collection.addItem(new UserModel('local', 'stum3', {silentMode: false}, 3, "Rolando Schiavi", "rolo@bocajuniors.com.ar"));
+            
+            
+            
+            console.log(collection);
+        }
+        
         return  {
             createNewCollection: createNewCollection,
             bindEvents: bindEvents,
@@ -131,7 +150,8 @@ define(
             getItem: getItem,
             removeItem: removeItem,
             resetCollection: resetCollection,
-            saveTest: saveTest
+            saveTest: saveTest,
+            filterTest: filterTest
         };
     }
 );
