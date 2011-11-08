@@ -32,7 +32,7 @@ define(
          * 
          * @author Alberto Miranda <alberto@nextive.com>
          */
-        var customCommLayer = function(){
+        var customCommLayer = function() {
             this.commLayer = 'customCommLayer';
             var comm = new VoxComm(this);
 

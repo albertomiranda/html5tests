@@ -32,7 +32,7 @@ define([
             //update objectIds
             if (!this.options.loadedFromStorage) {
                 ++this.statics.objectId;
-                this.setId(this.statics.objectId);
+                this.setObjectId(this.statics.objectId);
             }
         };
         
@@ -150,7 +150,7 @@ define([
          * @return Integer: VoxObject id.
          * @public
          */
-        var getId = function() {
+        var getObjectId = function() {
             return this.objectId;
         };
         
@@ -159,7 +159,7 @@ define([
          * @param integer: Id
          * @public
          */
-        var setId = function(id) {
+        var setObjectId = function(id) {
             this.objectId = id;
         };
         
@@ -210,8 +210,8 @@ define([
          * @public
          */
         var setStorageType = function(storageType) {
-            var storageLowered = storageType.toLowerCase();
-            if (isValidStorage(storageLowered)) {
+            if (storageType || isValidStorage(storageLowered)) {
+                var storageLowered = storageType.toLowerCase();
                 this.storageType = storageLowered;
             } else {
                 throw "Invalid Storage Type";
@@ -256,8 +256,8 @@ define([
                 hasCollectionAssociation: hasCollectionAssociation,
                 removeAssociation: removeAssociation,
                 removeAllAssociations: removeAllAssociations,
-                getId: getId,
-                setId: setId,
+                getObjectId: getObjectId,
+                setObjectId: setObjectId,
                 getStorageKey: getStorageKey,
                 setStorageKey: setStorageKey,
                 getStorageType: getStorageType,

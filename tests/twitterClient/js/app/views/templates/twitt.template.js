@@ -1,13 +1,9 @@
 define(function () {
     return "\
-        <div>\
-            @author <span class='author'>{{from_user}}</span>\
-        </div>\
-        <div>\
-            @date <span class='timestamp'>{{created_at}}</span>\
-        </div>\
-        <div>\
-            {{text}}\
-        </div>\
+        <li class = 'twitt' id = {{id}}>\
+            <p><strong>@{{from_user}}</strong></p>\
+            <p>{{text}}</p>\
+            <p class='ui-li-aside'><strong>{{created_at}}</strong></p>\
+        </li>\
     ";
 });
