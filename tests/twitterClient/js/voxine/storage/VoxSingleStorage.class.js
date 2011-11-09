@@ -22,20 +22,20 @@ function(VoxClass) {
 /**
 * PRIVATE----------------------------------------------------------
 */
-    var save = function(key, object) {
+    var save = function(key, object, extendedInfo) {
         var storableObject = serialize(object);
         var securedObject = secure(storableObject);
-        persist(key, securedObject);
+        persist(key, securedObject, extendedInfo);
     };
 
-    var load = function(key) {
-        var securedObject = recover(key);
+    var load = function(key, extendedInfo) {
+        var securedObject = recover(key, extendedInfo);
         var storableObject = unsecure(securedObject);
         return unserialize(storableObject);
     };
     
-    var erase = function(key){
-        remove(key);
+    var erase = function(key, extendedInfo){
+        remove(key, extendedInfo);
     }
 
     var serialize = function(object) {
@@ -62,16 +62,16 @@ function(VoxClass) {
  * Virtual methods----------------------------------------------------
  */
 
-    var persist = function(key, securedObject) {
-        return child.persist(key, securedObject);
+    var persist = function(key, securedObject, extendedInfo) {
+        return child.persist(key, securedObject, extendedInfo);
     };
 
-    var recover = function(key) {
-        return child.recover(key);
+    var recover = function(key, extendedInfo) {
+        return child.recover(key, extendedInfo);
     };
 
-    var remove = function(key) {
-        return child.remove(key);
+    var remove = function(key, extendedInfo) {
+        return child.remove(key, extendedInfo);
     };
     
 /**
