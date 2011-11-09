@@ -15,26 +15,10 @@ function(VoxClass) {
 /**
 * POLYMORPHISM------------------------------------------------------
 */
-    /*
-     *
-     *TODO: move responsability for creating specific storage
-     *to factory if it requires more than just calling a constructor.
-     *e.g if RemoteStorage requires to set parameters to the class
-     *
-     **/
     
     var child = null;
-    var getChild = function(){return child;}
     var setChild = function(chld){child = chld;}
-    
-    var polymorphic = function (functionName)
-    {
-        var instance = getChild();
-        var args = Array.prototype.slice.call(arguments).splice(1);
         
-        return instance[functionName].apply(instance, args);
-    }
-    
 /**
 * PRIVATE----------------------------------------------------------
 */
@@ -79,15 +63,15 @@ function(VoxClass) {
  */
 
     var persist = function(key, securedObject) {
-        polymorphic("persist", key, securedObject);
+        return child.persist(key, securedObject);
     };
 
     var recover = function(key) {
-        return polymorphic("recover", key);
+        return child.recover(key);
     };
 
     var remove = function(key) {
-        polymorphic("remove", key);
+        return child.remove(key);
     };
     
 /**

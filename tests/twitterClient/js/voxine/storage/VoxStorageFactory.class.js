@@ -40,21 +40,28 @@ define([
             }      
         }());
         
+        var localStorageCached = null;
         
         var getLocalStorage = function(){
-            var st = new VoxSingleStorage();
-            var child = new VoxLocalSingleStorage();
-            st.setChild(child);
+            if(localStorageCached == null){
+                localStorageCached = new VoxSingleStorage();
+                var child = new VoxLocalSingleStorage();
+                localStorageCached.setChild(child);
+            }
             
-            return st;
+            return localStorageCached;
         };
         
+        var sessionStorageCached = null;
+        
         var getSessionStorage = function(){
-            var st = new VoxSingleStorage();
-            var child = new VoxSessionSingleStorage();
-            st.setChild(child);
+            if(sessionStorageCached == null){
+                sessionStorageCached = new VoxSingleStorage();
+                var child = new VoxSessionSingleStorage();
+                sessionStorageCached.setChild(child);
+            }
             
-            return st;
+            return sessionStorageCached;
         };
         
         var getRemoteStorage = function(caller){

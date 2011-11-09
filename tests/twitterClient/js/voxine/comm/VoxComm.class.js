@@ -22,6 +22,8 @@ define([
             "gatewayUrl": ""
         };
         
+        var subscribers;
+        
         //----------------------------------------------------------------------
         /**
          * PRIVATE METHODS
@@ -31,9 +33,32 @@ define([
          * Class constructor.
          */
         var constructor = function(caller) {
+            loadConfig(caller);
+        };
+        
+        var loadConfig = function(caller){
             private.commLayer = getCommLayer(caller);
             private.gatewayUrl = getGatewayUrl(caller);
-        };
+            
+            loadSubscribers(caller);
+        }
+        
+       var loadSubscribers = function(caller){
+            subscribers = {};
+            
+            if (caller !== undefined && caller.onSuccess !== undefined) {
+                subscribers.onSuccess = caller.onSuccess;
+            }else{
+                subscribers.onSuccess = onSuccess;
+            } 
+            
+            if (caller !== undefined && caller.onError !== undefined) {
+                subscribers.onError = caller.onError;
+            }else{
+                subscribers.onError = onError;
+            }
+           
+       }
         
         /**
          * Returns gateway url from global config or caller.
@@ -101,8 +126,8 @@ define([
             /**
              * Me preocupa el costo en performance de esto por cada request 
              * hacia el backend.
-             * Capaz que podr’amos guardar comm y testear si ya fue definido
-             * o no. Como para hacer el 'require' s—lo la primera vez
+             * Capaz que podrï¿½amos guardar comm y testear si ya fue definido
+             * o no. Como para hacer el 'require' sï¿½lo la primera vez
              * 
              * Esteban.
              */
@@ -114,13 +139,17 @@ define([
                 function(VoxCommLayer) {
                     console.log("USING COMM LAYER: " + private.commLayer);
                     var comm = new VoxCommLayer(config);
-                    comm.send(data, context);
+                    comm.send(data, subscribers);
                 }
             );
         }
         
         /**
          * Default success handler
+         * 
+         * This is never called since this is kinda Singleton and is
+         * reconfigured before each call.
+         * 
          */
         var onSuccess = function(response) {
             console.log("VoxComm: SUCCESS!");
@@ -146,7 +175,8 @@ define([
                 constructor : constructor,
                 onSuccess : onSuccess,
                 onError : onError,
-                send: send
+                send: send,
+                loadConfig: loadConfig
             }
         );
         //----------------------------------------------------------------------
