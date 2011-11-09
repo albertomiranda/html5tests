@@ -53,9 +53,24 @@ function(VoxClass) {
     }
         
 /**
+* Multiplicity------------------------------------------------------
+*/
+    var targets = [];
+    var addTarget = function(storage){
+        targets.push(storage);
+    }
+    
+    var callAllTargets;
+
+/**
 * PRIVATE----------------------------------------------------------
 */
     var save = function(key, object) {
+        var i;
+        var size = targets.length;
+        for (i = 0; i < size; ++i) {
+            targets[i].save(key, object);
+        }
     };
 
     var load = function(key) {
