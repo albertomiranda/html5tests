@@ -18,7 +18,8 @@ define(
         'voxine/tests/VoxConfigTest.class',
         'voxine/tests/VoxCommTest.class',
         'voxine/tests/VoxDefaultCommTest.class',
-        'voxine/tests/VoxFilterTest.class'
+        'voxine/tests/VoxFilterTest.class',
+        'voxine/tests/VoxStringHelperTest.class'
     ],
     function (
         $,
@@ -31,7 +32,8 @@ define(
         VoxConfigTest,
         VoxCommTest,
         VoxDefaultCommTest,
-        VoxFilterTest
+        VoxFilterTest,
+        VoxStringHelperTest
     ) {
         
         /**
@@ -96,7 +98,8 @@ define(
                           "VoxStorage",
                           "VoxController",
                           "VoxConfig",
-                          "VoxFilter"
+                          "VoxFilter",
+                          "VoxStringHelper"
                           ]);
         }
         return {
@@ -111,7 +114,8 @@ define(
             VoxConfig: VoxConfigTest,
             VoxComm: VoxCommTest,
             VoxDefaultComm: VoxDefaultCommTest,
-            VoxFilter: VoxFilterTest
+            VoxFilter: VoxFilterTest,
+            VoxStringHelper: VoxStringHelperTest
         };
     }
 );
