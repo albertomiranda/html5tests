@@ -33,6 +33,7 @@ define([
         var constructor = function(caller) {
             private.commLayer = getCommLayer(caller);
             private.gatewayUrl = getGatewayUrl(caller);
+            console.log(private);
         };
         
         /**
@@ -97,15 +98,6 @@ define([
             };
             
             //require set comm layer module and redirect to its send method
-            
-            /**
-             * Me preocupa el costo en performance de esto por cada request 
-             * hacia el backend.
-             * Capaz que podr’amos guardar comm y testear si ya fue definido
-             * o no. Como para hacer el 'require' s—lo la primera vez
-             * 
-             * Esteban.
-             */
             var context = this;
             require(
                 [
