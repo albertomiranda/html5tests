@@ -6,9 +6,10 @@
 
 define([
     'VoxClass',
-    'voxine/model/VoxObject.class'
+    'voxine/model/VoxObject.class',
+    'voxine/helpers/VoxStringHelper.class'
     ], 
-    function(VoxClass, VoxObject) {
+    function(VoxClass, VoxObject, VoxStringHelper) {
 
         /* Private */
         var undefined;
@@ -119,11 +120,38 @@ define([
         /**
          * Filters the object collection returning a new collection filtered.
          * @param VoxFilter filter
+         * @param Boolean: if strict, will be search with equalTo method, otherwise contain.
          * @return VoxObjectCollection filteredCollection.
          * @public
          */
-        var filter = function(/* VoxFilter */ filter) {
-            console.log(filter);
+        var filterBy = function(/* VoxFilter */ filter, strict) {
+            var method, filteredCollection, i;
+            var searching = true;
+            var searchType = strict || false
+            
+            //Connection to be generated
+            filteredCollection = new VoxObjectCollection(this.getStorageType(), this.getStorageKey() + "_filter", this.getOptions(), this.filter);
+            for (i = 0; i < this.getSize(); ++i) {
+                for (method in filter) {
+                    if (method.substr(0,3) === "get" && method !== "getInherited" && method !== "getJsonFilter") {
+                            if (!searchType) {
+                                searching = searching && VoxStringHelper.contain(filter[method](), this.collection[i][method]());
+                            } else {
+                                searching = searching && VoxStringHelper.equalTo(filter[method](), this.collection[i][method]());
+                            }
+                            
+                            if (!searching) {
+                                //No matching method found, continues with next item.
+                                break;
+                            }
+                    }
+                }
+                if (searching) {
+                    //Object match with filter
+                    filteredCollection.addItem(this.collection[i]);
+                }
+            }
+            return filteredCollection
         };
         
         /**
@@ -146,7 +174,7 @@ define([
                 getItemPosition: getItemPosition,
                 removeItem: removeItem,
                 reset: reset,
-                filter: filter,
+                filterBy: filterBy,
                 loadCollectionFromJson: loadCollectionFromJson
             }
         );

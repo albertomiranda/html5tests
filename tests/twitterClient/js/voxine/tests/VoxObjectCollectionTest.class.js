@@ -125,22 +125,25 @@ define(
             console.log('%cFinished', 'color: green; font-weight:bold;');
         };
         
+        /**
+         * Tests for filter methods.
+         * @coverage filterBy
+         */
         var filterTest = function() {
             var filter = {
-                id: '12',
-                name: 'Sapo Pepe',
-                email: 'testyoursapo@sapopepe.wtr'
+                name: 'Ju'
             };
             var myFilter = new UserFilter(filter);
-            console.log(myFilter);
+            collection.setOptions({silentMode: true});
             collection.reset();
-            collection.addItem(new UserModel('local', 'stum1', {silentMode: false}, 1, "Juan Arribillaga", "juan.arribillaga@globant.com"));
-            collection.addItem(new UserModel('local', 'stum2', {silentMode: false}, 2, "Ricardo Noir", "ricky@nob.com"));
-            collection.addItem(new UserModel('local', 'stum3', {silentMode: false}, 3, "Rolando Schiavi", "rolo@bocajuniors.com.ar"));
-            
-            
-            
-            console.log(collection);
+            collection.addItem(new UserModel('local', 'stum1', {silentMode: true}, 1, "Juan Arribillaga", "juan.arribillaga@globant.com"));
+            collection.addItem(new UserModel('local', 'stum2', {silentMode: true}, 2, "Ricardo Rojaiju", "ricky@nob.com"));
+            collection.addItem(new UserModel('local', 'stum3', {silentMode: true}, 3, "Rolando Schiavi", "rolo@bocajuniors.com.ar"));
+            var filteredCollection = collection.filterBy(myFilter);
+            console.assert(filteredCollection.getSize() === 2);
+            filteredCollection = collection.filterBy(myFilter, true);
+            console.assert(filteredCollection.getSize() === 0);
+            console.log('%cFinished', 'color: green; font-weight:bold;');
         }
         
         return  {
