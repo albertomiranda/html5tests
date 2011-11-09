@@ -49,7 +49,7 @@ define([
         var getSize = function() {
             return this.collection.length;
         };
-
+        
         /**
          * Gives the position of an item.
          * @param int : id
@@ -151,6 +151,16 @@ define([
             return filteredCollection
         };
         
+        var toJSON = function() {
+            return JSON.stringify({
+                storageKey: this.getStorageKey(), 
+                storageType: this.getStorageType(), 
+                collection: this.collection,
+                objectId: this.getObjectId(),
+                filter: this.filter,
+                options: this.getOptions()
+            });
+        }
         
         return VoxClass.Class(
             'VoxObjectCollection',
@@ -164,6 +174,7 @@ define([
                 removeItem: removeItem,
                 reset: reset,
                 filterBy: filterBy,
+                toJSON: toJSON
             }
         );
 });
