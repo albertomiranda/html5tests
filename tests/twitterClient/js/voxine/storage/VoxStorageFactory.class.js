@@ -7,14 +7,14 @@
  */
 define([    
         'VoxClass',
-        'voxine/tools/VoxTools.class',
+        'voxine/helpers/VoxStringHelper.class',
         'Modernizr',
         'voxine/storage/VoxSingleStorage.class',
         'voxine/storage/VoxLocalSingleStorage.class',
         'voxine/storage/VoxSessionSingleStorage.class',
         'voxine/storage/VoxRemoteSingleStorage.class'
     ], 
-    function(VoxClass, VoxTools) {
+    function(VoxClass, VoxStringHelper) {
 
 /**
  * PRIVATE----------------------------------------------------------
@@ -87,9 +87,7 @@ define([
         }
         
         var getStorage = function(type) {
-            var tools = new VoxTools();
-            
-            var functionName = 'get' + tools.ucfirst(type) + 'Storage';
+            var functionName = 'get' + VoxStringHelper.ucfirst(type) + 'Storage';
             var args = Array.prototype.slice.call(arguments).splice(1);
             
             return getSpecificStorage[functionName].apply(null, args);

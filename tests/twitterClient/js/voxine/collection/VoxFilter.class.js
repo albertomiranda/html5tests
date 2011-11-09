@@ -6,9 +6,9 @@
 
 define([
     'VoxClass', 
-    'voxine/tools/VoxTools.class'
+    'voxine/helpers/VoxStringHelper.class'
     ], 
-    function(VoxClass, VoxTools) {
+    function(VoxClass, VoxStringHelper) {
 
         /**
          * Class Constructor
@@ -27,8 +27,7 @@ define([
         var parseFilter = function() {
             var undefined;
             for (var filterName in this.jsonFilter) {
-                var tools = new VoxTools();
-                var setterName = "set" + tools.ucfirst(filterName);
+                var setterName = "set" + VoxStringHelper.ucfirst(filterName);
                 if (this[setterName] !== undefined) {
                     this[setterName](this.jsonFilter[filterName]);
                 }

@@ -14,9 +14,9 @@
 define([    
         'VoxClass',
         'voxine/config/VoxConfig.class',
-        'voxine/tools/VoxTools.class'
+        'voxine/helpers/VoxStringHelper.class'
     ], 
-    function(VoxClass, VoxConfig, VoxTools) {
+    function(VoxClass, VoxConfig, VoxStringHelper) {
         var private = {
             commLayer: "Default",
             gatewayUrl: "",
@@ -113,9 +113,7 @@ define([
                     commLayer = VoxConfig.voxine.commLayer;
                 }
             }
-            
-            var tools = new VoxTools;
-            return tools.ucfirst(commLayer.toLowerCase());
+            return VoxStringHelper.ucfirst(commLayer.toLowerCase());
         };
         
         /**
