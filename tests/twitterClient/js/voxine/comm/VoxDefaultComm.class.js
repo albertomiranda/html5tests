@@ -102,6 +102,7 @@ define([
                 console.log('VoxDefaultComm: RECEIVED ERROR: ' + response);
                 if (caller !== undefined && caller.onError !== undefined) {
                     caller.onError(response);
+                }
             };
             
             var ajaxConfig = {
