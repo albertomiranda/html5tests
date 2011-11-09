@@ -64,12 +64,16 @@ define([
             return sessionStorageCached;
         };
         
-        var getRemoteStorage = function(caller){
-            var st = new VoxSingleStorage();
-            var child = new VoxRemoteSingleStorage(caller);
-            st.setChild(child);
+        var remoteStorageCached = null;
+        
+        var getRemoteStorage = function(){
+            if(remoteStorageCached == null){
+                remoteStorageCached = new VoxSingleStorage();
+                var child = new VoxRemoteSingleStorage();
+                remoteStorageCached.setChild(child);
+            }
             
-            return st;
+            return remoteStorageCached;
         };
         
 /*

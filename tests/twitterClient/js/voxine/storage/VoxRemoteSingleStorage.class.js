@@ -18,8 +18,8 @@ define([
          */
         var comm;
         
-        var constructor = function(caller) {
-            setComm(caller);
+        var constructor = function() {
+            setComm();
             enableEvents();
         };
         
@@ -28,8 +28,8 @@ define([
             Mediator.mixin(this);
         }
         
-        var setComm = function(caller){
-            comm = new VoxComm(caller);
+        var setComm = function(){
+            comm = new VoxComm();
 
             //add mediator
             var Mediator = new VoxMediator();
@@ -56,23 +56,31 @@ define([
 /**
  * -----------------------------------------------
  */
-        var persist = function(key, securedObject) {
+        var persist = function(key, securedObject, extendedInfo) {
             console.log('Guardando "' + key + '"="' + securedObject + '"');
             var packet = getPersistPacket(key, securedObject);
-            comm.send(packet);
+            
+            sendToComm(packet, extendedInfo);
         };
         
-        var recover = function(key) {
+        var recover = function(key, extendedInfo) {
             console.log('Recuperando "' + key + '"');
             var packet = getRecoverPacket(key);
-            comm.send(packet);
+            
+            sendToComm(packet, extendedInfo);
         };
                 
-        var remove = function(key) {
+        var remove = function(key, extendedInfo) {
             console.log('Eliminando "' + key + '"');
             var packet = getRemovePacket(key);
-            comm.send(packet);
+            
+            sendToComm(packet, extendedInfo);
         };
+        
+        var sendToComm = function(packet, connSetup){
+            comm.loadConfig(connSetup);
+            comm.send(packet);
+        }
                 
 
 /**
