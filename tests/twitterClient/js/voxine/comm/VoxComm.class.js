@@ -12,17 +12,16 @@
  * @author Alberto Miranda <alberto@nextive.com>
  */
 define([    
-    'VoxClass',
-    'voxine/config/VoxConfig.class',
-    'voxine/tools/VoxTools.class'
+        'VoxClass',
+        'voxine/config/VoxConfig.class',
+        'voxine/tools/VoxTools.class'
     ], 
     function(VoxClass, VoxConfig, VoxTools) {
         var private = {
-            "commLayer": "Default",
-            "gatewayUrl": ""
+            commLayer: "Default",
+            gatewayUrl: "",
+            callbacks : {}
         };
-        
-        var subscribers;
         
         //----------------------------------------------------------------------
         /**
@@ -30,7 +29,14 @@ define([
          */
         
         /**
-         * Class constructor.
+         * Constructor.
+         * Gets configuration options form the object using
+         * this class.
+         * The <pre>caller</pre> shall provide the following properties:
+         * - {string} getGatewayUrl
+         * - {VoxComm} getCommLayer
+         * 
+         * @param {VoxObject} caller client of this class
          */
         var constructor = function(caller) {
             loadConfig(caller);
@@ -40,25 +46,27 @@ define([
             private.commLayer = getCommLayer(caller);
             private.gatewayUrl = getGatewayUrl(caller);
             
-            loadSubscribers(caller);
-        }
+            setCallbacks(caller);
+        };
         
-       var loadSubscribers = function(caller){
-            subscribers = {};
+        /**
+         * 
+         */
+        var setCallbacks = function(caller){
+            var callbacks = private.callbacks;
             
             if (caller !== undefined && caller.onSuccess !== undefined) {
-                subscribers.onSuccess = caller.onSuccess;
+                callbacks.onSuccess = caller.onSuccess;
             }else{
-                subscribers.onSuccess = onSuccess;
-            } 
-            
+                callbacks.onSuccess = onSuccess;
+            }; 
+                
             if (caller !== undefined && caller.onError !== undefined) {
-                subscribers.onError = caller.onError;
+                callbacks.onError = caller.onError;
             }else{
-                subscribers.onError = onError;
-            }
-           
-       }
+                callbacks.onError = onError;
+            };       
+        };
         
         /**
          * Returns gateway url from global config or caller.
@@ -118,20 +126,15 @@ define([
          */
         var send = function(data){
             var config = {
-                "gatewayUrl": private.gatewayUrl
+                gatewayUrl: private.gatewayUrl
             };
             
             //require set comm layer module and redirect to its send method
             
             /**
-             * Me preocupa el costo en performance de esto por cada request 
-             * hacia el backend.
-             * Capaz que podr�amos guardar comm y testear si ya fue definido
-             * o no. Como para hacer el 'require' s�lo la primera vez
-             * 
-             * Esteban.
+             * FIXME Cache objects already created
              */
-            var context = this;
+            //var context = this;
             require(
                 [
                     'voxine/comm/Vox' + private.commLayer + 'Comm.class'
@@ -139,10 +142,10 @@ define([
                 function(VoxCommLayer) {
                     console.log("USING COMM LAYER: " + private.commLayer);
                     var comm = new VoxCommLayer(config);
-                    comm.send(data, subscribers);
+                    comm.send(data, private.callbacks);
                 }
             );
-        }
+        };
         
         /**
          * Default success handler
@@ -152,7 +155,7 @@ define([
          * 
          */
         var onSuccess = function(response) {
-            console.log("VoxComm: SUCCESS!");
+            //console.log("VoxComm: SUCCESS!");
             this.trigger('onSuccess', response);
         };
         
@@ -160,7 +163,7 @@ define([
          * Default error handler
          */
         var onError = function() {
-            
+            throw Error('VoxComm: an error has happened.');
         };
         //----------------------------------------------------------------------
         
