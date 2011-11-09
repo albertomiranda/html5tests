@@ -92,7 +92,7 @@ define([
             //console.log(data);
             
             var onSuccess = function(response){
-                //console.log('VoxDefaultComm: RECEIVED RESPONSE: ' + response);
+                console.log('VoxDefaultComm: RECEIVED RESPONSE: ' + response);
                 //console.log(caller);
                 if (caller !== undefined && caller.onSuccess !== undefined) {
                     caller.onSuccess(response);
@@ -100,6 +100,9 @@ define([
             };
             var onError = function(response){
                 console.log('VoxDefaultComm: RECEIVED ERROR: ' + response);
+                if (caller !== undefined && caller.onError !== undefined) {
+                    caller.onError(response);
+                }
             };
             
             var ajaxConfig = {

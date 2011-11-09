@@ -88,18 +88,6 @@ define(
             return obj1;
         };
         
-        // http://kevin.vanzonneveld.net
-        // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-        // +   bugfixed by: Onno Marsman
-        // +   improved by: Brett Zamir (http://brett-zamir.me)
-        // *     example 1: ucfirst('kevin van zonneveld');
-        // *     returns 1: 'Kevin van zonneveld'
-        var ucfirst = function ucfirst (str) {
-            str += '';
-            var f = str.charAt(0).toUpperCase();
-            return f + str.substr(1);
-        }
-    
         //----------------------------------------------------------------------
         //PUBLIC INTERFACE
         return VoxClass.Class(
@@ -110,8 +98,7 @@ define(
                 welcomeSpecificMobile: welcomeSpecificMobile,
                 welcomeMobile: welcomeMobile,
                 checkCacheUpdate: checkCacheUpdate,
-                mergeObject: mergeObject,
-                ucfirst: ucfirst
+                mergeObject: mergeObject
             }
         //----------------------------------------------------------------------
     )

@@ -15,43 +15,27 @@ function(VoxClass) {
 /**
 * POLYMORPHISM------------------------------------------------------
 */
-    /*
-     *
-     *TODO: move responsability for creating specific storage
-     *to factory if it requires more than just calling a constructor.
-     *e.g if RemoteStorage requires to set parameters to the class
-     *
-     **/
     
     var child = null;
-    var getChild = function(){return child;}
     var setChild = function(chld){child = chld;}
-    
-    var polymorphic = function (functionName)
-    {
-        var instance = getChild();
-        var args = Array.prototype.slice.call(arguments).splice(1);
         
-        return instance[functionName].apply(instance, args);
-    }
-    
 /**
 * PRIVATE----------------------------------------------------------
 */
-    var save = function(key, object) {
+    var save = function(key, object, extendedInfo) {
         var storableObject = serialize(object);
         var securedObject = secure(storableObject);
-        persist(key, securedObject);
+        persist(key, securedObject, extendedInfo);
     };
 
-    var load = function(key) {
-        var securedObject = recover(key);
+    var load = function(key, extendedInfo) {
+        var securedObject = recover(key, extendedInfo);
         var storableObject = unsecure(securedObject);
         return unserialize(storableObject);
     };
     
-    var erase = function(key){
-        remove(key);
+    var erase = function(key, extendedInfo){
+        remove(key, extendedInfo);
     }
 
     var serialize = function(object) {
@@ -78,16 +62,16 @@ function(VoxClass) {
  * Virtual methods----------------------------------------------------
  */
 
-    var persist = function(key, securedObject) {
-        polymorphic("persist", key, securedObject);
+    var persist = function(key, securedObject, extendedInfo) {
+        return child.persist(key, securedObject, extendedInfo);
     };
 
-    var recover = function(key) {
-        return polymorphic("recover", key);
+    var recover = function(key, extendedInfo) {
+        return child.recover(key, extendedInfo);
     };
 
-    var remove = function(key) {
-        polymorphic("remove", key);
+    var remove = function(key, extendedInfo) {
+        return child.remove(key, extendedInfo);
     };
     
 /**

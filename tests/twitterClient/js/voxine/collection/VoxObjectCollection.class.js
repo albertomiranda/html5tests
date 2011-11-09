@@ -6,9 +6,10 @@
 
 define([
     'VoxClass',
-    'voxine/model/VoxObject.class'
+    'voxine/model/VoxObject.class',
+    'voxine/helpers/VoxStringHelper.class'
     ], 
-    function(VoxClass, VoxObject) {
+    function(VoxClass, VoxObject, VoxStringHelper) {
 
         /* Private */
         var undefined;
@@ -20,7 +21,6 @@ define([
         var constructor = function(storageType, storageKey, options, filter) {
             this.filter = filter;
             this.collection = [];
-            this.length = 0;
         };
 
         /**
@@ -30,12 +30,11 @@ define([
          * @public
          */
         var addItem = function(/* VoxObject */ object) {
-            if (this.getItem(object.getId())) {
-                throw "Duplicate object. Object with Id = " + object.getId() + " already exists.";
+            if (this.getItem(object.getObjectId())) {
+                throw "Duplicate object. Object with Id = " + object.getObjectId() + " already exists.";
             }
             this.collection.push(object);
             object.setCollection(this.getStorageKey());
-            //this.length++;
             if (!this.getOptions().silentMode && !object.getOptions().silentMode) {
                 this.trigger('collection:itemAdded', object.getStorageKey());
             }
@@ -50,7 +49,7 @@ define([
         var getSize = function() {
             return this.collection.length;
         };
-
+        
         /**
          * Gives the position of an item.
          * @param int : id
@@ -61,7 +60,7 @@ define([
             var i;
             var size = this.getSize();
             for (i = 0; i < size; ++i) {
-                if (this.collection[i].getId() === id) {
+                if (this.collection[i].getObjectId() === id) {
                     return i;
                 }
             }
@@ -107,7 +106,6 @@ define([
          * @public
          */
         var reset = function() {
-            this.length = 0;
             this.collection = [];
             this.filter = null;
             //Collection silent mode.
@@ -119,21 +117,50 @@ define([
         /**
          * Filters the object collection returning a new collection filtered.
          * @param VoxFilter filter
+         * @param Boolean: if strict, will be search with equalTo method, otherwise contain.
          * @return VoxObjectCollection filteredCollection.
          * @public
          */
-        var filter = function(/* VoxFilter */ filter) {
-            //TODO
+        var filterBy = function(/* VoxFilter */ filter, strict) {
+            var method, filteredCollection, i;
+            var searching = true;
+            var searchType = strict || false
+            
+            //Connection to be generated
+            filteredCollection = new VoxObjectCollection(this.getStorageType(), this.getStorageKey() + "_filter", this.getOptions(), this.filter);
+            for (i = 0; i < this.getSize(); ++i) {
+                for (method in filter) {
+                    if (method.substr(0,3) === "get" && method !== "getInherited" && method !== "getJsonFilter") {
+                            if (!searchType) {
+                                searching = searching && VoxStringHelper.contain(filter[method](), this.collection[i][method]());
+                            } else {
+                                searching = searching && VoxStringHelper.equalTo(filter[method](), this.collection[i][method]());
+                            }
+                            
+                            if (!searching) {
+                                //No matching method found, continues with next item.
+                                break;
+                            }
+                    }
+                }
+                if (searching) {
+                    //Object match with filter
+                    filteredCollection.addItem(this.collection[i]);
+                }
+            }
+            return filteredCollection
         };
         
-        /**
-         * Parses a json object and load a collection.
-         * @param Object: Json to parse.
-         * @public
-         */
-        var loadCollectionFromJson = function(json) {
-            //TODO
-        };
+        var toJSON = function() {
+            return JSON.stringify({
+                storageKey: this.getStorageKey(), 
+                storageType: this.getStorageType(), 
+                collection: this.collection,
+                objectId: this.getObjectId(),
+                filter: this.filter,
+                options: this.getOptions()
+            });
+        }
         
         return VoxClass.Class(
             'VoxObjectCollection',
@@ -146,8 +173,8 @@ define([
                 getItemPosition: getItemPosition,
                 removeItem: removeItem,
                 reset: reset,
-                filter: filter,
-                loadCollectionFromJson: loadCollectionFromJson
+                filterBy: filterBy,
+                toJSON: toJSON
             }
         );
 });

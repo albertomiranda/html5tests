@@ -6,9 +6,10 @@
  * @author Leo Bianchi <leonardo.bianchi@nextive.com>
  */
 define([
-    'VoxClass'
+    'VoxClass',
+    'voxine/helpers/VoxStringHelper.class'
     ], 
-function(VoxClass) {
+function(VoxClass, VoxStringHelper) {
     
 
 /**
@@ -37,7 +38,7 @@ function(VoxClass) {
     
     var setSubType = function(tName){
         subTypeName = tName;
-        childName = 'Vox' + ucfirststrict(tName) + className.slice(3);
+        childName = 'Vox' + VoxStringHelper.ucfirst(tName) + className.slice(3);
     }
     
     var polymorphic = function (functionName)
@@ -47,15 +48,26 @@ function(VoxClass) {
         
         return instance[functionName].apply(instance, args);
     }
-    
-    var ucfirststrict = function(str){
-        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-    }
         
+/**
+* Multiplicity------------------------------------------------------
+*/
+    var targets = [];
+    var addTarget = function(storage){
+        targets.push(storage);
+    }
+    
+    var callAllTargets;
+
 /**
 * PRIVATE----------------------------------------------------------
 */
     var save = function(key, object) {
+        var i;
+        var size = targets.length;
+        for (i = 0; i < size; ++i) {
+            targets[i].save(key, object);
+        }
     };
 
     var load = function(key) {

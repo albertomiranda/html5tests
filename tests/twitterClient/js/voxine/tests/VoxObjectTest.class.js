@@ -17,8 +17,8 @@ define(
             
             var instance1 = new VoxObject('session', 'AD82KLM20EFN');
             var instance2 = new VoxObject('local', 'Asf3efdfasdf');
-            console.assert(instance1.getId() === 1);
-            console.assert(instance2.getId() === 2);
+            console.assert(instance1.getObjectId() === 1);
+            console.assert(instance2.getObjectId() === 2);
             
             console.log('%cFinished', 'color: green; font-weight:bold;');
         };
@@ -131,7 +131,7 @@ define(
             var object = storage.load("key1234");
             object.options.loadedFromStorage = true;
             var voxObjectInstance = new VoxObject(object.storageType, object.storageKey, object.options);
-            voxObjectInstance.setId(object.objectId);
+            voxObjectInstance.setObjectId(object.objectId);
             voxObjectInstance.setCollection(object.associatedCollectionKeys);
             console.assert(voxObjectInstance.getStorageKey() === 'key1234');
             
@@ -159,7 +159,7 @@ define(
             console.assert(object === Object(object));
             
             var voxObjectInstance = new VoxObject(object.storageType, object.storageKey, object.options);
-            voxObjectInstance.setId(object.objectId);
+            voxObjectInstance.setObjectId(object.objectId);
             voxObjectInstance.setCollection(object.associatedCollectionKeys);
             voxObjectInstance.remove();
             object = storage.load("key1234");

@@ -8,7 +8,7 @@ define([
     ], 
     function(VoxClass, VoxStorageFactory) {
 
-        var validStorages = ["local", "session"];
+        var validStorages = ["local", "session", "remote"];
         var validStoragesCount = validStorages.length;
 
         /**
@@ -210,9 +210,13 @@ define([
          * @public
          */
         var setStorageType = function(storageType) {
-            if (storageType || isValidStorage(storageLowered)) {
+            var undefined;
+            if (storageType !== undefined) {
                 var storageLowered = storageType.toLowerCase();
                 this.storageType = storageLowered;
+                if (!isValidStorage(storageLowered)) {
+                    throw "Invalid Storage Type";
+                }
             } else {
                 throw "Invalid Storage Type";
             }

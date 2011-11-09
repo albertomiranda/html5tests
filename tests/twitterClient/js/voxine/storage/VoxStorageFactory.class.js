@@ -7,14 +7,14 @@
  */
 define([    
         'VoxClass',
-        'voxine/tools/VoxTools.class',
+        'voxine/helpers/VoxStringHelper.class',
         'Modernizr',
         'voxine/storage/VoxSingleStorage.class',
         'voxine/storage/VoxLocalSingleStorage.class',
         'voxine/storage/VoxSessionSingleStorage.class',
         'voxine/storage/VoxRemoteSingleStorage.class'
     ], 
-    function(VoxClass, VoxTools) {
+    function(VoxClass, VoxStringHelper) {
 
 /**
  * PRIVATE----------------------------------------------------------
@@ -40,29 +40,40 @@ define([
             }      
         }());
         
+        var localStorageCached = null;
         
         var getLocalStorage = function(){
-            var st = new VoxSingleStorage();
-            var child = new VoxLocalSingleStorage();
-            st.setChild(child);
+            if(localStorageCached == null){
+                localStorageCached = new VoxSingleStorage();
+                var child = new VoxLocalSingleStorage();
+                localStorageCached.setChild(child);
+            }
             
-            return st;
+            return localStorageCached;
         };
+        
+        var sessionStorageCached = null;
         
         var getSessionStorage = function(){
-            var st = new VoxSingleStorage();
-            var child = new VoxSessionSingleStorage();
-            st.setChild(child);
+            if(sessionStorageCached == null){
+                sessionStorageCached = new VoxSingleStorage();
+                var child = new VoxSessionSingleStorage();
+                sessionStorageCached.setChild(child);
+            }
             
-            return st;
+            return sessionStorageCached;
         };
         
-        var getRemoteStorage = function(caller){
-            var st = new VoxSingleStorage();
-            var child = new VoxRemoteSingleStorage(caller);
-            st.setChild(child);
+        var remoteStorageCached = null;
+        
+        var getRemoteStorage = function(){
+            if(remoteStorageCached == null){
+                remoteStorageCached = new VoxSingleStorage();
+                var child = new VoxRemoteSingleStorage();
+                remoteStorageCached.setChild(child);
+            }
             
-            return st;
+            return remoteStorageCached;
         };
         
 /*
@@ -76,9 +87,7 @@ define([
         }
         
         var getStorage = function(type) {
-            var tools = new VoxTools();
-            
-            var functionName = 'get' + tools.ucfirst(type) + 'Storage';
+            var functionName = 'get' + VoxStringHelper.ucfirst(type) + 'Storage';
             var args = Array.prototype.slice.call(arguments).splice(1);
             
             return getSpecificStorage[functionName].apply(null, args);

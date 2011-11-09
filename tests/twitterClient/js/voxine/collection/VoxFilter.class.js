@@ -6,9 +6,9 @@
 
 define([
     'VoxClass', 
-    'voxine/tools/VoxTools.class'
+    'voxine/helpers/VoxStringHelper.class'
     ], 
-    function(VoxClass, VoxTools) {
+    function(VoxClass, VoxStringHelper) {
 
         /**
          * Class Constructor
@@ -27,8 +27,7 @@ define([
         var parseFilter = function() {
             var undefined;
             for (var filterName in this.jsonFilter) {
-                var tools = new VoxTools();
-                var setterName = "set" + tools.ucfirst(filterName);
+                var setterName = "set" + VoxStringHelper.ucfirst(filterName);
                 if (this[setterName] !== undefined) {
                     this[setterName](this.jsonFilter[filterName]);
                 }
@@ -49,11 +48,17 @@ define([
          * @public
          */
         var mixWith = function(model) {
-            var fn, prefix;
+            var fn, prefix, rest, functionNameSize, undefined;
+            
             for (fn in model) {
-                prefix = fn.substring(0,3);
-                if (prefix === "get" || prefix === "set") {
-                    this[fn] = model[fn];
+                functionNameSize = fn.length;
+                if (functionNameSize > 3) {
+                    prefix = fn.substring(0,3);
+                    rest = fn.substring(3, functionNameSize);
+                    rest = rest.toLowerCase();
+                    if ((prefix === "get" || prefix === "set") && this.jsonFilter[rest] !== undefined) {
+                        this[fn] = model[fn];
+                    }
                 }
             }
             this.parseFilter(this.filter);
