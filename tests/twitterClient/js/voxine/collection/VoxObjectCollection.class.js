@@ -21,7 +21,6 @@ define([
         var constructor = function(storageType, storageKey, options, filter) {
             this.filter = filter;
             this.collection = [];
-            this.length = 0;
         };
 
         /**
@@ -36,7 +35,6 @@ define([
             }
             this.collection.push(object);
             object.setCollection(this.getStorageKey());
-            //this.length++;
             if (!this.getOptions().silentMode && !object.getOptions().silentMode) {
                 this.trigger('collection:itemAdded', object.getStorageKey());
             }
@@ -108,7 +106,6 @@ define([
          * @public
          */
         var reset = function() {
-            this.length = 0;
             this.collection = [];
             this.filter = null;
             //Collection silent mode.
@@ -154,14 +151,6 @@ define([
             return filteredCollection
         };
         
-        /**
-         * Parses a json object and load a collection.
-         * @param Object: Json to parse.
-         * @public
-         */
-        var loadCollectionFromJson = function(json) {
-            //TODO
-        };
         
         return VoxClass.Class(
             'VoxObjectCollection',
@@ -175,7 +164,6 @@ define([
                 removeItem: removeItem,
                 reset: reset,
                 filterBy: filterBy,
-                loadCollectionFromJson: loadCollectionFromJson
             }
         );
 });
