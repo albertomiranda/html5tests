@@ -4,13 +4,22 @@
  */
 define(
     [
-        'voxine/tools/helpers/VoxStringHelper.class'
+        'voxine/helpers/VoxStringHelper.class'
     ],
     function(VoxStringHelper) {
         
         /**
-         * Test contains method.
-         * @coverage: contains
+         * Test ucfirst method.
+         * @coverage: ucfirst
+         */
+        var ucfirstTest = function() {
+            console.assert(VoxStringHelper.ucfirst("test") === "Test");
+            console.log('%cFinished', 'color: green; font-weight:bold;');
+        }
+        
+        /**
+         * Test contain method.
+         * @coverage: contain
          */
         var containTest = function() {
             console.assert(VoxStringHelper.contain("att", "pattern"));
@@ -30,16 +39,21 @@ define(
             console.log('%cFinished', 'color: green; font-weight:bold;');
         };
         
+        /**
+         * Performance measurement.
+         */
         var performTest = function() {
             console.profile('VoxStringHelperTest');
+            VoxStringHelper.ucfirst("myTest");
             VoxStringHelper.contain("att", "pattern");
             VoxStringHelper.equalTo("A", "B");
             console.profileEnd();
         };
 
         return  {
+            ucfirstTest: ucfirstTest,
             containTest: containTest,
-            equalTo: equalToTest,
+            equalToTest: equalToTest,
             performTest: performTest
         };
     }
