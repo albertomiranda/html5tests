@@ -36,11 +36,11 @@ define(
             VoxStringHelper.equalTo("A", "B");
             console.profileEnd();
         };
-        performTest();
-        
+
         return  {
             containTest: containTest,
-            equalTo: equalToTest
+            equalTo: equalToTest,
+            performTest: performTest
         };
     }
 );
