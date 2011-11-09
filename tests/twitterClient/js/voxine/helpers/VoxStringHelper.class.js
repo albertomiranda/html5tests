@@ -25,13 +25,23 @@ define(
          * Checks if source string contains the pattern param.
          * @param String: pattern to check
          * @param String: source
+         * @param Boolean: matchCase
          * @return Boolean
          * @static
          * 
          */
-        var contain = function (pattern, source) {
+        var contain = function (pattern, source, matchCase) {
+            var caseSensitive = matchCase || false;
             var patternToCheck = pattern || "";
             var sourceToCheck = source || "";
+            sourceToCheck += "";
+            patternToCheck += "";
+            
+            if (!caseSensitive) {
+                patternToCheck = patternToCheck.toLowerCase();
+                sourceToCheck = sourceToCheck.toLowerCase();
+            }
+            
             if (patternToCheck !== "") {
                 return (sourceToCheck.indexOf(patternToCheck) !== -1);
             }
