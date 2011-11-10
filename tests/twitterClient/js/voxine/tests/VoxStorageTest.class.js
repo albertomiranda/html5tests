@@ -13,8 +13,10 @@ define(
         var connConfig = {
             gatewayUrl: "www",
             commLayer: "default",
-            onSuccess: function(response){console.log("Storage succeded: " + response);},
-            onError: function(response){console.log("Storage error: " + response);}
+            onSuccess: function(response){
+                console.log("Storage succeded: " + JSON.stringify(response));},
+            onError: function(response){
+                console.log("Storage error: " + JSON.stringify(response));}
         };
         
         var voxStorageTest = function() {

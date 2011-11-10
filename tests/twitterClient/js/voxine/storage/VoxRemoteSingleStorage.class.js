@@ -23,11 +23,6 @@ define([
             enableEvents();
         };
         
-        var enableEvents = function(){
-            var Mediator = new VoxMediator();
-            Mediator.mixin(this);
-        }
-        
         var setComm = function(){
             comm = new VoxComm();
 
@@ -36,6 +31,11 @@ define([
             Mediator.mixin(comm);
             comm.bind('onSuccess', commSuccess);
             comm.bind('onError', commError);
+        }
+        
+        var enableEvents = function(){
+            var Mediator = new VoxMediator();
+            Mediator.mixin(this);
         }
         
 /**
