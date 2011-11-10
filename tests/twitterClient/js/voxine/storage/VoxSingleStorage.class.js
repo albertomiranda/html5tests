@@ -22,24 +22,44 @@ function(VoxClass) {
 /**
 * PRIVATE----------------------------------------------------------
 */
-    var save = function(key, object, extendedInfo) {
-        var storableObject = serialize(object);
-        var securedObject = secure(storableObject);
-        persist(key, securedObject, extendedInfo);
+    var save = function(object) {
+        var storableData = serialize(data(object));
+        var securedData = secure(storableData);
+        persist(key(object), securedData, extendedInfo(object));
     };
 
-    var load = function(key, extendedInfo) {
-        var securedObject = recover(key, extendedInfo);
-        var storableObject = unsecure(securedObject);
-        return unserialize(storableObject);
+    var load = function(object) {
+        var securedData = recover(key(object), extendedInfo(object));
+        var storableData = unsecure(securedData);
+        return unserialize(storableData);
     };
     
-    var erase = function(key, extendedInfo){
-        remove(key, extendedInfo);
+    var erase = function(object){
+        remove(key(object), extendedInfo(object));
     }
 
-    var serialize = function(object) {
-        var str = JSON.stringify(object);
+/**
+ * Data Extraction----------------------------------------------------
+ */
+    var key = function(object){
+        return object.getStorageKey();
+    }
+    
+    var data = function(object){
+        return object.prune();
+    }
+    
+    var extendedInfo = function(object){
+        return object;
+    }
+    
+
+/**
+ * Data processing----------------------------------------------------
+ */
+
+    var serialize = function(data) {
+        var str = JSON.stringify(data);
         console.log("Serialized obj :" + str);
         return str;
     };
@@ -62,8 +82,8 @@ function(VoxClass) {
  * Virtual methods----------------------------------------------------
  */
 
-    var persist = function(key, securedObject, extendedInfo) {
-        return child.persist(key, securedObject, extendedInfo);
+    var persist = function(key, securedData, extendedInfo) {
+        return child.persist(key, securedData, extendedInfo);
     };
 
     var recover = function(key, extendedInfo) {
