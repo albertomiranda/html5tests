@@ -18,7 +18,7 @@ define(
             /* Remote Storage config, maybe it could be returned as
             a separate object thorough getRemoteConfig() or something like that
             */
-            gatewayUrl: "www",
+            gatewayUrl: "/persistence/persistence_1.php",
             commLayer: "default",
             onSuccess: function(response){
                 console.log("Storage succeded: " + JSON.stringify(response));},
@@ -35,7 +35,7 @@ define(
         
         var test = function(type){
             
-            console.log("testing storage type : " + type);
+            console.log("-----testing storage type : " + type);
             var stf = new VoxStorageFactory();
             var st = stf.getStorage(type);
             

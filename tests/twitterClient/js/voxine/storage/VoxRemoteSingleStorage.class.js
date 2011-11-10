@@ -11,6 +11,13 @@ define([
     function(VoxClass) {
 
 /**
+* POLYMORPHISM------------------------------------------------------
+*/
+    
+    var child = null;
+    var setChild = function(chld){child = chld;}
+        
+/**
  * PRIVATE----------------------------------------------------------
  */
         /**
@@ -88,6 +95,46 @@ define([
  */
 
         var getPersistPacket = function(key, securedObject){
+            var packet;
+            
+            if(child != null){
+                packet = child.getPersistPacket(key, securedObject);
+            }else{
+                packet = getDefaultPersistPacket(key, securedObject);
+            }
+            
+            return packet;
+        }
+        
+        var getRecoverPacket = function(key){
+            var packet;
+            
+            if(child != null){
+                packet = child.getRecoverPacket(key);
+            }else{
+                packet = getDefaultRecoverPacket(key);
+            }
+            
+            return packet;
+        }
+        
+        var getRemovePacket = function(key){
+            var packet;
+            
+            if(child != null){
+                packet = child.getRemovePacket(key);
+            }else{
+                packet = getDefaultRemovePacket(key);
+            }
+            
+            return packet;
+        }
+        
+/**
+ * Default communication packets-----------------------------------------------
+ */
+
+        var getDefaultPersistPacket = function(key, securedObject){
             return {
                 operation: 'persist',
                 key: key,
@@ -95,14 +142,14 @@ define([
             }
         }
         
-        var getRecoverPacket = function(key){
+        var getDefaultRecoverPacket = function(key){
             return {
                 operation: 'recover',
                 key: key
             }
         }
         
-        var getRemovePacket = function(key){
+        var getDefaultRemovePacket = function(key){
             return {
                 operation: 'remove',
                 key: key
@@ -117,6 +164,7 @@ define([
             null,
             {
                 constructor : constructor,
+                setChild : setChild,
                 persist : persist,
                 recover : recover,
                 remove: remove
