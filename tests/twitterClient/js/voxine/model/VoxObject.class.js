@@ -3,8 +3,8 @@
  * @author Juan Arribillaga <juan.arribillaga@globant.com>
  */
 define([
-    'VoxClass', 
-    'voxine/storage/VoxStorageFactory.class'
+        'VoxClass', 
+        'voxine/storage/VoxStorageFactory.class'
     ], 
     function(VoxClass, VoxStorageFactory) {
 
