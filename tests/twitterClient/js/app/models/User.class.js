@@ -11,7 +11,8 @@ define([
     
     function(VoxClass, VoxObject) {
         
-        var constructor = function(id, name, email) {
+        var constructor = function(storageType, storageId, options, id, name, email) {
+            this.inherited(storageType, storageId, options);
             this.setId(id);
             this.setName(name);
             this.setEmail(email);

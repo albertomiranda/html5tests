@@ -32,8 +32,11 @@ define(
          * 
          * @author Alberto Miranda <alberto@nextive.com>
          */
-        var customCommLayer = function() {
-            this.commLayer = 'customCommLayer';
+        var customCommLayer = function(profiling) {
+            if (profiling) {
+                console.profile('VoxComm: custom layer test');
+            }
+            this.commLayer = 'custom';
             var comm = new VoxComm(this);
 
             //add mediator
@@ -42,6 +45,13 @@ define(
             comm.bind('onSuccess', function(response){
                 console.log("YEAH! There's life out there!\n" + response);
             });
+            
+            //communicate with the outside world
+            comm.send({"message": "hey!"});
+            
+            if (profiling) {
+                console.profileEnd();
+            }
         };
 
         return  {

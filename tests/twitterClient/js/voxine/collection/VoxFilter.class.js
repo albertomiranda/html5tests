@@ -48,11 +48,17 @@ define([
          * @public
          */
         var mixWith = function(model) {
-            var fn, prefix;
+            var fn, prefix, rest, functionNameSize, undefined;
+            
             for (fn in model) {
-                prefix = fn.substring(0,3);
-                if (prefix === "get" || prefix === "set") {
-                    this[fn] = model[fn];
+                functionNameSize = fn.length;
+                if (functionNameSize > 3) {
+                    prefix = fn.substring(0,3);
+                    rest = fn.substring(3, functionNameSize);
+                    rest = rest.toLowerCase();
+                    if ((prefix === "get" || prefix === "set") && this.jsonFilter[rest] !== undefined) {
+                        this[fn] = model[fn];
+                    }
                 }
             }
             this.parseFilter(this.filter);
