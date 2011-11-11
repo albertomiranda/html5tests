@@ -13,7 +13,7 @@ define([
 
         /**
          * Class Constructor.
-         * @private
+         * @public
          */
         var constructor = function(storageType, storageKey, options) {
             this.associatedCollectionKeys = [];
