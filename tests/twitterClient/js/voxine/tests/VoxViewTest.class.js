@@ -16,12 +16,12 @@ define(
          * @return string
          */
         var noTarget = function(){
-            var view = new VoxView('testView1.view.php', null, this);
+            var view = new VoxView('testView1.view.php');
 
             //add mediator
             var Mediator = new VoxMediator();
-            Mediator.mixin(this);
-            this.bind('parsed', function(output){
+            Mediator.mixin(view);
+            view.bind('parsed', function(output){
                 console.log("I HEAR YOU SAY 'parsed'!\n" + output);
             });
 
