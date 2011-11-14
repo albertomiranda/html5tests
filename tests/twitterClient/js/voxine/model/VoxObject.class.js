@@ -18,8 +18,10 @@ define([
         var constructor = function(storageType, storageKey, options) {
             this.associatedCollectionKeys = [];
             this.setStorageType(storageType);
-            this.setStorageKey(storageKey);
             this.setOptions(options);
+            this.storageKey = storageKey;
+            this.gatewayUrl = null;
+            this.commLayer = null;
             
             //Storage loaded.
             var factory = new VoxStorageFactory();
@@ -29,11 +31,11 @@ define([
             var mediator = new VoxMediator();
             mediator.mixin(this);
             
-            //update objectIds
-            if (!this.options.loadedFromStorage) {
-                ++this.statics.objectId;
-                this.setObjectId(this.statics.objectId);
-            }
+            //Object Keys.
+            ++this.statics.objectCount;
+            this.serverKey = null;
+            var now = new Date();
+            this.clientKey = this.statics.objectCount + "" + now.getFullYear() + now.getMonth() + now.getDay() + now.getTime();
         };
         
         /**
@@ -146,24 +148,6 @@ define([
         };
         
         /**
-         * Returns the object instance id
-         * @return Integer: VoxObject id.
-         * @public
-         */
-        var getObjectId = function() {
-            return this.objectId;
-        };
-        
-        /**
-         * Sets object id.
-         * @param integer: Id
-         * @public
-         */
-        var setObjectId = function(id) {
-            this.objectId = id;
-        };
-        
-        /**
          * Check if the storage is valid.
          * @private
          */
@@ -183,15 +167,6 @@ define([
          */
         var getStorageKey = function() {
             return this.storageKey;
-        };
-        
-        /**
-         * Set storage key value.
-         * @param String : Key
-         * @public
-         */
-        var setStorageKey = function(key) {
-            this.storageKey = key;
         };
         
         /**
@@ -227,7 +202,7 @@ define([
          * @public
          */
         var save = function() {
-            this.storage.save(this.getStorageKey(), this);
+            this.storage.save(this);
         };
 
         /**
@@ -235,7 +210,18 @@ define([
          * @public
          */
          var load = function() {
-            this.storage.load(this.getStorageKey());
+            var data = this.storage.load(this);
+            if (data !== null) {
+                this.associatedCollectionKeys = data['associatedCollectionKeys'] || [];
+                this.setStorageType(data['storageType']);
+                this.options = data['options'] || {};
+                this.gatewayUrl = data['gatewayUrl'] || null;
+                this.commLayer = data['commLayer'] || null;
+                this.serverKey = data['serverKey'];
+                this.clientKey = data['clientKey'];
+            } else {
+                throw "Object does not exists";
+            }
         };
 
         /**
@@ -243,7 +229,33 @@ define([
          * @public
          */
         var remove = function() {
-            this.storage.erase(this.getStorageKey());
+            this.load();
+            this.storage.erase(this);
+        };
+        
+        /**
+         * Prune method to select which properties shuould be exported.
+         * By default is setted as this. (All object will be exported).
+         * @public
+         */
+        var prune = function() {
+            return this;
+        };
+        
+        /**
+         * @Overrideable
+         * @public
+         */
+        var onSuccess = function() {
+           
+        };
+        
+        /**
+         * @Overrideable
+         * @public
+         */
+        var onError = function() {
+            
         };
         
         return VoxClass.Class(
@@ -251,7 +263,7 @@ define([
             null,
             {
                 constructor: constructor,
-                statics: {objectId : 0},
+                statics: {objectCount : 0},
                 getOptions: getOptions,
                 setOptions: setOptions,
                 getAssociatedCollectionKeys: getAssociatedCollectionKeys,
@@ -260,15 +272,15 @@ define([
                 hasCollectionAssociation: hasCollectionAssociation,
                 removeAssociation: removeAssociation,
                 removeAllAssociations: removeAllAssociations,
-                getObjectId: getObjectId,
-                setObjectId: setObjectId,
                 getStorageKey: getStorageKey,
-                setStorageKey: setStorageKey,
                 getStorageType: getStorageType,
                 setStorageType: setStorageType,
                 save: save, 
                 load: load,
-                remove: remove
+                remove: remove,
+                prune: prune,
+                onSuccess: onSuccess,
+                onError: onError
             }
         );
 });
