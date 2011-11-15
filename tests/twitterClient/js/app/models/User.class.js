@@ -4,58 +4,48 @@
  * @author Juan Arribillaga <juan.arribillaga@globant.com>
  */
 
-define([
-    'VoxClass',
-    'voxine/model/VoxObject.class'
+define(
+    [
+        'VoxClass',
+        'voxine/model/VoxObject.class'
     ], 
-    
     function(VoxClass, VoxObject) {
-        
         var constructor = function(storageType, storageId, options, id, name, email) {
             this.inherited(storageType, storageId, options);
-            this.setId(id);
-            this.setName(name);
-            this.setEmail(email);
-        };
-        
-        var setId = function(id) {
             this.id = id;
-        };
-        
-        var getId = function() {
-            return this.id;
-        };
-        
-        var setName = function(name) {
             this.name = name;
-        };
-        
-        var getName = function() {
-            return this.name;
-        };
-        
-        var setEmail = function(email) {
-            //Email could be validated using a helper.
             this.email = email;
         };
         
-        var getEmail = function() {
-            return this.email;
+        var properties = {
+            "name": null
         };
         
-        
-        return VoxClass.Class(
+        var obj = VoxClass.Class(
             'User',
             VoxObject,
             {
-                constructor: constructor,
-                setId: setId,
-                getId: getId,
-                setName: setName,
-                getName: getName,
-                setEmail: setEmail,
-                getEmail: getEmail
+                constructor: constructor
             }
         );
+            
+        /*
+        obj.prototype.__defineGetter__("name", function(){
+            return properties.name + " Rivers";
+        });
+        obj.prototype.__defineSetter__("name", function(name){
+            return properties.name = name + " Setter";
+        });
+        */
+        Object.defineProperty(obj, 'email', {
+            get: function(){
+                return 'got ' + properties.email;
+            },
+            set: function(email){
+                properties.email = 'set ' + email;
+            }
+        });
+        
+        return obj;
     }
 );
