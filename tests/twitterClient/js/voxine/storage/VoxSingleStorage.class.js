@@ -32,24 +32,24 @@ function(VoxClass, VoxStringHelper) {
 * PRIVATE----------------------------------------------------------
 */
     var save = function(object) {
-        var storageOperation = 'save';
+        var storageOperation = 'save'; //pasaría el valor directamente
         persist(
-            key(object), 
-            formatForStorage(data(object)), 
+            key(object), //pondría object.getStorageKey() directamente. @Q170
+            formatForStorage(data(object)), //pondría object.prune() directamente. @Q170
             connConfig(object, storageOperation));
     };
 
     var load = function(object) {
-        var storageOperation = 'load';
+        var storageOperation = 'load'; //pasaría el valor directamente
         recover(
-            key(object), 
+            key(object), //pondría object.getStorageKey() directamente. @Q170
             connConfig(object, storageOperation));
     };
     
     var erase = function(object){
-        var storageOperation = 'erase';
+        var storageOperation = 'erase'; //pasaría el valor directamente
         remove(
-            key(object), 
+            key(object), //pondría object.getStorageKey() directamente. @Q170
             connConfig(object, storageOperation));
     }
 
@@ -76,7 +76,7 @@ function(VoxClass, VoxStringHelper) {
     }
     
     var formatFromStorage = function(securedData){
-        var data = undefined;
+        var data = undefined; //lo mismo es var data;
         
         if(securedData !== undefined){
             var storableData = unsecure(securedData);
@@ -102,7 +102,8 @@ function(VoxClass, VoxStringHelper) {
             console.log("Error while parsing: " + e);
         }
         
-        return obj;
+        return obj; //pondría esto en la línea 100, si hubo un error
+                    //entonces devuelve un valor undefined
     };
 
     //TODO VoxSecurity.encrypt(string)
@@ -135,7 +136,7 @@ function(VoxClass, VoxStringHelper) {
  * Asinchronous response-----------------------------------------------
  */
     var connConfig = function(extendedInfo, storageOperation){
-        var processedConnConfig = undefined;
+        var processedConnConfig = undefined; //var processedConnConfig;
         
         if(extendedInfo !== undefined){
             processedConnConfig = {};
@@ -154,7 +155,7 @@ function(VoxClass, VoxStringHelper) {
     }
     
     var getWrappedCallBack = function(object, callBackName){
-        var wrappedCallBack = undefined;
+        var wrappedCallBack = undefined; //var wrappedCallBack;
         
         var callBack = object[callBackName];
         
