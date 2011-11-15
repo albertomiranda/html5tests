@@ -18,7 +18,7 @@ define([
         loader.yepnope ([
             {
                 test : Modernizr.localstorage,
-                nope : 'lib/storage_polyfill/sessionstorage.1.4'
+                nope : 'lib/polyfills/sessionstorage.1.4'
             }
         ]);
         

@@ -20,6 +20,8 @@ define([
 /**
  * PRIVATE----------------------------------------------------------
  */
+        var className = 'VoxRemoteSingleStorage';
+        
         /**
          * Class constructor.
          */
@@ -27,7 +29,7 @@ define([
         
         var constructor = function() {
             setComm();
-            enableEvents();
+            enableEvents(); //jajajaja Leoo metele el mixin de una ahí! QU170
         };
         
         var setComm = function(){
@@ -64,21 +66,21 @@ define([
  * -----------------------------------------------
  */
         var persist = function(key, securedObject, extendedInfo) {
-            console.log('Guardando "' + key + '"="' + securedObject + '"');
+            console.log(className + ': Guardando "' + key + '"="' + securedObject + '"');
             var packet = getPersistPacket(key, securedObject);
             
             sendToComm(packet, extendedInfo);
         };
         
         var recover = function(key, extendedInfo) {
-            console.log('Recuperando "' + key + '"');
+            console.log(className + ': Recuperando "' + key + '"');
             var packet = getRecoverPacket(key);
             
             sendToComm(packet, extendedInfo);
         };
                 
         var remove = function(key, extendedInfo) {
-            console.log('Eliminando "' + key + '"');
+            console.log(className + ': Eliminando "' + key + '"');
             var packet = getRemovePacket(key);
             
             sendToComm(packet, extendedInfo);
@@ -97,7 +99,7 @@ define([
         var getPersistPacket = function(key, securedObject){
             var packet;
             
-            if(child != null){
+            if(child != null){ //Este child quien sería? QU170
                 packet = child.getPersistPacket(key, securedObject);
             }else{
                 packet = getDefaultPersistPacket(key, securedObject);
@@ -160,7 +162,7 @@ define([
  * PUBLIC INTERFACE-----------------------------------------------------------
  */
         return VoxClass.Class(
-            'VoxRemoteSingleStorage',
+            className,
             null,
             {
                 constructor : constructor,

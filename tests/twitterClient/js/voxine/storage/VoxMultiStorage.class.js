@@ -15,32 +15,8 @@ function(VoxClass, VoxStringHelper) {
 /**
 * POLYMORPHISM------------------------------------------------------
 */
-    /*
-     *
-     *TODO: move responsability for creating specific storage
-     *to factory if it requires more than just calling a constructor.
-     *e.g if RemoteStorage requires to set parameters to the class
-     *
-     **/
-    
-    var child = null;
-    var getChild = function(){
-        if(child === null){
-            child = new (window[childName])();
-        }
-        
-        return child;
-    }
-    
     var className = 'VoxMultiStorage';
-    var subTypeName;
-    var childName;
-    
-    var setSubType = function(tName){
-        subTypeName = tName;
-        childName = 'Vox' + VoxStringHelper.ucfirst(tName) + className.slice(3);
-    }
-    
+
     var polymorphic = function (functionName)
     {
         var instance = getChild();
@@ -62,36 +38,41 @@ function(VoxClass, VoxStringHelper) {
 /**
 * PRIVATE----------------------------------------------------------
 */
-    var save = function(key, object) {
+    var save = function(object) {
         var i;
         var size = targets.length;
+        
         for (i = 0; i < size; ++i) {
-            targets[i].save(key, object);
+            targets[i].save(object);
         }
     };
 
-    var load = function(key) {
+    var load = function(object) {
+        var data = null;
+        
+        var i;
+        var size = targets.length;
+        
+        for (i = 0; i < size; ++i) {
+            data = targets[i].load(object);
+            
+            if(data != null){
+                break;
+            }
+        }
+        
+        return data;
     };
     
-    var erase = function(key){
+    var erase = function(object){
+        var i;
+        var size = targets.length;
+        
+        for (i = 0; i < size; ++i) {
+            targets[i].erase(object);
+        }
     }
 
-/**
- * Virtual methods----------------------------------------------------
- */
-
-    var persist = function(key, securedObject) {
-        polymorphic("persist", key, securedObject);
-    };
-
-    var recover = function(key) {
-        return polymorphic("recover", key);
-    };
-
-    var remove = function(key) {
-        polymorphic("remove", key);
-    };
-    
 /**
  * PUBLIC INTERFACE-----------------------------------------------------------
  */
@@ -104,7 +85,7 @@ function(VoxClass, VoxStringHelper) {
             load: load,
             save: save,
             erase: erase,
-            setSubType : setSubType
+            addTarget : addTarget
         }
         
         

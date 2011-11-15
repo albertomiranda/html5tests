@@ -7,11 +7,20 @@
  */
 define([
     'VoxClass',
+    'voxine/helpers/VoxStringHelper.class',
     'voxine/tools/VoxTools.class'
 ], 
-function(VoxClass) {
+function(VoxClass, VoxStringHelper) {
     
 
+    /**
+     * Class constructor.
+     */
+    var constructor = function() {
+        var Mediator = new VoxMediator();
+        Mediator.mixin(this);
+    };
+        
 /**
 * POLYMORPHISM------------------------------------------------------
 */
@@ -23,19 +32,25 @@ function(VoxClass) {
 * PRIVATE----------------------------------------------------------
 */
     var save = function(object) {
-        var storableData = serialize(data(object));
-        var securedData = secure(storableData);
-        persist(key(object), securedData, extendedInfo(object));
+        var storageOperation = 'save'; //pasaría el valor directamente
+        persist(
+            key(object), //pondría object.getStorageKey() directamente. @Q170
+            formatForStorage(data(object)), //pondría object.prune() directamente. @Q170
+            connConfig(object, storageOperation));
     };
 
     var load = function(object) {
-        var securedData = recover(key(object), extendedInfo(object));
-        var storableData = unsecure(securedData);
-        return unserialize(storableData);
+        var storageOperation = 'load'; //pasaría el valor directamente
+        recover(
+            key(object), //pondría object.getStorageKey() directamente. @Q170
+            connConfig(object, storageOperation));
     };
     
     var erase = function(object){
-        remove(key(object), extendedInfo(object));
+        var storageOperation = 'erase'; //pasaría el valor directamente
+        remove(
+            key(object), //pondría object.getStorageKey() directamente. @Q170
+            connConfig(object, storageOperation));
     }
 
 /**
@@ -49,15 +64,28 @@ function(VoxClass) {
         return object.prune();
     }
     
-    var extendedInfo = function(object){
-        return object;
-    }
-    
 
 /**
  * Data processing----------------------------------------------------
  */
 
+    var formatForStorage = function(data){
+        var storableData = serialize(data);
+        var securedData = secure(storableData);
+        return securedData;
+    }
+    
+    var formatFromStorage = function(securedData){
+        var data = undefined; //lo mismo es var data;
+        
+        if(securedData !== undefined){
+            var storableData = unsecure(securedData);
+            data = unserialize(storableData);
+        }
+        
+        return data;
+    }
+    
     var serialize = function(data) {
         var str = JSON.stringify(data);
         console.log("Serialized obj :" + str);
@@ -65,7 +93,17 @@ function(VoxClass) {
     };
 
     var unserialize = function(string) {
-        return JSON.parse(string);
+        var obj = string;
+        
+        console.log("Attemping to parse: " + string);
+        try{
+            obj = JSON.parse(string);
+        }catch(e){
+            console.log("Error while parsing: " + e);
+        }
+        
+        return obj; //pondría esto en la línea 100, si hubo un error
+                    //entonces devuelve un valor undefined
     };
 
     //TODO VoxSecurity.encrypt(string)
@@ -95,7 +133,66 @@ function(VoxClass) {
     };
     
 /**
- * PUBLIC INTERFACE-----------------------------------------------------------
+ * Asinchronous response-----------------------------------------------
+ */
+    var connConfig = function(extendedInfo, storageOperation){
+        var processedConnConfig = undefined; //var processedConnConfig;
+        
+        if(extendedInfo !== undefined){
+            processedConnConfig = {};
+            processedConnConfig.gatewayUrl = extendedInfo.gatewayUrl;
+            processedConnConfig.commLayer = extendedInfo.commLayer;
+
+            storageOperation = VoxStringHelper.ucfirst(storageOperation)
+            var successCallBackName = 'on' + storageOperation + 'Success';
+            var errorCallBackName = 'on' + storageOperation + 'Error';
+            
+            processedConnConfig.onSuccess = getWrappedCallBack(extendedInfo, successCallBackName);
+            processedConnConfig.onError = getWrappedCallBack(extendedInfo, errorCallBackName);
+        }
+        
+        return processedConnConfig;
+    }
+    
+    var getWrappedCallBack = function(object, callBackName){
+        var wrappedCallBack = undefined; //var wrappedCallBack;
+        
+        var callBack = object[callBackName];
+        
+        if(callBack === undefined){
+            console.log(callBackName + ' no definido. Pasando a manejador por defecto');
+            callBack = function(response){
+                var cbn = callBackName;
+                console.log(cbn + ' por defecto lanzado');
+                //trigger(cbn, response); //xq esto no anda??? contexto puto
+            }
+        }
+        
+        //will create a new copy of wrappedWithFormater with its own callback attribute???
+        wrappedCallBack = new wrappedWithFormater(callBack);
+        //catchedCallBack.callBack = callBack;
+        
+        return wrappedCallBack;
+    }
+    
+    var wrappedWithFormater = function(origCallBack){
+        var callBack = origCallBack;
+        
+        return function(rawResponse){
+            if(callBack !== undefined){
+                console.log("Processing raw response...");
+                var response = formatFromStorage(rawResponse);
+                console.log("Resending processed response...");
+                callBack(response);
+            }else{
+                console.log("Callback still UNdefined");
+            }
+        }
+        
+    }
+
+/**
+ * PUBLIC INTERFACE----------------------------------------------------
  */
     
     
@@ -103,6 +200,7 @@ function(VoxClass) {
         'VoxSingleStorage',
         null,
         {
+            constructor: constructor,
             load: load,
             save: save,
             erase: erase,

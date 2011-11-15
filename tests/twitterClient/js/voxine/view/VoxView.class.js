@@ -27,7 +27,7 @@ define(
          * @param string target View element where to render output
          * @param object caller Object instantiating VoxView. Used for bindings.
          */
-        var constructor = function(template, target, caller) {
+        var constructor = function(template, target) {
             console.log("NEW VoxView: TARGET: " + target);
             if (template === undefined) {
                 console.log("VIEW ERROR: NO TEMPLATE"); //TODO: implement error handling system
@@ -35,7 +35,6 @@ define(
 
             //set private properties
             private.template = template;
-            private.caller = caller;
             private.target = target;
         };
         
@@ -59,7 +58,6 @@ define(
             }
 
             var target = private.target; //we need it in the context of this function!
-            var caller = private.caller;
             var View = this;
             var viewLoaded = function(template){
                 console.log('TARGET: ' + target);
@@ -69,7 +67,6 @@ define(
                 if (target !== null && target !== void 0) {
                     console.log('+ assign to target');
                     $(target).html(output);
-                    return true;
                 }
                 
                 //theres no target, trigger event passing template to listener

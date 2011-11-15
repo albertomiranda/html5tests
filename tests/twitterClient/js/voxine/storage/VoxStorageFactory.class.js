@@ -12,13 +12,16 @@ define([
         'voxine/storage/VoxSingleStorage.class',
         'voxine/storage/VoxLocalSingleStorage.class',
         'voxine/storage/VoxSessionSingleStorage.class',
-        'voxine/storage/VoxRemoteSingleStorage.class'
+        'voxine/storage/VoxRemoteSingleStorage.class',
+        'voxine/storage/VoxMultiStorage.class'
     ], 
     function(VoxClass, VoxStringHelper) {
 
 /**
  * PRIVATE----------------------------------------------------------
  */
+        var className = 'VoxStorageFactory';
+        
         /**
          * Singleton Pattern
          * Wraps the constructor in an immediate function
@@ -76,19 +79,58 @@ define([
             return remoteStorageCached;
         };
         
+        var lsrStorageCached = null;
+        
+        var getLsrStorage = function(){
+            if(lsrStorageCached == null){
+                lsrStorageCached = new VoxMultiStorage();
+                lsrStorageCached.addTarget(getLocalStorage());
+                lsrStorageCached.addTarget(getSessionStorage());
+                lsrStorageCached.addTarget(getRemoteStorage());
+            }
+            
+            return lsrStorageCached;
+        };
+        
 /*
  *Lista de funciones a llamar para no usar switch
  *NO OLVIDARSE DE ACTUALIZAR AL AGREGAR TIPOS NUEVOS
  *
- **/    var getSpecificStorage = {
+ **/    
+        var isValidStorageType = function(functionName){
+            var res = false;
+            
+            for(var key in getSpecificStorage){
+                if(key == functionName){
+                    res = true;
+                    break;
+                }
+            }
+            
+            return res;
+        }
+        
+        //No habíamos dicho de tener la instancia del objeto
+        //almacenada en esta estructura? (QU170)
+        //Fijate que es lo mismo que mantener 4 variables
+        //de caché... las inicializas en el constructor y después
+        //ya quedan para ser usadas
+        var getSpecificStorage = {
             'getLocalStorage' : getLocalStorage,
             'getSessionStorage' : getSessionStorage,
-            'getRemoteStorage' : getRemoteStorage
+            'getRemoteStorage' : getRemoteStorage,
+            'getLsrStorage' : getLsrStorage
         }
         
         var getStorage = function(type) {
             var functionName = 'get' + VoxStringHelper.ucfirst(type) + 'Storage';
             var args = Array.prototype.slice.call(arguments).splice(1);
+            
+            if (!isValidStorageType(functionName)) {
+                var msg = className + ": Invalid Storage Type: " + type;
+                console.log(msg);
+                throw msg;
+            }
             
             return getSpecificStorage[functionName].apply(null, args);
         };
@@ -97,7 +139,7 @@ define([
  * PUBLIC INTERFACE--------------------------------------------------------------
  */
         return VoxClass.Class(
-            'VoxStorageFactory',
+            className,
             null,
             {
                 getStorage : getStorage
