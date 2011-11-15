@@ -11,6 +11,17 @@ define([
         Vox.tests = VoxTests;
         
         /**
+         * Load language-specific polyfills
+         */
+        var loader = new Polyfills();
+        loader.yepnope ([
+            {
+                test : Modernizr.defineproperty,
+                nope : 'lib/polyfills/defineproperty'
+            }
+        ]);
+        
+        /**
          * Eventually, we could handle at this point loading different
          * application versions according to some device detection
          * technique

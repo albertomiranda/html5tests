@@ -12,48 +12,22 @@ define([
     /**
      * PRIVATE METHODS AND PROPERTIES ------------------------------------------
      */
-    var private = {
-        /**
-         * On the child controller this should be defined as follows:
-         * 
-         * bindingsMap = {
-         *    "templateName": {
-         *        "elementId": {
-         *            "event": "action",
-         *            "event2": "action2"
-         *        }
-         *    },
-         *    "templateName2": {
-         *        "elementId": {
-         *            "event": "action"
-         *        },
-         *        "elementId2": {
-         *            "event": "action"
-         *        }
-         *    }
-         *  }
-         */
-        bindingsMap: {},
-    };
     
     /**
      * Attaches events to actions (callbacks) for the template.
      * 
      * @param template string
      */
-    var attachEvents = function (template) {
-        var bindings = private.bindingsMap[template];
-
+    var attachEvents = function (template, self) {
+        var bindings = self.bindingsMap[template];
+        console.log('ATTACHING EVENTS...');
         for (var key in bindings) {
             var actions = bindings[key];
             for (var event in actions) {
-                $('#'+key).bind(event, actions[event]);
+                console.log('ATTACHING ' + event + ' TO ' + key);
+                $(key).bind(event, {controller: self}, actions[event]);
             }
         };
-    };
-    
-    var setBindingsMap = function(bindingsMap) {
-        private.bindingsMap = bindingsMap;
     };
     
     /**
@@ -63,11 +37,21 @@ define([
      * @param target string
      * @param data array
      */
-    var render = function(template, target, data) {
+    var render = function(template, target, data, callback) {
         var view = new VoxView(template, target);
-        view.render(data);
         
-        attachEvents(template);
+        if (typeof callback != "undefined") {
+            var Mediator = new VoxMediator();
+            Mediator.mixin(view);
+            view.bind('parsed', callback);
+            
+            var attach = attachEvents;
+            var controller = this;
+            var temp = template;
+            view.bind('parsed', function () {attach(temp, controller);});
+        }
+        
+        view.render(data);
     };
 
     /**
@@ -77,7 +61,27 @@ define([
         'VoxController',
         null,
         {
-            bindingsMap: setBindingsMap,
-        	render: render
+            /**
+             * On the child controller this should be defined as follows:
+             * 
+             * bindingsMap = {
+             *    "templateName": {
+             *        "elementId": {
+             *            "event": "action",
+             *            "event2": "action2"
+             *        }
+             *    },
+             *    "templateName2": {
+             *        "elementId": {
+             *            "event": "action"
+             *        },
+             *        "elementId2": {
+             *            "event": "action"
+             *        }
+             *    }
+             *  }
+             */
+            bindingsMap: {},
+            render: render
         });
 });
