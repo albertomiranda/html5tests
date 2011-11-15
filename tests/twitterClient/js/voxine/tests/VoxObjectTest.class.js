@@ -10,16 +10,15 @@ define(
     function(VoxObject, VoxStorageFactory) {
         
         /**
-         * Automatic unique id creation test.
-         * @coverage: getInstance, constructor
+         * Test for client and server Keys.
+         * @coverage: constructor
          */
-        var automaticUniqueObjectId = function() {
-            
-            var instance1 = new VoxObject('session', 'AD82KLM20EFN');
-            var instance2 = new VoxObject('local', 'Asf3efdfasdf');
-            console.assert(instance1.getObjectId() === 1);
-            console.assert(instance2.getObjectId() === 2);
-            
+        var objectKeysTest = function() {
+            var instance = new VoxObject('session');
+            console.assert(Object.prototype.toString.call(instance.clientKey) == '[object String]');
+            console.assert(instance.serverKey === null);
+            instance.serverKey = 23;
+            console.assert(instance.serverKey !== null);
             console.log('%cFinished', 'color: green; font-weight:bold;');
         };
         
@@ -31,11 +30,10 @@ define(
         var optionsTests = function() {
             
             //Tests null options.
-            var testInstance = new VoxObject('local', 'key1234');
+            var testInstance = new VoxObject('local');
             console.assert(testInstance.getOptions() === Object(testInstance.getOptions()));
-            
             //Tests with options
-            testInstance = new VoxObject('session', 'key12345', {silentMode: true});
+            testInstance = new VoxObject('session', "stK", {silentMode: true});
             console.assert(testInstance.getOptions().silentMode === true);
 
             console.log('%cFinished', 'color: green; font-weight:bold;');
@@ -50,14 +48,14 @@ define(
             
             //Check invalid type exception.
             try {
-                var testInstance = new VoxObject('invalidType', 'key000', {silentMode: false});
+                var testInstance = new VoxObject('invalidType', 'stk',{silentMode: false});
             } catch(e) {
                 console.assert(e === "Invalid Storage Type");
             }
             
             //Checks type and key.
-            testInstance = new VoxObject('local', 'key1234', {silentMode: false});
-            console.assert(testInstance.getStorageKey() === 'key1234');
+            testInstance = new VoxObject('local', 'stk', {silentMode: false});
+            console.assert(testInstance.getStorageKey() === 'stk');
             console.assert(testInstance.getStorageType() === 'local');
             
             console.log('%cFinished', 'color: green; font-weight:bold;');
@@ -70,7 +68,7 @@ define(
          *            removeAllAssociations, hasCollectionAssociation
          */
         var testKeyAssociation = function() {
-            var testInstance = new VoxObject('local', 'key1234', {silentMode: false});
+            var testInstance = new VoxObject('local', {silentMode: false});
             testInstance.setCollection(['ck1', 'ck2', 'ck3']);
             
             //Test multiple key association
@@ -103,43 +101,20 @@ define(
         };
         
         /**
-         * Object storage save test.
-         * @coverage: save
-         */
-        var saveTest = function() {
-            //Local Storage
-            var testInstance = new VoxObject('local', 'key1234', {silentMode: false});
-            testInstance.save();
-            
-            //Remote Storage
-            //** TODO **
-            
-            console.log('%cFinished', 'color: green; font-weight:bold;');
-        };
-        
-        /**
          * Object storage load test.
-         * @coverage: load
+         * @coverage: load, save
          */
-        var loadTest = function() {
-            var factory = new VoxStorageFactory();
+        var loadAndSaveTest = function() {
+            var objectToBeStored, objectToBeLoaded;
+            //Save
+            objectToBeStored = new VoxObject('local', 'stk1', {silentMode: false});
+            objectToBeStored.save();
+            //Load
+            objectToBeLoaded = new VoxObject('local', 'stk1', {silentMode: false});
+            objectToBeLoaded.load();
+            console.assert(JSON.stringify(objectToBeStored) === JSON.stringify(objectToBeLoaded));
             
-            //Local Storage
-            var storage = factory.getStorage('local');
-            
-            //Existing stored object.
-            var object = storage.load("key1234");
-            object.options.loadedFromStorage = true;
-            var voxObjectInstance = new VoxObject(object.storageType, object.storageKey, object.options);
-            voxObjectInstance.setObjectId(object.objectId);
-            voxObjectInstance.setCollection(object.associatedCollectionKeys);
-            console.assert(voxObjectInstance.getStorageKey() === 'key1234');
-            
-            //Non existing stored object
-            object = storage.load("keyNonExisting");
-            console.assert(object == null);
-            
-            
+            //
             //Remote Storage
             // ** TODO **
             
@@ -152,29 +127,17 @@ define(
          * 
          */
         var removeTest = function() {
-            var factory = new VoxStorageFactory();
-            var storage = factory.getStorage('local');
-            var object = storage.load("key1234");
-            object.options.loadedFromStorage = true;
-            console.assert(object === Object(object));
-            
-            var voxObjectInstance = new VoxObject(object.storageType, object.storageKey, object.options);
-            voxObjectInstance.setObjectId(object.objectId);
-            voxObjectInstance.setCollection(object.associatedCollectionKeys);
-            voxObjectInstance.remove();
-            object = storage.load("key1234");
-            console.assert(object == null); //was removed.
-            
+            var objectToBeLoaded = new VoxObject('local', 'stk1', {silentMode: false});
+            objectToBeLoaded.remove();
             console.log('%cFinished', 'color: green; font-weight:bold;');
         };
         
         return  {
-            automaticUniqueObjectId: automaticUniqueObjectId,
+            objectKeysTest: objectKeysTest,
             optionsTests: optionsTests,
             initValues: initValues,
             testKeyAssociation: testKeyAssociation,
-            saveTest: saveTest,
-            loadTest: loadTest,
+            loadAndSaveTest: loadAndSaveTest,
             removeTest: removeTest
         };
     }

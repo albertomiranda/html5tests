@@ -30,13 +30,13 @@ define([
          * @public
          */
         var addItem = function(/* VoxObject */ object) {
-            if (this.getItem(object.getObjectId())) {
-                throw "Duplicate object. Object with Id = " + object.getObjectId() + " already exists.";
+            if (this.getItem(object.clientKey)) {
+                throw "Duplicate object. Object with Id = " + object.clientKey + " already exists.";
             }
             this.collection.push(object);
-            object.setCollection(this.getStorageKey());
+            object.setCollection(this.clientKey);
             if (!this.getOptions().silentMode && !object.getOptions().silentMode) {
-                this.trigger('collection:itemAdded', object.getStorageKey());
+                this.trigger('collection:itemAdded', object.clientKey);
             }
             return true;
         };
@@ -52,15 +52,15 @@ define([
         
         /**
          * Gives the position of an item.
-         * @param int : id
+         * @param int : key
          * @return integer or null
          * @public
          */
-        var getItemPosition = function(id) {
+        var getItemPosition = function(key) {
             var i;
             var size = this.getSize();
             for (i = 0; i < size; ++i) {
-                if (this.collection[i].getObjectId() === id) {
+                if (this.collection[i].clientKey === key) {
                     return i;
                 }
             }
@@ -73,8 +73,8 @@ define([
          * @return VoxObject: The object found, otherwise null.
          * @public
          */
-        var getItem = function(id) {
-            var position = this.getItemPosition(id);
+        var getItem = function(key) {
+            var position = this.getItemPosition(key);
             if (position !== null) {
                 return this.collection[position];
             }
@@ -87,11 +87,11 @@ define([
          * @return boolean: true if the item was removed.
          * @public
          */
-        var removeItem = function(id) {
-            var itemPosition = this.getItemPosition(id);
+        var removeItem = function(key) {
+            var itemPosition = this.getItemPosition(key);
             if (itemPosition !== null) {
-                var item = this.getItem(id);
-                var itemStorageKey = item.getStorageKey();
+                var item = this.getItem(key);
+                var itemStorageKey = item.clientKey;
                 this.collection.splice(itemPosition, 1);
                 if (!this.getOptions().silentMode && !item.getOptions().silentMode) {
                     this.trigger('collection:itemRemoved', itemStorageKey);
@@ -110,7 +110,7 @@ define([
             this.filter = null;
             //Collection silent mode.
             if (!this.getOptions().silentMode) {
-                this.trigger('collection:reseted', this.getStorageKey());
+                this.trigger('collection:reseted', this.clientKey);
             }
         };
 
@@ -127,7 +127,7 @@ define([
             var searchType = strict || false
             
             //Connection to be generated
-            filteredCollection = new VoxObjectCollection(this.getStorageType(), this.getStorageKey() + "_filter", this.getOptions(), this.filter);
+            filteredCollection = new VoxObjectCollection(this.getStorageType(), this.getStorageKey(), this.getOptions(), this.filter);
             for (i = 0; i < this.getSize(); ++i) {
                 for (method in filter) {
                     if (method.substr(0,3) === "get" && method !== "getInherited" && method !== "getJsonFilter") {
@@ -154,9 +154,10 @@ define([
         var toJSON = function() {
             return JSON.stringify({
                 storageKey: this.getStorageKey(), 
-                storageType: this.getStorageType(), 
+                storageType: this.getStorageType(),
+                clientKey: this.clientKey,
+                serverKey: this.serverKey,
                 collection: this.collection,
-                objectId: this.getObjectId(),
                 filter: this.filter,
                 options: this.getOptions()
             });

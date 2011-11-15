@@ -49,12 +49,6 @@ define(
             collection.addItem(objInstance);
             console.assert(collection.getSize() === 1);
             
-            //Test adding an existing element
-            try {
-                collection.addItem(objInstance);
-            } catch (e) {
-                console.assert(e === "Duplicate object. Object with Id = " + objInstance.getObjectId() + " already exists.");
-            }
             console.log('%cFinished', 'color: green; font-weight:bold;');
         };
         
@@ -66,7 +60,7 @@ define(
             var objInstance = new VoxObject('session', 'key5678', {silentMode: false});
             collection.addItem(objInstance);
             //Test existing item.
-            console.assert(objInstance === collection.getItem(objInstance.getObjectId()));
+            console.assert(objInstance === collection.getItem(objInstance.clientKey));
             
             //Test non existing item.
             console.assert(collection.getItem(0) === null);
@@ -83,26 +77,21 @@ define(
             var objInstance = new VoxObject('local', 'silentModeFalse', {silentMode: false});
             console.log("%cSilent Mode -> False: Add and Remove actions should be showed", "color:#0000FF; font-weight:bold;");
             collection.addItem(objInstance);
-            console.assert(collection.removeItem(objInstance.getObjectId()) === true);
+            console.assert(collection.removeItem(objInstance.clientKey) === true);
             //Silent mode true
             objInstance = new VoxObject('local', 'silentModeTrue', {silentMode: true});
             console.log("%cSilent Mode -> True: Add and Remove actions shouldn't be showed", "color:#0000FF; font-weight:bold;");
             collection.addItem(objInstance);
-            console.assert(collection.removeItem(objInstance.getObjectId()) === true);
+            console.assert(collection.removeItem(objInstance.clientKey) === true);
             
             console.log('%cFinished', 'color: green; font-weight:bold;');
         };
         
         var saveTest = function() {
-            var objInstance = new VoxObject('local', '123ABC', {silentMode: false});
-            collection.addItem(objInstance);
-            objInstance = new VoxObject('local', '456ABC', {silentMode: false});
-            collection.addItem(objInstance);
-            objInstance = new VoxObject('local', '789ABC', {silentMode: false});
-            collection.addItem(objInstance);
-            
+            collection.addItem(new VoxObject('local', 'stk', {silentMode: false}));
+            collection.addItem(new VoxObject('local', 'stk', {silentMode: false}));
+            collection.addItem(new VoxObject('local', 'stk', {silentMode: false}));
             collection.save();
-
             console.log('%cFinished', 'color: green; font-weight:bold;');
         };
         
