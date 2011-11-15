@@ -31,6 +31,7 @@ define(
         }
         
         var voxStorageTest = function() {
+            //test('nonValidType');
             test('local');
             test('session');
             test('remote');
