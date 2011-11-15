@@ -7,11 +7,20 @@
  */
 define([
     'VoxClass',
+    'voxine/helpers/VoxStringHelper.class',
     'voxine/tools/VoxTools.class'
 ], 
-function(VoxClass) {
+function(VoxClass, VoxStringHelper) {
     
 
+    /**
+     * Class constructor.
+     */
+    var constructor = function() {
+        var Mediator = new VoxMediator();
+        Mediator.mixin(this);
+    };
+        
 /**
 * POLYMORPHISM------------------------------------------------------
 */
@@ -23,15 +32,25 @@ function(VoxClass) {
 * PRIVATE----------------------------------------------------------
 */
     var save = function(object) {
-        persist(key(object), formatForStorage(data(object)), extendedInfo(object));
+        var storageOperation = 'save';
+        persist(
+            key(object), 
+            formatForStorage(data(object)), 
+            connConfig(object, storageOperation));
     };
 
     var load = function(object) {
-        recover(key(object), extendedInfo(object));
+        var storageOperation = 'load';
+        recover(
+            key(object), 
+            connConfig(object, storageOperation));
     };
     
     var erase = function(object){
-        remove(key(object), extendedInfo(object));
+        var storageOperation = 'erase';
+        remove(
+            key(object), 
+            connConfig(object, storageOperation));
     }
 
 /**
@@ -43,10 +62,6 @@ function(VoxClass) {
     
     var data = function(object){
         return object.prune();
-    }
-    
-    var extendedInfo = function(object){
-        return getExtendedInfo(object);
     }
     
 
@@ -119,34 +134,47 @@ function(VoxClass) {
 /**
  * Asinchronous response-----------------------------------------------
  */
-    var getExtendedInfo = function(extendedInfo){
-        var catchedExtendedInfo = undefined;
+    var connConfig = function(extendedInfo, storageOperation){
+        var processedConnConfig = undefined;
         
         if(extendedInfo !== undefined){
-            catchedExtendedInfo = {};
-            catchedExtendedInfo.gatewayUrl = extendedInfo.gatewayUrl;
-            catchedExtendedInfo.commLayer = extendedInfo.commLayer;
+            processedConnConfig = {};
+            processedConnConfig.gatewayUrl = extendedInfo.gatewayUrl;
+            processedConnConfig.commLayer = extendedInfo.commLayer;
 
-            catchedExtendedInfo.onSuccess = getCatchedCallBack(extendedInfo.onSuccess);
-            catchedExtendedInfo.onError = getCatchedCallBack(extendedInfo.onError);
+            storageOperation = VoxStringHelper.ucfirst(storageOperation)
+            var successCallBackName = 'on' + storageOperation + 'Success';
+            var errorCallBackName = 'on' + storageOperation + 'Error';
+            
+            processedConnConfig.onSuccess = getWrappedCallBack(extendedInfo, successCallBackName);
+            processedConnConfig.onError = getWrappedCallBack(extendedInfo, errorCallBackName);
         }
         
-        return catchedExtendedInfo;
+        return processedConnConfig;
     }
     
-    var getCatchedCallBack = function(callBack){
-        var catchedCallBack = undefined;
+    var getWrappedCallBack = function(object, callBackName){
+        var wrappedCallBack = undefined;
         
-        if(callBack !== undefined){
-        //will create a new copy of processAndCallback with its own callback attribute???
-            catchedCallBack = new processAndCallback(callBack);
-            //catchedCallBack.callBack = callBack;
+        var callBack = object[callBackName];
+        
+        if(callBack === undefined){
+            console.log(callBackName + ' no definido. Pasando a manejador por defecto');
+            callBack = function(response){
+                var cbn = callBackName;
+                console.log(cbn + ' por defecto lanzado');
+                //trigger(cbn, response); //xq esto no anda??? contexto puto
+            }
         }
         
-        return catchedCallBack;
+        //will create a new copy of wrappedWithFormater with its own callback attribute???
+        wrappedCallBack = new wrappedWithFormater(callBack);
+        //catchedCallBack.callBack = callBack;
+        
+        return wrappedCallBack;
     }
     
-    var processAndCallback = function(origCallBack){
+    var wrappedWithFormater = function(origCallBack){
         var callBack = origCallBack;
         
         return function(rawResponse){
@@ -171,6 +199,7 @@ function(VoxClass) {
         'VoxSingleStorage',
         null,
         {
+            constructor: constructor,
             load: load,
             save: save,
             erase: erase,

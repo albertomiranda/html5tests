@@ -21,11 +21,11 @@ define(
             */
             gatewayUrl: "/persistence/persistence_1.php",
             commLayer: "default",
-            onSuccess: function(response){
-                console.log("Object "+storableObject.oid+" Says: Remote Storage succeded: " 
+            onSaveSuccess: function(response){
+                console.log("Object "+storableObject.oid+" Says: Remote Save Storage succeded: " 
                     + JSON.stringify(response));},
-            onError: function(response){
-                console.log("Object "+storableObject.oid+" Says: Remote Storage error: " 
+            onLoadError: function(response){
+                console.log("Object "+storableObject.oid+" Says: Remote Load Storage error: " 
                     + JSON.stringify(response));}
             
         }
@@ -33,8 +33,8 @@ define(
         var voxStorageTest = function() {
             //test('nonValidType');
             test('local');
-            test('session');
-            test('remote');
+            //test('session');
+            //test('remote');
             //test('lsr');
         };
         
