@@ -12,6 +12,7 @@ define(
         var packet = {var1:'value 1',var2:{var21:'value 21', var22: null},var3:'value 3'};
          
         var storableObject ={
+            oid : 0,
             prune : function(){return packet;},
             getStorageKey : function(){return "veryUniqueKey";},
             
@@ -21,9 +22,11 @@ define(
             gatewayUrl: "/persistence/persistence_1.php",
             commLayer: "default",
             onSuccess: function(response){
-                console.log("Storage succeded: " + JSON.stringify(response));},
+                console.log("Object "+storableObject.oid+" Says: Remote Storage succeded: " 
+                    + JSON.stringify(response));},
             onError: function(response){
-                console.log("Storage error: " + JSON.stringify(response));}
+                console.log("Object "+storableObject.oid+" Says: Remote Storage error: " 
+                    + JSON.stringify(response));}
             
         }
         
@@ -31,18 +34,23 @@ define(
             test('local');
             test('session');
             test('remote');
+            //test('lsr');
         };
         
         var test = function(type){
             
-            console.log("-----testing storage type : " + type);
+            console.group("Testing storage type : " + type);
             var stf = new VoxStorageFactory();
             var st = stf.getStorage(type);
+            var sto = jQuery.extend(true, {}, storableObject);
+            sto.oid = sto.oid++;
+            console.log(sto);
             
-            st.save(storableObject);
-            console.log('recuperado: ' + JSON.stringify(st.load(storableObject)));
-            st.erase(storableObject);
-            console.log('recuperado: ' + JSON.stringify(st.load(storableObject)));
+            st.save(sto);
+            st.load(sto);
+            st.erase(sto);
+            st.load(sto);
+            console.groupEnd();
         }
                 
         return  {

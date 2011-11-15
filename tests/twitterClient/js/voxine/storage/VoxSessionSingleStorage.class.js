@@ -20,27 +20,34 @@ define([
 /**
  * PRIVATE----------------------------------------------------------
  */
+        var className = 'VoxSessionSingleStorage';
         
-        var persist = function(key, securedObject) {
-            console.log('Guardando "' + key + '"="' + securedObject + '"');
-            window.sessionStorage.setItem(key, securedObject);
+        var persist = function(key, securedObject, callBacks) {
+            console.log(className + ': Guardando "' + key + '"="' + securedObject + '"');
+            callBacks.onSuccess(window.sessionStorage.setItem(key, securedObject));
         };
         
-        var recover = function(key) {
-            console.log('Recuperando "' + key + '"');
-            return window.sessionStorage.getItem(key);
+        var recover = function(key, callBacks) {
+            console.log(className + ': Recuperando "' + key + '"');
+            var item = window.sessionStorage.getItem(key);
+            
+            if(item !== null){
+                callBacks.onSuccess(item);
+            }else{
+                callBacks.onError(item);
+            }
         };
                 
-        var remove = function(key) {
-            console.log('Eliminando "' + key + '"');
-            return window.sessionStorage.removeItem(key);
+        var remove = function(key, callBacks) {
+            console.log(className + ': Eliminando "' + key + '"');
+            callBacks.onSuccess(window.sessionStorage.removeItem(key));
         };
                 
 /**
  * PUBLIC INTERFACE--------------------------------------------------------------
  */
         return VoxClass.Class(
-            'VoxSessionSingleStorage',
+            className,
             null,
             {
                 persist : persist,

@@ -12,7 +12,8 @@ define([
         'voxine/storage/VoxSingleStorage.class',
         'voxine/storage/VoxLocalSingleStorage.class',
         'voxine/storage/VoxSessionSingleStorage.class',
-        'voxine/storage/VoxRemoteSingleStorage.class'
+        'voxine/storage/VoxRemoteSingleStorage.class',
+        'voxine/storage/VoxMultiStorage.class'
     ], 
     function(VoxClass, VoxStringHelper) {
 
@@ -76,6 +77,19 @@ define([
             return remoteStorageCached;
         };
         
+        var lsrStorageCached = null;
+        
+        var getLsrStorage = function(){
+            if(lsrStorageCached == null){
+                lsrStorageCached = new VoxMultiStorage();
+                lsrStorageCached.addTarget(getLocalStorage());
+                lsrStorageCached.addTarget(getSessionStorage());
+                lsrStorageCached.addTarget(getRemoteStorage());
+            }
+            
+            return lsrStorageCached;
+        };
+        
 /*
  *Lista de funciones a llamar para no usar switch
  *NO OLVIDARSE DE ACTUALIZAR AL AGREGAR TIPOS NUEVOS
@@ -83,7 +97,8 @@ define([
  **/    var getSpecificStorage = {
             'getLocalStorage' : getLocalStorage,
             'getSessionStorage' : getSessionStorage,
-            'getRemoteStorage' : getRemoteStorage
+            'getRemoteStorage' : getRemoteStorage,
+            'getLsrStorage' : getLsrStorage
         }
         
         var getStorage = function(type) {

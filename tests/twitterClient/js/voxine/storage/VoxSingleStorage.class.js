@@ -23,15 +23,11 @@ function(VoxClass) {
 * PRIVATE----------------------------------------------------------
 */
     var save = function(object) {
-        var storableData = serialize(data(object));
-        var securedData = secure(storableData);
-        persist(key(object), securedData, extendedInfo(object));
+        persist(key(object), formatForStorage(data(object)), extendedInfo(object));
     };
 
     var load = function(object) {
-        var securedData = recover(key(object), extendedInfo(object));
-        var storableData = unsecure(securedData);
-        return unserialize(storableData);
+        recover(key(object), extendedInfo(object));
     };
     
     var erase = function(object){
@@ -50,7 +46,7 @@ function(VoxClass) {
     }
     
     var extendedInfo = function(object){
-        return object;
+        return getExtendedInfo(object);
     }
     
 
@@ -58,6 +54,23 @@ function(VoxClass) {
  * Data processing----------------------------------------------------
  */
 
+    var formatForStorage = function(data){
+        var storableData = serialize(data);
+        var securedData = secure(storableData);
+        return securedData;
+    }
+    
+    var formatFromStorage = function(securedData){
+        var data = undefined;
+        
+        if(securedData !== undefined){
+            var storableData = unsecure(securedData);
+            data = unserialize(storableData);
+        }
+        
+        return data;
+    }
+    
     var serialize = function(data) {
         var str = JSON.stringify(data);
         console.log("Serialized obj :" + str);
@@ -65,7 +78,16 @@ function(VoxClass) {
     };
 
     var unserialize = function(string) {
-        return JSON.parse(string);
+        var obj = string;
+        
+        console.log("Attemping to parse: " + string);
+        try{
+            obj = JSON.parse(string);
+        }catch(e){
+            console.log("Error while parsing: " + e);
+        }
+        
+        return obj;
     };
 
     //TODO VoxSecurity.encrypt(string)
@@ -95,7 +117,53 @@ function(VoxClass) {
     };
     
 /**
- * PUBLIC INTERFACE-----------------------------------------------------------
+ * Asinchronous response-----------------------------------------------
+ */
+    var getExtendedInfo = function(extendedInfo){
+        var catchedExtendedInfo = undefined;
+        
+        if(extendedInfo !== undefined){
+            catchedExtendedInfo = {};
+            catchedExtendedInfo.gatewayUrl = extendedInfo.gatewayUrl;
+            catchedExtendedInfo.commLayer = extendedInfo.commLayer;
+
+            catchedExtendedInfo.onSuccess = getCatchedCallBack(extendedInfo.onSuccess);
+            catchedExtendedInfo.onError = getCatchedCallBack(extendedInfo.onError);
+        }
+        
+        return catchedExtendedInfo;
+    }
+    
+    var getCatchedCallBack = function(callBack){
+        var catchedCallBack = undefined;
+        
+        if(callBack !== undefined){
+        //will create a new copy of processAndCallback with its own callback attribute???
+            catchedCallBack = new processAndCallback(callBack);
+            //catchedCallBack.callBack = callBack;
+        }
+        
+        return catchedCallBack;
+    }
+    
+    var processAndCallback = function(origCallBack){
+        var callBack = origCallBack;
+        
+        return function(rawResponse){
+            if(callBack !== undefined){
+                console.log("Processing raw response...");
+                var response = formatFromStorage(rawResponse);
+                console.log("Resending processed response...");
+                callBack(response);
+            }else{
+                console.log("Callback still UNdefined");
+            }
+        }
+        
+    }
+
+/**
+ * PUBLIC INTERFACE----------------------------------------------------
  */
     
     
