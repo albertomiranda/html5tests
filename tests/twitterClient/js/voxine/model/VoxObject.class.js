@@ -8,24 +8,25 @@ define([
     ], 
     function(VoxClass, VoxStorageFactory) {
 
-        var validStorages = ["local", "session", "remote"];
-        var validStoragesCount = validStorages.length;
-
+        var private = {
+            options: {}
+        }
+        
         /**
          * Class Constructor.
          * @public
          */
         var constructor = function(storageType, storageKey, options) {
-            this.associatedCollectionKeys = [];
-            this.setStorageType(storageType);
-            this.setOptions(options);
+            this.associatedKeys = [];
+            this.storageType = storageType;
+            this.options = options;
             this.storageKey = storageKey;
             this.gatewayUrl = null;
             this.commLayer = null;
             
             //Storage loaded.
             var factory = new VoxStorageFactory();
-            this.storage = factory.getStorage(this.getStorageType());
+            this.storage = factory.getStorage(this.storageType);
             
             //add Mediator methods
             var mediator = new VoxMediator();
@@ -39,42 +40,15 @@ define([
         };
         
         /**
-         * Return object options. Ex. {silentMode: false}
-         * @public
-         * @return Object
-         */
-        var getOptions = function() {
-            return this.options;
-        };
-        
-        /**
-         * Set object options. Ex. {silentMode: false}
-         * @param Object options : {silentMode: true/false} used for event triggering.
-         * @public
-         */
-        var setOptions = function(options) {
-            this.options = options || {};
-        };
-        
-        /**
-         * If the object belongs to a collection it will return the key associated.
-         * @return String | Array if is not empty. Otherwise, null.
-         * @public
-         */
-        var getAssociatedCollectionKeys = function() {
-            return this.associatedCollectionKeys;
-        };
-        
-        /**
          * Checks if the object belongs to a collection (by key)
          * @param String: Collection Key
          * @return Boolean | Integer: Element position if exists. Otherwise false. 
          */
         var belongsToCollection = function(collectionKey) {
             var i, size;
-            size = this.associatedCollectionKeys.length;
+            size = this.associatedKeys.length;
             for (i = 0; i < size; ++i) {
-                if (this.associatedCollectionKeys[i] === collectionKey) {
+                if (this.associatedKeys[i] === collectionKey) {
                     return i;
                 }
             }
@@ -87,7 +61,7 @@ define([
          * @public
          */
         var hasCollectionAssociation = function() {
-            return this.associatedCollectionKeys.length !== 0;
+            return this.associatedKeys.length !== 0;
         };
         
         /**
@@ -101,11 +75,11 @@ define([
                  //Array ok keys received.
                  size = associatedKey.length;
                  for (i = 0; i < size; ++i) {
-                     this.associatedCollectionKeys.push(associatedKey[i]);
+                     this.associatedKeys.push(associatedKey[i]);
                  }
              } else {
                  //Received an string with a key.
-                 this.associatedCollectionKeys.push(associatedKey);
+                 this.associatedKeys.push(associatedKey);
              }
          };
          
@@ -123,7 +97,7 @@ define([
                 for (i = 0; i < size; ++i) {
                     element = this.belongsToCollection(associatedKey[i]);
                     if (Object.prototype.toString.call(element) == '[object Number]') {
-                        this.associatedCollectionKeys.splice(element, 1);
+                        this.associatedKeys.splice(element, 1);
                         elementsRemoved++;
                     }
                 }
@@ -131,7 +105,7 @@ define([
             } else {
                 element = this.belongsToCollection(associatedKey);
                 if (Object.prototype.toString.call(element) == '[object Number]') {
-                    this.associatedCollectionKeys.splice(element, 1);
+                    this.associatedKeys.splice(element, 1);
                     return true;
                 }
             }
@@ -144,57 +118,7 @@ define([
          */
         
         var removeAllAssociations = function() {
-            this.associatedCollectionKeys = [];
-        };
-        
-        /**
-         * Check if the storage is valid.
-         * @private
-         */
-        var isValidStorage = function(storageType) {
-            for (var i = 0; i < validStoragesCount; ++i) {
-                if (validStorages[i] === storageType) {
-                    return true;
-                }
-            }
-            return false;
-        };
-        
-        /**
-         * Get storage key
-         * @return String
-         * @public
-         */
-        var getStorageKey = function() {
-            return this.storageKey;
-        };
-        
-        /**
-         * Get storage type
-         * @return String
-         * @public
-         */
-        var getStorageType = function() {
-            return this.storageType;
-        };
-
-
-        /**
-         * Set storage type value
-         * @param [local | session]
-         * @public
-         */
-        var setStorageType = function(storageType) {
-            var undefined;
-            if (storageType !== undefined) {
-                var storageLowered = storageType.toLowerCase();
-                this.storageType = storageLowered;
-                if (!isValidStorage(storageLowered)) {
-                    throw "Invalid Storage Type";
-                }
-            } else {
-                throw "Invalid Storage Type";
-            }
+            this.associatedKeys = [];
         };
         
         /**
@@ -209,19 +133,8 @@ define([
          * Loads the object calling VoxStorage Class.
          * @public
          */
-         var load = function() {
-            var data = this.storage.load(this);
-            if (data !== null) {
-                this.associatedCollectionKeys = data['associatedCollectionKeys'] || [];
-                this.setStorageType(data['storageType']);
-                this.options = data['options'] || {};
-                this.gatewayUrl = data['gatewayUrl'] || null;
-                this.commLayer = data['commLayer'] || null;
-                this.serverKey = data['serverKey'];
-                this.clientKey = data['clientKey'];
-            } else {
-                throw "Object does not exists";
-            }
+        var load = function() {
+            this.storage.load(this);
         };
 
         /**
@@ -244,43 +157,63 @@ define([
         
         /**
          * @Overrideable
+         * @param response
          * @public
          */
-        var onSuccess = function() {
-           
+        var onLoadSuccess = function(response) {
+            var undefined;
+            if (response !== undefined) {
+                this.associatedKeys = response['associatedKeys'] || [];
+                this.storageType = response['storageType'];
+                this.options = response['options'] || {};
+                this.gatewayUrl = response['gatewayUrl'] || null;
+                this.commLayer = response['commLayer'] || null;
+                this.serverKey = response['serverKey'];
+                this.clientKey = response['clientKey'];
+            }
         };
         
-        /**
-         * @Overrideable
-         * @public
-         */
-        var onError = function() {
-            
-        };
-        
-        return VoxClass.Class(
+        var object = VoxClass.Class(
             'VoxObject',
             null,
             {
                 constructor: constructor,
                 statics: {objectCount : 0},
-                getOptions: getOptions,
-                setOptions: setOptions,
-                getAssociatedCollectionKeys: getAssociatedCollectionKeys,
                 belongsToCollection: belongsToCollection,
                 setCollection: setCollection,
                 hasCollectionAssociation: hasCollectionAssociation,
                 removeAssociation: removeAssociation,
                 removeAllAssociations: removeAllAssociations,
-                getStorageKey: getStorageKey,
-                getStorageType: getStorageType,
-                setStorageType: setStorageType,
                 save: save, 
                 load: load,
                 remove: remove,
                 prune: prune,
-                onSuccess: onSuccess,
-                onError: onError
+                onLoadSuccess: onLoadSuccess
             }
         );
+          
+          
+        /**
+         *  Setter for private options
+         *  @param value: options object.
+         *  For example:
+         *      Object {
+         *          silentMode: true|false
+         *      }
+         */
+        object.prototype.__defineSetter__('options', function(/* Object */ value){
+            private.options = value ||{};
+        });
+        
+        /**
+         * Getter for private options.
+         * @return Object
+         */
+        object.prototype.__defineGetter__('options', function() {
+            return private.options;
+        });
+        
+        
+        
+        return object;
 });

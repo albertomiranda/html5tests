@@ -18,7 +18,6 @@ define(
         'voxine/tests/VoxConfigTest.class',
         'voxine/tests/VoxCommTest.class',
         'voxine/tests/VoxDefaultCommTest.class',
-        'voxine/tests/VoxFilterTest.class',
         'voxine/tests/VoxStringHelperTest.class',
         'voxine/tests/UserTest.class'
     ],
@@ -33,7 +32,6 @@ define(
         VoxConfigTest,
         VoxCommTest,
         VoxDefaultCommTest,
-        VoxFilterTest,
         VoxStringHelperTest,
         UserTest
     ) {
@@ -100,7 +98,6 @@ define(
                           "VoxStorage",
                           "VoxController",
                           "VoxConfig",
-                          "VoxFilter",
                           "VoxStringHelper"
                           ]);
         }
@@ -116,7 +113,6 @@ define(
             VoxConfig: VoxConfigTest,
             VoxComm: VoxCommTest,
             VoxDefaultComm: VoxDefaultCommTest,
-            VoxFilter: VoxFilterTest,
             VoxStringHelper: VoxStringHelperTest,
             UserTest: UserTest
         };

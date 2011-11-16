@@ -4,24 +4,22 @@
  */
 define(
     [
-        'voxine/model/VoxObject.class',
-        'voxine/storage/VoxStorageFactory.class'
+        'voxine/model/VoxObject.class'
     ],
-    function(VoxObject, VoxStorageFactory) {
+    function(VoxObject) {
         
         /**
          * Test for client and server Keys.
          * @coverage: constructor
          */
         var objectKeysTest = function() {
-            var instance = new VoxObject('session');
+            var instance = new VoxObject('session', 'ss', {silentMode: false});
             console.assert(Object.prototype.toString.call(instance.clientKey) == '[object String]');
             console.assert(instance.serverKey === null);
             instance.serverKey = 23;
             console.assert(instance.serverKey !== null);
             console.log('%cFinished', 'color: green; font-weight:bold;');
         };
-        
         
         /**
          * Testing options for the class.
@@ -31,17 +29,17 @@ define(
             
             //Tests null options.
             var testInstance = new VoxObject('local');
-            console.assert(testInstance.getOptions() === Object(testInstance.getOptions()));
+            console.assert(testInstance.options === Object(testInstance.options));
             //Tests with options
             testInstance = new VoxObject('session', "stK", {silentMode: true});
-            console.assert(testInstance.getOptions().silentMode === true);
+            console.assert(testInstance.options.silentMode === true);
 
             console.log('%cFinished', 'color: green; font-weight:bold;');
         };
         
         /**
-         * Testing init values.
-         * @coverage: getStorageKey, getStorageType, constructor validation.
+         * Testing init values.getSt
+         * @coverage: constructor validation.
          * 
          */
         var initValues = function() {
@@ -50,13 +48,13 @@ define(
             try {
                 var testInstance = new VoxObject('invalidType', 'stk',{silentMode: false});
             } catch(e) {
-                console.assert(e === "Invalid Storage Type");
+                console.assert(e === "VoxStorageFactory: Invalid Storage Type: invalidType");
             }
             
             //Checks type and key.
             testInstance = new VoxObject('local', 'stk', {silentMode: false});
-            console.assert(testInstance.getStorageKey() === 'stk');
-            console.assert(testInstance.getStorageType() === 'local');
+            console.assert(testInstance.storageKey === 'stk');
+            console.assert(testInstance.storageType === 'local');
             
             console.log('%cFinished', 'color: green; font-weight:bold;');
         };
@@ -72,11 +70,11 @@ define(
             testInstance.setCollection(['ck1', 'ck2', 'ck3']);
             
             //Test multiple key association
-            console.assert(testInstance.getAssociatedCollectionKeys().length === 3);
+            console.assert(testInstance.associatedKeys.length === 3);
             
             //Test single key association
             testInstance.setCollection('ck4');
-            console.assert(testInstance.getAssociatedCollectionKeys().length === 4);
+            console.assert(testInstance.associatedKeys.length === 4);
             
             //Belongs to collection
             console.assert(testInstance.belongsToCollection("ck3") === 2);
@@ -108,11 +106,14 @@ define(
             var objectToBeStored, objectToBeLoaded;
             //Save
             objectToBeStored = new VoxObject('local', 'stk1', {silentMode: false});
+            console.log(objectToBeStored.clientKey, "1");
             objectToBeStored.save();
+            console.log(objectToBeStored.clientKey, "2");
             //Load
             objectToBeLoaded = new VoxObject('local', 'stk1', {silentMode: false});
+            console.log(objectToBeLoaded.clientKey, "3");
             objectToBeLoaded.load();
-            console.assert(JSON.stringify(objectToBeStored) === JSON.stringify(objectToBeLoaded));
+            console.log(objectToBeLoaded.clientKey, "4");
             
             //
             //Remote Storage
