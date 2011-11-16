@@ -33,20 +33,20 @@ function(VoxClass, VoxStringHelper) {
 */
     var save = function(object) {
         persist(
-            key(object), //pondría object.getStorageKey() directamente. @Q170
-            formatForStorage(data(object)), //pondría object.prune() directamente. @Q170
+            object.storageKey,
+            formatForStorage(object.prune()), 
             connConfig(object, 'save'));
     };
 
     var load = function(object) {
         recover(
-            key(object), //pondría object.getStorageKey() directamente. @Q170
+            object.storageKey,
             connConfig(object, 'load'));
     };
     
     var erase = function(object){
         remove(
-            key(object), //pondría object.getStorageKey() directamente. @Q170
+            object.storageKey,
             connConfig(object, 'erase'));
     }
 
@@ -101,6 +101,7 @@ function(VoxClass, VoxStringHelper) {
         
         return obj; //pondría esto en la línea 100, si hubo un error
                     //entonces devuelve un valor undefined
+                    //LB: prefiero q devuelva el string sin procesar aunque sea
     };
 
     //TODO VoxSecurity.encrypt(string)
