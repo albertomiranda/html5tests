@@ -19,7 +19,8 @@ define(
         'voxine/tests/VoxCommTest.class',
         'voxine/tests/VoxDefaultCommTest.class',
         'voxine/tests/VoxFilterTest.class',
-        'voxine/tests/VoxStringHelperTest.class'
+        'voxine/tests/VoxStringHelperTest.class',
+        'voxine/tests/UserTest.class'
     ],
     function (
         $,
@@ -33,7 +34,8 @@ define(
         VoxCommTest,
         VoxDefaultCommTest,
         VoxFilterTest,
-        VoxStringHelperTest
+        VoxStringHelperTest,
+        UserTest
     ) {
         
         /**
@@ -115,7 +117,8 @@ define(
             VoxComm: VoxCommTest,
             VoxDefaultComm: VoxDefaultCommTest,
             VoxFilter: VoxFilterTest,
-            VoxStringHelper: VoxStringHelperTest
+            VoxStringHelper: VoxStringHelperTest,
+            UserTest: UserTest
         };
     }
 );

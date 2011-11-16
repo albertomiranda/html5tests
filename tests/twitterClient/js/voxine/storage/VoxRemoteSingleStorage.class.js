@@ -29,7 +29,7 @@ define([
         
         var constructor = function() {
             setComm();
-            enableEvents();
+            enableEvents(); //jajajaja Leoo metele el mixin de una ahí! QU170
         };
         
         var setComm = function(){
@@ -99,7 +99,7 @@ define([
         var getPersistPacket = function(key, securedObject){
             var packet;
             
-            if(child != null){
+            if(child != null){ //Este child quien sería? QU170
                 packet = child.getPersistPacket(key, securedObject);
             }else{
                 packet = getDefaultPersistPacket(key, securedObject);

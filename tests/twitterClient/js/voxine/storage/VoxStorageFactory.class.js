@@ -110,6 +110,11 @@ define([
             return res;
         }
         
+        //No habíamos dicho de tener la instancia del objeto
+        //almacenada en esta estructura? (QU170)
+        //Fijate que es lo mismo que mantener 4 variables
+        //de caché... las inicializas en el constructor y después
+        //ya quedan para ser usadas
         var getSpecificStorage = {
             'getLocalStorage' : getLocalStorage,
             'getSessionStorage' : getSessionStorage,
