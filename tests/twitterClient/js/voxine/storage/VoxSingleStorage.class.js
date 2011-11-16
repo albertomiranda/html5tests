@@ -32,25 +32,22 @@ function(VoxClass, VoxStringHelper) {
 * PRIVATE----------------------------------------------------------
 */
     var save = function(object) {
-        var storageOperation = 'save'; //pasaría el valor directamente
         persist(
             key(object), //pondría object.getStorageKey() directamente. @Q170
             formatForStorage(data(object)), //pondría object.prune() directamente. @Q170
-            connConfig(object, storageOperation));
+            connConfig(object, 'save'));
     };
 
     var load = function(object) {
-        var storageOperation = 'load'; //pasaría el valor directamente
         recover(
             key(object), //pondría object.getStorageKey() directamente. @Q170
-            connConfig(object, storageOperation));
+            connConfig(object, 'load'));
     };
     
     var erase = function(object){
-        var storageOperation = 'erase'; //pasaría el valor directamente
         remove(
             key(object), //pondría object.getStorageKey() directamente. @Q170
-            connConfig(object, storageOperation));
+            connConfig(object, 'erase'));
     }
 
 /**
@@ -76,7 +73,7 @@ function(VoxClass, VoxStringHelper) {
     }
     
     var formatFromStorage = function(securedData){
-        var data = undefined; //lo mismo es var data;
+        var data;
         
         if(securedData !== undefined){
             var storableData = unsecure(securedData);
@@ -140,7 +137,7 @@ function(VoxClass, VoxStringHelper) {
      * wrapped callbacks based on storage operation
      */
     var connConfig = function(extendedInfo, storageOperation){
-        var processedConnConfig = undefined; //var processedConnConfig;
+        var processedConnConfig;
         
         if(extendedInfo !== undefined){
             processedConnConfig = {};
@@ -163,7 +160,7 @@ function(VoxClass, VoxStringHelper) {
      * a wrapped version
      */
     var getWrappedCallBack = function(object, callBackName){
-        var wrappedCallBack = undefined; //var wrappedCallBack;
+        var wrappedCallBack;
         
         var callBack = object[callBackName];
         
