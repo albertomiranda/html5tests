@@ -32,25 +32,22 @@ function(VoxClass, VoxStringHelper) {
 * PRIVATE----------------------------------------------------------
 */
     var save = function(object) {
-        var storageOperation = 'save'; //pasaría el valor directamente
         persist(
-            key(object), //pondría object.getStorageKey() directamente. @Q170
-            formatForStorage(data(object)), //pondría object.prune() directamente. @Q170
-            connConfig(object, storageOperation));
+            object.storageKey,
+            formatForStorage(object.prune()), 
+            connConfig(object, 'save'));
     };
 
     var load = function(object) {
-        var storageOperation = 'load'; //pasaría el valor directamente
         recover(
-            key(object), //pondría object.getStorageKey() directamente. @Q170
-            connConfig(object, storageOperation));
+            object.storageKey,
+            connConfig(object, 'load'));
     };
     
     var erase = function(object){
-        var storageOperation = 'erase'; //pasaría el valor directamente
         remove(
-            key(object), //pondría object.getStorageKey() directamente. @Q170
-            connConfig(object, storageOperation));
+            object.storageKey,
+            connConfig(object, 'erase'));
     }
 
 /**
@@ -76,7 +73,7 @@ function(VoxClass, VoxStringHelper) {
     }
     
     var formatFromStorage = function(securedData){
-        var data = undefined; //lo mismo es var data;
+        var data;
         
         if(securedData !== undefined){
             var storableData = unsecure(securedData);
@@ -104,6 +101,7 @@ function(VoxClass, VoxStringHelper) {
         
         return obj; //pondría esto en la línea 100, si hubo un error
                     //entonces devuelve un valor undefined
+                    //LB: prefiero q devuelva el string sin procesar aunque sea
     };
 
     //TODO VoxSecurity.encrypt(string)
@@ -135,8 +133,12 @@ function(VoxClass, VoxStringHelper) {
 /**
  * Asinchronous response-----------------------------------------------
  */
+    /*
+     * Returns an object that contains conn info and
+     * wrapped callbacks based on storage operation
+     */
     var connConfig = function(extendedInfo, storageOperation){
-        var processedConnConfig = undefined; //var processedConnConfig;
+        var processedConnConfig;
         
         if(extendedInfo !== undefined){
             processedConnConfig = {};
@@ -154,8 +156,12 @@ function(VoxClass, VoxStringHelper) {
         return processedConnConfig;
     }
     
+    /*
+     * Looks for a callback function on the object and returns
+     * a wrapped version
+     */
     var getWrappedCallBack = function(object, callBackName){
-        var wrappedCallBack = undefined; //var wrappedCallBack;
+        var wrappedCallBack;
         
         var callBack = object[callBackName];
         
@@ -166,6 +172,8 @@ function(VoxClass, VoxStringHelper) {
                 console.log(cbn + ' por defecto lanzado');
                 //trigger(cbn, response); //xq esto no anda??? contexto puto
             }
+        }else{
+            console.log(callBackName + ' encontrado');
         }
         
         //will create a new copy of wrappedWithFormater with its own callback attribute???
@@ -175,6 +183,10 @@ function(VoxClass, VoxStringHelper) {
         return wrappedCallBack;
     }
     
+    /*
+     * Wraps the callback so it catches the response, formats it 
+     * and then calls the orignal callback with the formated data
+     */
     var wrappedWithFormater = function(origCallBack){
         var callBack = origCallBack;
         

@@ -24,7 +24,7 @@ define(
             onSaveSuccess: function(response){
                 console.log("Object "+storableObject.oid+" Says: Remote Save Storage succeded: " 
                     + JSON.stringify(response));},
-            onLoadError: function(response){
+            onLoadSuccess: function(response){
                 console.log("Object "+storableObject.oid+" Says: Remote Load Storage error: " 
                     + JSON.stringify(response));}
             
@@ -32,9 +32,9 @@ define(
         
         var voxStorageTest = function() {
             //test('nonValidType');
-            test('local');
+            //test('local');
             //test('session');
-            //test('remote');
+            test('remote');
             //test('lsr');
         };
         
@@ -45,7 +45,7 @@ define(
             var st = stf.getStorage(type);
             var sto = jQuery.extend(true, {}, storableObject);
             sto.oid = sto.oid++;
-            console.log(sto);
+            //console.log(sto);
             
             st.save(sto);
             st.load(sto);
