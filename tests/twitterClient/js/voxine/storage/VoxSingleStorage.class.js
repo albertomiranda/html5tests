@@ -134,6 +134,10 @@ function(VoxClass, VoxStringHelper) {
 /**
  * Asinchronous response-----------------------------------------------
  */
+    /*
+     * Returns an object that contains conn info and
+     * wrapped callbacks based on storage operation
+     */
     var connConfig = function(extendedInfo, storageOperation){
         var processedConnConfig = undefined;
         
@@ -153,6 +157,10 @@ function(VoxClass, VoxStringHelper) {
         return processedConnConfig;
     }
     
+    /*
+     * Looks for a callback function on the object and returns
+     * a wrapped version
+     */
     var getWrappedCallBack = function(object, callBackName){
         var wrappedCallBack = undefined;
         
@@ -165,6 +173,8 @@ function(VoxClass, VoxStringHelper) {
                 console.log(cbn + ' por defecto lanzado');
                 //trigger(cbn, response); //xq esto no anda??? contexto puto
             }
+        }else{
+            console.log(callBackName + ' encontrado');
         }
         
         //will create a new copy of wrappedWithFormater with its own callback attribute???
@@ -174,6 +184,10 @@ function(VoxClass, VoxStringHelper) {
         return wrappedCallBack;
     }
     
+    /*
+     * Wraps the callback so it catches the response, formats it 
+     * and then calls the orignal callback with the formated data
+     */
     var wrappedWithFormater = function(origCallBack){
         var callBack = origCallBack;
         
