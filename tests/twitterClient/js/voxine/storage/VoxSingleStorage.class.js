@@ -23,6 +23,7 @@ function(VoxClass, VoxStringHelper) {
         Mediator.mixin(this);
         console.log('Constructed ' + className);
         console.log(this);
+        return this;
     };
         
 /**
@@ -30,7 +31,7 @@ function(VoxClass, VoxStringHelper) {
 */
     
     var child = null;
-    var setChild = function(chld){child = chld;}
+    var setChild = function(chld){child = chld; return this;}
         
 /**
 * PRIVATE----------------------------------------------------------
