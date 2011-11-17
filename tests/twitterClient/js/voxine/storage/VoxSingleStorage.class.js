@@ -11,14 +11,17 @@ define([
     'voxine/tools/VoxTools.class'
 ], 
 function(VoxClass, VoxStringHelper) {
-    
 
+    var className = 'VoxSingleStorage';
+    
     /**
      * Class constructor.
      */
     var constructor = function() {
         var Mediator = new VoxMediator();
         Mediator.mixin(this);
+        console.log('Constructed ' + className);
+        console.log(this);
     };
         
 /**
@@ -167,7 +170,7 @@ function(VoxClass, VoxStringHelper) {
         
         if(callBack === undefined){
             console.log(callBackName + ' no definido. Pasando a manejador por defecto');
-            callBack = new defaultCallback(callBackName);
+            //callBack = new defaultCallback(callBackName);
         }else{
             console.log(callBackName + ' encontrado');
         }
@@ -203,6 +206,7 @@ function(VoxClass, VoxStringHelper) {
         var cbn = callBackName;
         return function(response){
             console.log(cbn + ' por defecto lanzado');
+            console.log(this);
             trigger(cbn, response); //xq esto no anda??? contexto puto
         }
     }
@@ -213,7 +217,7 @@ function(VoxClass, VoxStringHelper) {
     
     
     return VoxClass.Class(
-        'VoxSingleStorage',
+        className,
         null,
         {
             constructor: constructor,
