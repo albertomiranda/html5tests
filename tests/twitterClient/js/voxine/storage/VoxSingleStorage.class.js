@@ -167,11 +167,7 @@ function(VoxClass, VoxStringHelper) {
         
         if(callBack === undefined){
             console.log(callBackName + ' no definido. Pasando a manejador por defecto');
-            callBack = function(response){
-                var cbn = callBackName;
-                console.log(cbn + ' por defecto lanzado');
-                //trigger(cbn, response); //xq esto no anda??? contexto puto
-            }
+            callBack = new defaultCallback(callBackName);
         }else{
             console.log(callBackName + ' encontrado');
         }
@@ -201,6 +197,14 @@ function(VoxClass, VoxStringHelper) {
             }
         }
         
+    }
+    
+    var defaultCallback = function(callBackName){
+        var cbn = callBackName;
+        return function(response){
+            console.log(cbn + ' por defecto lanzado');
+            trigger(cbn, response); //xq esto no anda??? contexto puto
+        }
     }
 
 /**

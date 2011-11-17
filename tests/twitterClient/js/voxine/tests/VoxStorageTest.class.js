@@ -14,7 +14,7 @@ define(
         var storableObject ={
             oid : 0,
             prune : function(){return packet;},
-            getStorageKey : function(){return "veryUniqueKey";},
+            storageKey : "veryUniqueKey",
             
             /* Remote Storage config, maybe it could be returned as
             a separate object thorough getRemoteConfig() or something like that
