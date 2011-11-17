@@ -48,7 +48,7 @@ define(
             try {
                 var testInstance = new VoxObject('invalidType', 'stk',{silentMode: false});
             } catch(e) {
-                console.assert(e === "VoxStorageFactory: Invalid Storage Type: invalidType");
+                console.assert(e === "VoxStorageFactory : Invalid Storage Type: invalidType");
             }
             
             //Checks type and key.
