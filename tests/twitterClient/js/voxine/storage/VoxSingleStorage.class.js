@@ -8,7 +8,8 @@
 define([
     'VoxClass',
     'voxine/helpers/VoxStringHelper.class',
-    'voxine/tools/VoxTools.class'
+    'voxine/tools/VoxTools.class',
+    'voxine/storage/VoxStorageCallbackProxy.class'
 ], 
 function(VoxClass, VoxStringHelper) {
 
@@ -170,36 +171,14 @@ function(VoxClass, VoxStringHelper) {
         
         if(callBack === undefined){
             console.log(callBackName + ' no definido. Pasando a manejador por defecto');
-            //callBack = new defaultCallback(callBackName);
+            callBack = new defaultCallback(callBackName);
         }else{
             console.log(callBackName + ' encontrado');
         }
         
-        //will create a new copy of wrappedWithFormater with its own callback attribute???
-        wrappedCallBack = new wrappedWithFormater(callBack);
-        //catchedCallBack.callBack = callBack;
+        wrappedCallBack = new VoxStorageCallbackProxy(callBack, formatFromStorage).proxy;
         
         return wrappedCallBack;
-    }
-    
-    /*
-     * Wraps the callback so it catches the response, formats it 
-     * and then calls the orignal callback with the formated data
-     */
-    var wrappedWithFormater = function(origCallBack){
-        var callBack = origCallBack;
-        
-        return function(rawResponse){
-            if(callBack !== undefined){
-                console.log("Processing raw response...");
-                var response = formatFromStorage(rawResponse);
-                console.log("Resending processed response...");
-                callBack(response);
-            }else{
-                console.log("Callback still UNdefined");
-            }
-        }
-        
     }
     
     var defaultCallback = function(callBackName){
