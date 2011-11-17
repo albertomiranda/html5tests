@@ -54,7 +54,7 @@ function(VoxClass, VoxStringHelper) {
  * Data Extraction----------------------------------------------------
  */
     var key = function(object){
-        return object.getStorageKey();
+        return object.storageKey;
     }
     
     var data = function(object){

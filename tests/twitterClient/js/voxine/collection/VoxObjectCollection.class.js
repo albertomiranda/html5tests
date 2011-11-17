@@ -19,6 +19,7 @@ define([
          * @public
          */
         var constructor = function(storageType, storageKey, options, filter) {
+            this.inherited(storageType, storageKey, options);
             this.filter = filter;
             this.collection = [];
         };
@@ -35,19 +36,10 @@ define([
             }
             this.collection.push(object);
             object.setCollection(this.clientKey);
-            if (!this.getOptions().silentMode && !object.getOptions().silentMode) {
+            if (!this.options.silentMode && !object.options.silentMode) {
                 this.trigger('collection:itemAdded', object.clientKey);
             }
             return true;
-        };
-        
-        /**
-         * Returns collection size
-         * @return Integer
-         * @public
-         */
-        var getSize = function() {
-            return this.collection.length;
         };
         
         /**
@@ -58,7 +50,7 @@ define([
          */
         var getItemPosition = function(key) {
             var i;
-            var size = this.getSize();
+            var size = this.size;
             for (i = 0; i < size; ++i) {
                 if (this.collection[i].clientKey === key) {
                     return i;
@@ -93,7 +85,7 @@ define([
                 var item = this.getItem(key);
                 var itemStorageKey = item.clientKey;
                 this.collection.splice(itemPosition, 1);
-                if (!this.getOptions().silentMode && !item.getOptions().silentMode) {
+                if (!this.options.silentMode && !item.options.silentMode) {
                     this.trigger('collection:itemRemoved', itemStorageKey);
                 }
                 return true;
@@ -109,38 +101,37 @@ define([
             this.collection = [];
             this.filter = null;
             //Collection silent mode.
-            if (!this.getOptions().silentMode) {
+            if (!this.options.silentMode) {
                 this.trigger('collection:reseted', this.clientKey);
             }
         };
 
         /**
          * Filters the object collection returning a new collection filtered.
-         * @param VoxFilter filter
+         * @param Object filter : filter components must be named as VoxObject properties.
          * @param Boolean: if strict, will be search with equalTo method, otherwise contain.
          * @return VoxObjectCollection filteredCollection.
          * @public
          */
-        var filterBy = function(/* VoxFilter */ filter, strict) {
-            var method, filteredCollection, i;
+        var filterBy = function(filter, strict) {
+            var prop, filteredCollection, i;
             var searching = true;
-            var searchType = strict || false
+            var strictSearch = strict || false
             
             //Connection to be generated
-            filteredCollection = new VoxObjectCollection(this.getStorageType(), this.getStorageKey(), this.getOptions(), this.filter);
-            for (i = 0; i < this.getSize(); ++i) {
-                for (method in filter) {
-                    if (method.substr(0,3) === "get" && method !== "getInherited" && method !== "getJsonFilter") {
-                            if (!searchType) {
-                                searching = searching && VoxStringHelper.contain(filter[method](), this.collection[i][method]());
-                            } else {
-                                searching = searching && VoxStringHelper.equalTo(filter[method](), this.collection[i][method]());
-                            }
-                            
-                            if (!searching) {
-                                //No matching method found, continues with next item.
-                                break;
-                            }
+            filteredCollection = new VoxObjectCollection(this.storageType, this.storageKey, this.options, this.filter);
+            for (i = 0; i < this.size; ++i) {
+                
+                for (prop in filter) {
+                    if (!strictSearch) {
+                        searching = searching && VoxStringHelper.contain(filter[prop], this.collection[i][prop]);
+                    } else {
+                        searching = searching && VoxStringHelper.equalTo(filter[prop], this.collection[i][prop]);
+                    }
+
+                    if (!searching) {
+                        //No matching method found, continues with next item.
+                        break;
                     }
                 }
                 if (searching) {
@@ -151,24 +142,30 @@ define([
             return filteredCollection
         };
         
+        /**
+         * Stringify can not be recursive. If the stringify method sees an 
+         * object that contains a toJSON method, it calls that method, and 
+         * stringifies the value returned. This allows an object to determine 
+         * its own JSON representation.
+         * @return String: Object strigified.
+         */
         var toJSON = function() {
             return JSON.stringify({
-                storageKey: this.getStorageKey(), 
-                storageType: this.getStorageType(),
+                storageKey: this.storageKey, 
+                storageType: this.storageType,
                 clientKey: this.clientKey,
                 serverKey: this.serverKey,
                 collection: this.collection,
                 filter: this.filter,
-                options: this.getOptions()
+                options: this.options
             });
         }
         
-        return VoxClass.Class(
+        var object = VoxClass.Class(
             'VoxObjectCollection',
             VoxObject,
             {
                 constructor: constructor,
-                getSize: getSize,
                 addItem: addItem,
                 getItem: getItem,
                 getItemPosition: getItemPosition,
@@ -178,4 +175,20 @@ define([
                 toJSON: toJSON
             }
         );
+        
+        /**
+         * Getter to return the size of the entire collection.
+         * It is considered special because we can do the following:
+         *    var collection = new VoxObjectCollection(...);
+         *    console.log(collection.size)
+         * instead of
+         *    var collection = new VoxObjectCollection(...);
+         *    var size = collection.collection.length;
+         *    console.log(size);
+         */
+        object.prototype.__defineGetter__('size', function(){
+            return this.collection.length;
+        });
+        
+        return object;
 });

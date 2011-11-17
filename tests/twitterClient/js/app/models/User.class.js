@@ -39,7 +39,7 @@ define(
         */
         Object.defineProperty(obj, 'email', {
             get: function(){
-                return 'got ' + properties.email;
+                return properties.email;
             },
             set: function(email){
                 properties.email = 'set ' + email;

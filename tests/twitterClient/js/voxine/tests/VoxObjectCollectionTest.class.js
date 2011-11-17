@@ -6,11 +6,10 @@
 define(
     [
         'voxine/collection/VoxObjectCollection.class',
-        'app/models/filter/UserFilter.class',
         'voxine/model/VoxObject.class',
         'app/models/User.class'
     ],
-    function(VoxObjectCollection, UserFilter, VoxObject, UserModel) {
+    function(VoxObjectCollection, VoxObject, UserModel) {
         
         var collection;
         
@@ -19,10 +18,9 @@ define(
          * @coverage: constructor, getOptions, setOptions, getSize
          */
         var createNewCollection = function() {
-            var filter = new UserFilter({id:"1", name: "Test", email:"youremail@mailify.com"});
-            collection = new VoxObjectCollection('local', 'StKey123', {silentMode: false}, filter);
-            console.assert(collection.getOptions().silentMode === false);
-            console.assert(collection.getSize() === 0);
+            collection = new VoxObjectCollection('local', 'StKey123', {silentMode: false}, {name: 'Juan'});
+            console.assert(collection.options.silentMode === false);
+            console.assert(collection.size === 0);
             console.log('%cFinished', 'color: green; font-weight:bold;');
         };
         
@@ -47,7 +45,7 @@ define(
             var objInstance = new VoxObject('local', 'key1234', {silentMode: false});
             //Test adding a new element.
             collection.addItem(objInstance);
-            console.assert(collection.getSize() === 1);
+            console.assert(collection.size === 1);
             
             console.log('%cFinished', 'color: green; font-weight:bold;');
         };
@@ -105,10 +103,10 @@ define(
             
             console.log("%cSilent Mode -> False: Reset event should be showed", "color:#0000FF; font-weight:bold;");
             collection.reset();
-            console.assert(collection.getSize() === 0);
+            console.assert(collection.size === 0);
             
             console.log("%cSilent Mode -> False: Reset event should be showed", "color:#0000FF; font-weight:bold;");
-            clonedCollection.setOptions({silentMode: true});
+            clonedCollection.options = {silentMode: true};
             clonedCollection.reset();
             
             console.log('%cFinished', 'color: green; font-weight:bold;');
@@ -122,16 +120,15 @@ define(
             var filter = {
                 name: 'Ju'
             };
-            var myFilter = new UserFilter(filter);
-            collection.setOptions({silentMode: true});
+            collection.options = {silentMode: true};
             collection.reset();
             collection.addItem(new UserModel('local', 'stum1', {silentMode: true}, 1, "Juan Arribillaga", "juan.arribillaga@globant.com"));
             collection.addItem(new UserModel('local', 'stum2', {silentMode: true}, 2, "Ricardo Rojaiju", "ricky@nob.com"));
             collection.addItem(new UserModel('local', 'stum3', {silentMode: true}, 3, "Rolando Schiavi", "rolo@bocajuniors.com.ar"));
-            var filteredCollection = collection.filterBy(myFilter);
-            console.assert(filteredCollection.getSize() === 2);
-            filteredCollection = collection.filterBy(myFilter, true);
-            console.assert(filteredCollection.getSize() === 0);
+            var filteredCollection = collection.filterBy(filter);
+            console.assert(filteredCollection.size === 2);
+            filteredCollection = collection.filterBy({name: 'Ju', email: 'zulma@lobato.com'}, true);
+            console.assert(filteredCollection.size === 0);
             console.log('%cFinished', 'color: green; font-weight:bold;');
         }
         
