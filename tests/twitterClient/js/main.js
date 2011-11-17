@@ -26,12 +26,14 @@ require.config({
 require(
     [
      	'app',
+        'voxine/tests/VoxTests.class',
      	"order!lib/jquery/1.6.4/jquery-min",
      	"order!lib/jquery-mobile/1.0rc2/jquery-mobile-min"
     ], 
-    function(App) {
+    function(App, VoxTests) {
         var app = new App();
         app.initialize();
+        VoxTests.runTest(['VoxObject', 'VoxObjectCollection']);
     }
 );
 //------------------------------------------------------------------------------

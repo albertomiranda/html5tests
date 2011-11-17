@@ -152,64 +152,22 @@ function(VoxClass, VoxStringHelper) {
             var successCallBackName = 'on' + storageOperation + 'Success';
             var errorCallBackName = 'on' + storageOperation + 'Error';
             
-            processedConnConfig.onSuccess = getWrappedCallBack(extendedInfo, successCallBackName);
-            processedConnConfig.onError = getWrappedCallBack(extendedInfo, errorCallBackName);
+            processedConnConfig.onSuccess = extendedInfo[successCallBackName] ? extendedInfo[successCallBackName] : defaultCallback(successCallBackName);
+            processedConnConfig.onError = extendedInfo[errorCallBackName] ? extendedInfo[errorCallBackName] : defaultCallback(successCallBackName);
         }
-        
         return processedConnConfig;
     }
     
-    /*
-     * Looks for a callback function on the object and returns
-     * a wrapped version
+    /**
+     * Muestro la idea con este metodo pero la logica se cambiaria.
+     * @JuanO
      */
-    var getWrappedCallBack = function(object, callBackName){
-        var wrappedCallBack;
-        
-        var callBack = object[callBackName];
-        
-        if(callBack === undefined){
-            console.log(callBackName + ' no definido. Pasando a manejador por defecto');
-            //callBack = new defaultCallback(callBackName);
-        }else{
-            console.log(callBackName + ' encontrado');
-        }
-        
-        //will create a new copy of wrappedWithFormater with its own callback attribute???
-        wrappedCallBack = new wrappedWithFormater(callBack);
-        //catchedCallBack.callBack = callBack;
-        
-        return wrappedCallBack;
-    }
-    
-    /*
-     * Wraps the callback so it catches the response, formats it 
-     * and then calls the orignal callback with the formated data
-     */
-    var wrappedWithFormater = function(origCallBack){
-        var callBack = origCallBack;
-        
-        return function(rawResponse){
-            if(callBack !== undefined){
-                console.log("Processing raw response...");
-                var response = formatFromStorage(rawResponse);
-                console.log("Resending processed response...");
-                callBack(response);
-            }else{
-                console.log("Callback still UNdefined");
-            }
-        }
-        
-    }
-    
-    var defaultCallback = function(callBackName){
-        var cbn = callBackName;
-        return function(response){
-            console.log(cbn + ' por defecto lanzado');
-            console.log(this);
-            trigger(cbn, response); //xq esto no anda??? contexto puto
-        }
-    }
+    var defaultCallback = function(callbackName) {
+        console.info(callbackName + " has not been defined yet.");
+        return function() {
+            //empty!
+        };
+    };
 
 /**
  * PUBLIC INTERFACE----------------------------------------------------
