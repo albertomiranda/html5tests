@@ -14,18 +14,15 @@ define(
          * @author Alberto Miranda <alberto@nextive.com>
          */
         var basic = function(){
-            var comm = new VoxComm;
-
-            //add mediator
-            var Mediator = new VoxMediator();
-            Mediator.mixin(comm);
-            comm.bind('onSuccess', function(response){
-                console.log("YEAH! There's life out there!\n" + response);
-            });
-            
-            //communicate with the outside world
+            //instantiate and communicate with the outside world
+            var comm = new VoxComm(this);
             comm.send({"message": "hey!"});
         };
+        
+        var onSuccess = function(data){
+            console.log('VoxComm.onSuccess:');
+            console.log(data);
+        }
         
         /**
          * Custom Comm layer test.
@@ -56,7 +53,8 @@ define(
 
         return  {
             basic: basic,
-            customCommLayer: customCommLayer
+            customCommLayer: customCommLayer,
+            onSuccess: onSuccess
         };
     }
 );

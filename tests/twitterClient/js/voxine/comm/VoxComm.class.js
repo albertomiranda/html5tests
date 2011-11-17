@@ -20,7 +20,7 @@ define([
         var private = {
             commLayer: "Default",
             gatewayUrl: "",
-            callbacks : {}
+            caller: null
         };
         
         //----------------------------------------------------------------------
@@ -45,27 +45,7 @@ define([
         var loadConfig = function(caller){
             private.commLayer = getCommLayer(caller);
             private.gatewayUrl = getGatewayUrl(caller);
-            
-            setCallbacks(caller);
-        };
-        
-        /**
-         * 
-         */
-        var setCallbacks = function(caller){
-            var callbacks = private.callbacks;
-            
-            if (caller !== undefined && caller.onSuccess !== undefined) {
-                callbacks.onSuccess = caller.onSuccess;
-            }else{
-                callbacks.onSuccess = onSuccess;
-            }; 
-                
-            if (caller !== undefined && caller.onError !== undefined) {
-                callbacks.onError = caller.onError;
-            }else{
-                callbacks.onError = onError;
-            };       
+            private.caller = caller;
         };
         
         /**
@@ -140,7 +120,7 @@ define([
                 function(VoxCommLayer) {
                     console.log("USING COMM LAYER: " + private.commLayer);
                     var comm = new VoxCommLayer(config);
-                    comm.send(data, private.callbacks);
+                    comm.send(data, private.caller);
                 }
             );
         };
