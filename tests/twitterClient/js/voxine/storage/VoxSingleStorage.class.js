@@ -9,7 +9,7 @@ define([
     'VoxClass',
     'voxine/helpers/VoxStringHelper.class',
     'voxine/tools/VoxTools.class',
-    'voxine/storage/VoxStorageCallbackProxy.class'
+    //'voxine/storage/VoxStorageCallbackProxy.class'
 ], 
 function(VoxClass, VoxStringHelper) {
 
