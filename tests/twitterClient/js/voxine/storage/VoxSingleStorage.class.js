@@ -9,7 +9,7 @@ define([
     'VoxClass',
     'voxine/helpers/VoxStringHelper.class',
     'voxine/tools/VoxTools.class',
-    'voxine/storage/VoxStorageCallbackProxy.class'
+    //'voxine/storage/VoxStorageCallbackProxy.class'
 ], 
 function(VoxClass, VoxStringHelper) {
 
@@ -24,6 +24,7 @@ function(VoxClass, VoxStringHelper) {
         
         console.log('Constructed ' + className);
         console.log(this);
+        return this;
     };
         
 /**
@@ -31,7 +32,7 @@ function(VoxClass, VoxStringHelper) {
 */
     
     var child = null;
-    var setChild = function(chld){child = chld;}
+    var setChild = function(chld){child = chld; return this;}
         
 /**
 * PRIVATE----------------------------------------------------------

@@ -8,7 +8,6 @@
 define([    
         'VoxClass',
         'voxine/helpers/VoxStringHelper.class',
-        'Modernizr',
         'voxine/storage/VoxSingleStorage.class',
         'voxine/storage/VoxLocalSingleStorage.class',
         'voxine/storage/VoxSessionSingleStorage.class',
@@ -17,10 +16,9 @@ define([
     ], 
     function(VoxClass, VoxStringHelper) {
 
-/**
- * PRIVATE----------------------------------------------------------
- */
-        var className = 'VoxStorageFactory';
+        /**
+         * PRIVATE----------------------------------------------------------
+         */
         
         /**
          * Singleton Pattern
@@ -33,115 +31,46 @@ define([
             var instance;
             
             constructor = function constructor() {
-                
                 if (instance) {
                     return instance;
                 };
                 
                 instance = this;
             
-            }      
-        }());
+                storageTypes = {};
+                storageTypes['local'] = new VoxSingleStorage().setChild(new VoxLocalSingleStorage());
+                storageTypes['session'] = new VoxSingleStorage().setChild(new VoxSessionSingleStorage());
+                storageTypes['remote'] = new VoxSingleStorage().setChild(new VoxRemoteSingleStorage());
+                storageTypes['lsr'] = new VoxMultiStorage();
+                storageTypes['lsr'].addTarget(storageTypes['local']);
+                storageTypes['lsr'].addTarget(storageTypes['session']);
+                storageTypes['lsr'].addTarget(storageTypes['remote']);
+            };      
+        }()); 
         
-        var localStorageCached = null;
-        
-        var getLocalStorage = function(){
-            if(localStorageCached == null){
-                localStorageCached = new VoxSingleStorage();
-                var child = new VoxLocalSingleStorage();
-                localStorageCached.setChild(child);
-            }
-            
-            return localStorageCached;
+        //
+        var isValidStorageType = function(type){
+            return storageTypes.hasOwnProperty(type);
         };
-        
-        var sessionStorageCached = null;
-        
-        var getSessionStorage = function(){
-            if(sessionStorageCached == null){
-                sessionStorageCached = new VoxSingleStorage();
-                var child = new VoxSessionSingleStorage();
-                sessionStorageCached.setChild(child);
-            }
-            
-            return sessionStorageCached;
-        };
-        
-        var remoteStorageCached = null;
-        
-        var getRemoteStorage = function(){
-            if(remoteStorageCached == null){
-                remoteStorageCached = new VoxSingleStorage();
-                var child = new VoxRemoteSingleStorage();
-                remoteStorageCached.setChild(child);
-            }
-            
-            return remoteStorageCached;
-        };
-        
-        var lsrStorageCached = null;
-        
-        var getLsrStorage = function(){
-            if(lsrStorageCached == null){
-                lsrStorageCached = new VoxMultiStorage();
-                lsrStorageCached.addTarget(getLocalStorage());
-                lsrStorageCached.addTarget(getSessionStorage());
-                lsrStorageCached.addTarget(getRemoteStorage());
-            }
-            
-            return lsrStorageCached;
-        };
-        
-/*
- *Lista de funciones a llamar para no usar switch
- *NO OLVIDARSE DE ACTUALIZAR AL AGREGAR TIPOS NUEVOS
- *
- **/    
-        var isValidStorageType = function(functionName){
-            var res = false;
-            
-            for(var key in getSpecificStorage){
-                if(key == functionName){
-                    res = true;
-                    break;
-                }
-            }
-            
-            return res;
-        }
-        
-        //No habíamos dicho de tener la instancia del objeto
-        //almacenada en esta estructura? (QU170)
-        //Fijate que es lo mismo que mantener 4 variables
-        //de caché... las inicializas en el constructor y después
-        //ya quedan para ser usadas
-        var getSpecificStorage = {
-            'getLocalStorage' : getLocalStorage,
-            'getSessionStorage' : getSessionStorage,
-            'getRemoteStorage' : getRemoteStorage,
-            'getLsrStorage' : getLsrStorage
-        }
         
         var getStorage = function(type) {
-            var functionName = 'get' + VoxStringHelper.ucfirst(type) + 'Storage';
-            var args = Array.prototype.slice.call(arguments).splice(1);
-            
-            if (!isValidStorageType(functionName)) {
-                var msg = className + ": Invalid Storage Type: " + type;
+            if (!isValidStorageType(type)) {
+                var msg = "VoxStorageFactory : Invalid Storage Type: " + type;
                 console.log(msg);
                 throw msg;
             }
             
-            return getSpecificStorage[functionName].apply(null, args);
+            return storageTypes[type];
         };
                         
 /**
  * PUBLIC INTERFACE--------------------------------------------------------------
  */
         return VoxClass.Class(
-            className,
+            'VoxStorageFactory',
             null,
             {
+                constructor : constructor,
                 getStorage : getStorage
             }
         );
