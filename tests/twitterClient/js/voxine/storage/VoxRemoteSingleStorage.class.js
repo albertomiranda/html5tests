@@ -161,6 +161,11 @@ define([
 /**
  * PUBLIC INTERFACE-----------------------------------------------------------
  */
+        
+        var toString = function(){
+            return className;
+        }
+                
         return VoxClass.Class(
             className,
             null,
@@ -169,7 +174,8 @@ define([
                 setChild : setChild,
                 persist : persist,
                 recover : recover,
-                remove: remove
+                remove: remove,
+                toString : toString
             }
         );
 		

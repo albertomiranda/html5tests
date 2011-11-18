@@ -195,8 +195,7 @@ function(VoxClass, VoxStringHelper) {
             constructor: constructor,
             load: load,
             save: save,
-            erase: erase,
-            setChild : setChild
+            erase: erase
         }
         
         

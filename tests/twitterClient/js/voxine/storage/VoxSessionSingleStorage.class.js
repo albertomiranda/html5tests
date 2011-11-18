@@ -46,13 +46,18 @@ define([
 /**
  * PUBLIC INTERFACE--------------------------------------------------------------
  */
+        var toString = function(){
+            return className;
+        }
+                
         return VoxClass.Class(
             className,
             null,
             {
                 persist : persist,
                 recover : recover,
-                remove: remove
+                remove: remove,
+                toString : toString
             }
         );
 		
