@@ -21,6 +21,7 @@ function(VoxClass, VoxStringHelper) {
     var constructor = function() {
         var Mediator = new VoxMediator();
         Mediator.mixin(this);
+        
         console.log('Constructed ' + className);
         console.log(this);
     };

@@ -29,7 +29,9 @@ define([
         
         var constructor = function() {
             setComm();
-            enableEvents(); //jajajaja Leoo metele el mixin de una ahí! QU170
+            
+            var Mediator = new VoxMediator();
+            Mediator.mixin(this);;
         };
         
         var setComm = function(){
@@ -41,11 +43,7 @@ define([
             comm.bind('onSuccess', commSuccess);
             comm.bind('onError', commError);
         }
-        
-        var enableEvents = function(){
-            var Mediator = new VoxMediator();
-            Mediator.mixin(this);
-        }
+
         
 /**
  * Event-----------------------------------------------
@@ -100,6 +98,8 @@ define([
             var packet;
             
             if(child != null){ //Este child quien sería? QU170
+                                //Por si quremos enchufar una clase q genere packetes
+                                //p un storage especifico (memcached, vixen, etc)
                 packet = child.getPersistPacket(key, securedObject);
             }else{
                 packet = getDefaultPersistPacket(key, securedObject);

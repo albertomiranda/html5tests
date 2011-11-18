@@ -17,7 +17,7 @@ define(
             storageKey : "veryUniqueKey",
             
             /* Remote Storage config, maybe it could be returned as
-            a separate object thorough getRemoteConfig() or something like that
+            a separate object through getRemoteConfig() or something like that
             */
             gatewayUrl: "/persistence/persistence_1.php",
             commLayer: "default",
