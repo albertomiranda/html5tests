@@ -22,8 +22,6 @@ function(VoxClass, VoxStringHelper) {
         var Mediator = new VoxMediator();
         Mediator.mixin(this);
         
-        console.log('Constructed ' + className);
-        console.log(this);
         return this;
     };
         
@@ -167,8 +165,7 @@ function(VoxClass, VoxStringHelper) {
      * a wrapped version
      */
     var getWrappedCallBack = function(object, callBackName){
-        var wrappedCallBack;
-        
+       
         var callBack = object[callBackName];
         
         if(callBack === undefined){
@@ -178,7 +175,7 @@ function(VoxClass, VoxStringHelper) {
             console.log(callBackName + ' encontrado');
         }
         
-        wrappedCallBack = new VoxStorageCallbackProxy(callBack, formatFromStorage).proxy;
+        var wrappedCallBack = new VoxStorageCallbackProxy(callBack, formatFromStorage).proxy;
         
         return wrappedCallBack;
     }
@@ -188,7 +185,7 @@ function(VoxClass, VoxStringHelper) {
         return function(response){
             console.log(cbn + ' por defecto lanzado');
             console.log(this);
-            trigger(cbn, response); //xq esto no anda??? contexto puto
+            //trigger(cbn, response); //xq esto no anda??? contexto puto
         }
     }
 

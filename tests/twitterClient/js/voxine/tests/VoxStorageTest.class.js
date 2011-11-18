@@ -32,9 +32,9 @@ define(
         
         var voxStorageTest = function() {
             //test('nonValidType');
-            //test('local');
+            test('local');
             //test('session');
-            test('remote');
+            //test('remote');
             //test('lsr');
         };
         
