@@ -39,9 +39,9 @@ define([
                 instance = this;
             
                 storageTypes = {};
-                storageTypes['local'] = new VoxSingleStorage().setChild(new VoxLocalSingleStorage());
-                storageTypes['session'] = new VoxSingleStorage().setChild(new VoxSessionSingleStorage());
-                storageTypes['remote'] = new VoxSingleStorage().setChild(new VoxRemoteSingleStorage());
+                storageTypes['local'] = new VoxSingleStorage(new VoxLocalSingleStorage());
+                storageTypes['session'] = new VoxSingleStorage(new VoxSessionSingleStorage());
+                storageTypes['remote'] = new VoxSingleStorage(new VoxRemoteSingleStorage());
                 storageTypes['lsr'] = new VoxMultiStorage();
                 storageTypes['lsr'].addTarget(storageTypes['local']);
                 storageTypes['lsr'].addTarget(storageTypes['session']);

@@ -14,24 +14,18 @@ define([
 function(VoxClass, VoxStringHelper) {
 
     var className = 'VoxSingleStorage';
+    var child = null;
     
     /**
      * Class constructor.
      */
-    var constructor = function() {
+    var constructor = function(concreteStorage) {
         var Mediator = new VoxMediator();
         Mediator.mixin(this);
         
-        return this;
+        child = concreteStorage;
     };
-        
-/**
-* POLYMORPHISM------------------------------------------------------
-*/
-    
-    var child = null;
-    var setChild = function(chld){child = chld; return this;}
-        
+     
 /**
 * PRIVATE----------------------------------------------------------
 */
