@@ -7,18 +7,19 @@
  */
 define([    
         'VoxClass',
-        'voxine/helpers/VoxStringHelper.class',
         'voxine/storage/VoxSingleStorage.class',
         'voxine/storage/VoxLocalSingleStorage.class',
         'voxine/storage/VoxSessionSingleStorage.class',
         'voxine/storage/VoxRemoteSingleStorage.class',
         'voxine/storage/VoxMultiStorage.class'
     ], 
-    function(VoxClass, VoxStringHelper) {
+    function(VoxClass) {
 
         /**
          * PRIVATE----------------------------------------------------------
          */
+        
+        var storageTypes;
         
         /**
          * Singleton Pattern
