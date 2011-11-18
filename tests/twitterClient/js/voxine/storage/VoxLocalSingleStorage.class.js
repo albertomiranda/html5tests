@@ -42,17 +42,21 @@ define([
             console.log(className + ': Eliminando "' + key + '"');
             callBacks.onSuccess(window.localStorage.removeItem(key));
         };
-                
 /**
  * PUBLIC INTERFACE--------------------------------------------------------------
  */
+        var toString = function(){
+            return className;
+        }
+                
         return VoxClass.Class(
             className,
             null,
             {
                 persist : persist,
                 recover : recover,
-                remove: remove
+                remove : remove,
+                toString : toString
             }
         );
 		

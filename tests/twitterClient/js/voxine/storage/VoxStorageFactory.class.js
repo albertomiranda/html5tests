@@ -37,7 +37,20 @@ define([
                 };
                 
                 instance = this;
-            
+                
+                /* cuando lo resuelva lo saco
+                
+                var a = new VoxSingleStorage();
+                a.setChild(new VoxLocalSingleStorage());
+                
+                var b = new VoxSingleStorage();
+                b.setChild(new VoxSessionSingleStorage());
+                
+                console.log(a.toString());
+                console.log(b.toString());
+                
+                debugger;
+*/
                 storageTypes = {};
                 storageTypes['local'] = new VoxSingleStorage().setChild(new VoxLocalSingleStorage());
                 storageTypes['session'] = new VoxSingleStorage().setChild(new VoxSessionSingleStorage());
@@ -55,10 +68,14 @@ define([
         };
         
         var getStorage = function(type) {
+            var msg = "VoxStorageFactory : Invalid Storage Type: " + type;
+            
             if (!isValidStorageType(type)) {
-                var msg = "VoxStorageFactory : Invalid Storage Type: " + type;
                 console.log(msg);
                 throw msg;
+            }else{
+                msg = storageTypes[type].toString();
+                console.log(msg);
             }
             
             return storageTypes[type];

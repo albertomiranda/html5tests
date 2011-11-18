@@ -22,7 +22,7 @@ function(VoxClass, VoxStringHelper) {
         var Mediator = new VoxMediator();
         Mediator.mixin(this);
         
-        return this;
+        //return this;
     };
         
 /**
@@ -30,7 +30,7 @@ function(VoxClass, VoxStringHelper) {
 */
     
     var child = null;
-    var setChild = function(chld){child = chld; return this;}
+    var setChild = function(chld){child = chld;return this;}
         
 /**
 * PRIVATE----------------------------------------------------------
@@ -188,11 +188,13 @@ function(VoxClass, VoxStringHelper) {
             //trigger(cbn, response); //xq esto no anda??? contexto puto
         }
     }
-
 /**
  * PUBLIC INTERFACE----------------------------------------------------
  */
     
+    var toString = function(){
+        return 'I am ' + className + ' ( ' + child.toString() + ' )';
+    }
     
     return VoxClass.Class(
         className,
@@ -202,7 +204,8 @@ function(VoxClass, VoxStringHelper) {
             load: load,
             save: save,
             erase: erase,
-            setChild : setChild
+            setChild : setChild,
+            toString : toString
         }
         
         
