@@ -14,67 +14,57 @@ define([
 function(VoxClass, VoxStringHelper) {
 
     var className = 'VoxSingleStorage';
-    var child = null;
     
     /**
      * Class constructor.
      */
     var constructor = function(concreteStorage) {
+        this.child = concreteStorage;
+        
         var Mediator = new VoxMediator();
         Mediator.mixin(this);
-        
-        child = concreteStorage;
     };
      
 /**
 * PRIVATE----------------------------------------------------------
 */
     var save = function(object) {
-        persist(
+        this.child.persist(
             object.storageKey,
             formatForStorage(object.prune()), 
-            connConfig(object, 'save'));
+            connConfig(object, 'save')
+        );
     };
 
     var load = function(object) {
-        recover(
+        this.child.recover(
             object.storageKey,
-            connConfig(object, 'load'));
+            connConfig(object, 'load')
+        );
     };
     
     var erase = function(object){
-        remove(
+        this.child.remove(
             object.storageKey,
-            connConfig(object, 'erase'));
-    }
-
-/**
- * Data Extraction----------------------------------------------------
- */
-    var key = function(object){
-        return object.storageKey;
-    }
+            connConfig(object, 'erase')
+        );
+    };
     
-    var data = function(object){
-        return object.prune();
-    }
-    
-
 /**
  * Data processing----------------------------------------------------
  */
 
     var formatForStorage = function(data){
         var storableData = serialize(data);
-        var securedData = secure(storableData);
-        return securedData;
+        //var securedData = secure(storableData);
+        return storableData;
     }
     
     var formatFromStorage = function(securedData){
         var data;
         
         if(securedData !== undefined){
-            var storableData = unsecure(securedData);
+            //var storableData = unsecure(securedData);
             data = unserialize(storableData);
         }
         
@@ -100,32 +90,6 @@ function(VoxClass, VoxStringHelper) {
         return obj; //pondría esto en la línea 100, si hubo un error
                     //entonces devuelve un valor undefined
                     //LB: prefiero q devuelva el string sin procesar aunque sea
-    };
-
-    //TODO VoxSecurity.encrypt(string)
-    var secure = function(object) {
-        return object;
-    };
-
-    //TODO VoxSecurity.decrypt(string)
-    var unsecure = function(object) {
-        return object;
-    };
-
-/**
- * Virtual methods----------------------------------------------------
- */
-
-    var persist = function(key, securedData, extendedInfo) {
-        return child.persist(key, securedData, extendedInfo);
-    };
-
-    var recover = function(key, extendedInfo) {
-        return child.recover(key, extendedInfo);
-    };
-
-    var remove = function(key, extendedInfo) {
-        return child.remove(key, extendedInfo);
     };
     
 /**
