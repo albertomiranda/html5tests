@@ -14,8 +14,7 @@ define([
 * POLYMORPHISM------------------------------------------------------
 */
     
-    var child = null;
-    var setChild = function(chld){child = chld;}
+    var setChild = function(chld){this.child = chld;}
         
 /**
  * PRIVATE----------------------------------------------------------
@@ -97,10 +96,10 @@ define([
         var getPersistPacket = function(key, securedObject){
             var packet;
             
-            if(child != null){ //Este child quien sería? QU170
+            if(this.child != null){ //Este child quien sería? QU170
                                 //Por si quremos enchufar una clase q genere packetes
                                 //p un storage especifico (memcached, vixen, etc)
-                packet = child.getPersistPacket(key, securedObject);
+                packet = this.child.getPersistPacket(key, securedObject);
             }else{
                 packet = getDefaultPersistPacket(key, securedObject);
             }
@@ -111,8 +110,8 @@ define([
         var getRecoverPacket = function(key){
             var packet;
             
-            if(child != null){
-                packet = child.getRecoverPacket(key);
+            if(this.child != null){
+                packet = this.child.getRecoverPacket(key);
             }else{
                 packet = getDefaultRecoverPacket(key);
             }
@@ -123,8 +122,8 @@ define([
         var getRemovePacket = function(key){
             var packet;
             
-            if(child != null){
-                packet = child.getRemovePacket(key);
+            if(this.child != null){
+                packet = this.child.getRemovePacket(key);
             }else{
                 packet = getDefaultRemovePacket(key);
             }

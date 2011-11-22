@@ -5,7 +5,8 @@
  */
 define(
     [
-        'voxine/storage/VoxStorageFactory.class'
+        'voxine/storage/VoxStorageFactory.class',
+        'voxine/model/VoxObject.class'
     ],
     function() {
         
@@ -20,43 +21,47 @@ define(
             a separate object through getRemoteConfig() or something like that
             */
             gatewayUrl: "/persistence/persistence_1.php",
-            commLayer: "default",
-            onSaveSuccess: function(response){
+            commLayer: "default"
+/*            
+          ,onSaveSuccess: function(response){
                 console.log("Object "+storableObject.oid+" Says: Remote Save Storage succeded: " 
                     + JSON.stringify(response));},
             onLoadSuccess: function(response){
                 console.log("Object "+storableObject.oid+" Says: Remote Load Storage succeded: " 
                     + JSON.stringify(response));}
-            
+*/            
         }
         
         var voxStorageTest = function() {
             //test('nonValidType');
             test('local');
-            //test('session');
-            //test('remote');
+            test('session');
+            test('remote');
             //test('lsr');
         };
         
         var test = function(type){
-            
             console.group("Testing storage type : " + type);
             var stf = new VoxStorageFactory();
             var st = stf.getStorage(type);
             
+            st.bind('onSaveSuccess', function(response){
+                console.log('onSaveSuccess por defecto recibio: ' + JSON.stringify(response));
+                st.load(storableObject)});
+            
+            st.bind('onLoadSuccess', function(response){
+                console.log('onLoadSuccess por defecto recibio: ' + JSON.stringify(response));
+                st.erase(storableObject)});
+            
             st.bind('onEraseSuccess', function(response){
-                console.log('onEraseSuccess por defecto recibio: ' + response);});
+                console.log('onEraseSuccess por defecto recibio: ' + JSON.stringify(response));
+                });
             
-            var sto = jQuery.extend(true, {}, storableObject);
-            sto.oid = sto.oid++;
-            //console.log(sto);
+            st.save(storableObject);
             
-            st.save(sto);
-            st.load(sto);
-            st.erase(sto);
-            st.load(sto);
             console.groupEnd();
         }
+        
                 
         return  {
             voxStorageTest: voxStorageTest

@@ -21,15 +21,22 @@ define([
  * PRIVATE----------------------------------------------------------
  */
         var className = 'VoxSessionSingleStorage';
+        var storage = window.sessionStorage;
         
         var persist = function(key, securedObject, callBacks) {
             console.log(className + ': Guardando "' + key + '"="' + securedObject + '"');
-            callBacks.onSuccess(window.sessionStorage.setItem(key, securedObject));
+            
+            var response = storage.setItem(key, securedObject);
+            if(response === undefined){
+                response = key;
+            }
+            
+            callBacks.onSuccess(response);
         };
         
         var recover = function(key, callBacks) {
             console.log(className + ': Recuperando "' + key + '"');
-            var item = window.sessionStorage.getItem(key);
+            var item = storage.getItem(key);
             
             if(item !== null){
                 callBacks.onSuccess(item);
@@ -40,7 +47,13 @@ define([
                 
         var remove = function(key, callBacks) {
             console.log(className + ': Eliminando "' + key + '"');
-            callBacks.onSuccess(window.sessionStorage.removeItem(key));
+            
+            var response = storage.removeItem(key);
+            if(response === undefined){
+                response = key;
+            }
+            
+            callBacks.onSuccess(response);
         };
                 
 /**

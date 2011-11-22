@@ -13,25 +13,29 @@ function(VoxClass) {
 
     var className = 'VoxStorageCallbackProxy';
     
-    var originalCallback;
-    var dataFormater;
     /**
      * Class constructor.
      */
     var constructor = function(origCallback, formater) {
-        originalCallback = origCallback;
-        dataFormater = formater;
+        this.originalCallback = origCallback;
+        this.dataFormater = formater;
+
     };
     
-    var proxy = function(rawResponse){
-        if(originalCallback !== undefined){
-            console.log("Processing raw response...");
-            var response = dataFormater(rawResponse);
-            
-            console.log("Resending processed response...");
-            originalCallback(response);
-        }else{
-            console.log("Callback still UNdefined");
+    var getProxy = function(){
+        var context = this;//cacheo para q no pierda contexto
+        return function(rawResponse){
+            if(context.originalCallback !== undefined){
+                console.log("Processing raw response...");
+                var response = context.dataFormater(rawResponse);
+
+                console.log("Resending processed response...");
+                context.originalCallback(response);
+            }else{
+                console.log("Callback still UNdefined on:");
+                console.log(this);
+                console.log(context);
+            }
         }
     }
         
@@ -46,7 +50,7 @@ function(VoxClass) {
         null,
         {
             constructor: constructor,
-            proxy : proxy
+            getProxy : getProxy
         }
         
         

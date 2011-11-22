@@ -32,21 +32,21 @@ function(VoxClass, VoxStringHelper) {
         this.child.persist(
             object.storageKey,
             formatForStorage(object.prune()), 
-            connConfig(object, 'save')
+            connConfig.apply(this, [object, 'save'])
         );
     };
 
     var load = function(object) {
         this.child.recover(
             object.storageKey,
-            connConfig(object, 'load')
+            connConfig.apply(this, [object, 'load'])
         );
     };
     
     var erase = function(object){
         this.child.remove(
             object.storageKey,
-            connConfig(object, 'erase')
+            connConfig.apply(this, [object, 'erase'])
         );
     };
     
@@ -56,18 +56,11 @@ function(VoxClass, VoxStringHelper) {
 
     var formatForStorage = function(data){
         var storableData = serialize(data);
-        //var securedData = secure(storableData);
         return storableData;
     }
     
-    var formatFromStorage = function(securedData){
-        var data;
-        
-        if(securedData !== undefined){
-            //var storableData = unsecure(securedData);
-            data = unserialize(storableData);
-        }
-        
+    var formatFromStorage = function(storableData){
+        var data = unserialize(storableData);
         return data;
     }
     
@@ -104,6 +97,7 @@ function(VoxClass, VoxStringHelper) {
         
         if(extendedInfo !== undefined){
             processedConnConfig = {};
+            processedConnConfig.toString = function(){return 'processedConnConfig';};
             processedConnConfig.gatewayUrl = extendedInfo.gatewayUrl;
             processedConnConfig.commLayer = extendedInfo.commLayer;
 
@@ -111,8 +105,10 @@ function(VoxClass, VoxStringHelper) {
             var successCallBackName = 'on' + storageOperation + 'Success';
             var errorCallBackName = 'on' + storageOperation + 'Error';
             
-            processedConnConfig.onSuccess = getWrappedCallBack(extendedInfo, successCallBackName);
-            processedConnConfig.onError = getWrappedCallBack(extendedInfo, errorCallBackName);
+            processedConnConfig.onSuccess = 
+                getWrappedCallBack.apply(this, [extendedInfo, successCallBackName]);
+            processedConnConfig.onError = 
+                getWrappedCallBack.apply(this, [extendedInfo, errorCallBackName]);
         }
         
         return processedConnConfig;
@@ -123,34 +119,50 @@ function(VoxClass, VoxStringHelper) {
      * a wrapped version
      */
     var getWrappedCallBack = function(object, callBackName){
-       
-        var callBack = object[callBackName];
-        
-        if(callBack === undefined){
-            console.log(callBackName + ' no definido. Pasando a manejador por defecto');
-            callBack = new defaultCallback(callBackName);
-        }else{
-            console.log(callBackName + ' encontrado');
-        }
-        
-        var wrappedCallBack = new VoxStorageCallbackProxy(callBack, formatFromStorage).proxy;
+        var callBack = 
+            getCallBackOrDefault.apply(this, [object, callBackName]);
+        var wrappedCallBack = 
+            new VoxStorageCallbackProxy(callBack, formatFromStorage).getProxy();
         
         return wrappedCallBack;
     }
     
-    var defaultCallback = function(callBackName){
+    var getCallBackOrDefault = function(object, callBackName){
+        var foundCallBack = object[callBackName];
+       
+        if(foundCallBack === undefined){
+            console.log(callBackName + ' no definido. Pasando a manejador por defecto');
+            foundCallBack = getDefaultCallback.apply(this, [callBackName]);
+        }else{
+            console.log(callBackName + ' encontrado');
+        }
+        
+        return foundCallBack;
+    }
+    
+    var getDefaultCallback = function(callBackName){
         var cbn = callBackName;
+        var context = this;//cacheo para q no pierda contexto
+        
         return function(response){
             console.log(cbn + ' por defecto lanzado');
-            console.log(this);
-            //trigger(cbn, response); //xq esto no anda??? contexto puto
+            context.trigger(cbn, response);
         }
     }
 
 /**
  * PUBLIC INTERFACE----------------------------------------------------
  */
-    
+    var toString = function(){
+        var str = className;
+        if(this.child !== undefined){
+            str += ' ( ';
+            str += this.child.toString();
+            str +=  ' )';
+        }
+        
+        return str;
+    }
     
     return VoxClass.Class(
         className,
@@ -159,7 +171,8 @@ function(VoxClass, VoxStringHelper) {
             constructor: constructor,
             load: load,
             save: save,
-            erase: erase
+            erase: erase,
+            toString : toString
         }
         
         
