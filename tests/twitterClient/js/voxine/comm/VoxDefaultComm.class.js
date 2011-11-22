@@ -78,7 +78,7 @@ define([
                 };
                 
                 console.log("constructed VoxDefaultComm; Gateway URL: " + private.gatewayUrl);
-            }      
+            };
         }());
     
         /**
@@ -93,13 +93,13 @@ define([
             
             var onSuccess = function(response){
                 console.log('VoxDefaultComm: RECEIVED RESPONSE: ' + response);
-                //console.log(caller);
+                
                 if (caller !== undefined && caller.onSuccess !== undefined) {
                     caller.onSuccess(response);
                 }
             };
             var onError = function(response){
-                console.log('VoxDefaultComm: RECEIVED ERROR: ' + response);
+                console.log('VoxDefaultComm: RECEIVED ERROR: ' + response.statusText);
                 if (caller !== undefined && caller.onError !== undefined) {
                     caller.onError(response);
                 }
@@ -108,7 +108,8 @@ define([
             var ajaxConfig = {
                 url: private.gatewayUrl,
                 type: private.type,
-                crossDomain: private.crossdomain,
+                dataType: private.dataType,
+                crossDomain: private.crossDomain,
                 success: onSuccess,
                 error: onError //de ser un request JSONP no estoy seguro que tome este callback en caso de error
             };

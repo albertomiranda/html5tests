@@ -102,9 +102,11 @@ define([
          * @author Alberto Miranda <alberto@nextive.com>
          * @param object data
          */
-        var send = function(data){
-            var config = {
-                gatewayUrl: private.gatewayUrl
+        var send = function(data, config){
+            if (typeof config == 'undefined') {
+                config = {
+                    gatewayUrl: private.gatewayUrl
+                };
             };
             
             //require set comm layer module and redirect to its send method
