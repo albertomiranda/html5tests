@@ -19,7 +19,6 @@ define([
          * @public
          */
         var constructor = function(storageType, storageKey, options, filter) {
-            this.inherited(storageType, storageKey, options);
             this.filter = filter;
             this.collection = [];
         };
