@@ -19,7 +19,12 @@ function(VoxClass) {
     var constructor = function(origCallback, formater) {
         this.originalCallback = origCallback;
         this.dataFormater = formater;
-
+        this.callbackContext = null;
+        
+        var args = Array.prototype.slice.call(arguments).splice(2);
+        if(args.length > 0){
+            this.callbackContext = args[0];
+        }
     };
     
     var getProxy = function(){
@@ -30,7 +35,7 @@ function(VoxClass) {
                 var response = context.dataFormater(rawResponse);
 
                 console.log("Resending processed response...");
-                context.originalCallback(response);
+                context.originalCallback.apply(context.callbackContext, [response]);
             }else{
                 console.log("Callback still UNdefined on:");
                 console.log(this);

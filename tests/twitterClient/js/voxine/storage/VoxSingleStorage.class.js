@@ -128,11 +128,11 @@ function(VoxClass, VoxStringHelper) {
     var getWrappedCallBack = function(object, callBackName){
         var callBack = 
             getCallBackOrDefault.apply(this, [object, callBackName]);
-        debugger;
         var formater = getFormaterOrDefault.apply(this, [object]);
+        var callbackContext = object;//si es default callback lo ignora
         
         var wrappedCallBack = 
-            new VoxStorageCallbackProxy(callBack, formater).getProxy();
+            new VoxStorageCallbackProxy(callBack, formater, callbackContext).getProxy();
         
         return wrappedCallBack;
     }
