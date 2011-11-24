@@ -31,7 +31,7 @@ function(VoxClass, VoxStringHelper) {
     var save = function(object) {
         this.child.persist(
             object.storageKey,
-            formatForStorage(object.prune()), 
+            formatForStorage(object), 
             connConfig.apply(this, [object, 'save'])
         );
     };
@@ -54,8 +54,8 @@ function(VoxClass, VoxStringHelper) {
  * Data processing----------------------------------------------------
  */
 
-    var formatForStorage = function(data){
-        var storableData = serialize(data);
+    var formatForStorage = function(object){
+        var storableData = serialize(object);
         return storableData;
     }
     
@@ -64,8 +64,15 @@ function(VoxClass, VoxStringHelper) {
         return data;
     }
     
-    var serialize = function(data) {
-        var str = JSON.stringify(data);
+    var serialize = function(object) {
+        var str;
+            
+        if(object.toJSON !== undefined){
+            str = object.toJSON();
+        }else{
+            str = JSON.stringify(object.prune());
+        }
+        
         console.log("Serialized obj :" + str);
         return str;
     };
@@ -92,23 +99,23 @@ function(VoxClass, VoxStringHelper) {
      * Returns an object that contains conn info and
      * wrapped callbacks based on storage operation
      */
-    var connConfig = function(extendedInfo, storageOperation){
+    var connConfig = function(object, storageOperation){
         var processedConnConfig;
         
-        if(extendedInfo !== undefined){
+        if(object !== undefined){
             processedConnConfig = {};
             processedConnConfig.toString = function(){return 'processedConnConfig';};
-            processedConnConfig.gatewayUrl = extendedInfo.gatewayUrl;
-            processedConnConfig.commLayer = extendedInfo.commLayer;
+            processedConnConfig.gatewayUrl = object.gatewayUrl;
+            processedConnConfig.commLayer = object.commLayer;
 
             storageOperation = VoxStringHelper.ucfirst(storageOperation)
             var successCallBackName = 'on' + storageOperation + 'Success';
             var errorCallBackName = 'on' + storageOperation + 'Error';
             
             processedConnConfig.onSuccess = 
-                getWrappedCallBack.apply(this, [extendedInfo, successCallBackName]);
+                getWrappedCallBack.apply(this, [object, successCallBackName]);
             processedConnConfig.onError = 
-                getWrappedCallBack.apply(this, [extendedInfo, errorCallBackName]);
+                getWrappedCallBack.apply(this, [object, errorCallBackName]);
         }
         
         return processedConnConfig;
@@ -121,10 +128,19 @@ function(VoxClass, VoxStringHelper) {
     var getWrappedCallBack = function(object, callBackName){
         var callBack = 
             getCallBackOrDefault.apply(this, [object, callBackName]);
+        debugger;
+        var formater = getFormaterOrDefault.apply(this, [object]);
+        
         var wrappedCallBack = 
-            new VoxStorageCallbackProxy(callBack, formatFromStorage).getProxy();
+            new VoxStorageCallbackProxy(callBack, formater).getProxy();
         
         return wrappedCallBack;
+    }
+    
+    var getFormaterOrDefault = function(object){
+        return (object.toJSON !== undefined)
+            ? object.toJSON
+            : formatFromStorage;
     }
     
     var getCallBackOrDefault = function(object, callBackName){
