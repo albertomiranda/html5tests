@@ -138,8 +138,8 @@ function(VoxClass, VoxStringHelper) {
     }
     
     var getFormaterOrDefault = function(object){
-        return (object.toJSON !== undefined)
-            ? object.toJSON
+        return (object.fromJSON !== undefined)
+            ? object.fromJSON
             : formatFromStorage;
     }
     
