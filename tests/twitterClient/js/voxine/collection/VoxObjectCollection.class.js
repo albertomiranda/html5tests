@@ -146,19 +146,27 @@ define([
          * object that contains a toJSON method, it calls that method, and 
          * stringifies the value returned. This allows an object to determine 
          * its own JSON representation.
-         * @return String: Object strigified.
+         * 
+         * Before persisted collection's objects are pruned in order to reduce
+         * the amount of data to be saved.
+         * 
+         * @return {String} Object stringified.
          */
         var toJSON = function() {
+            var collection = [];
+            for (var i=0, l = this.collection.length; i<l; ++i) {
+                collection[i] = this.collection[i].prune();
+            };
             return JSON.stringify({
                 storageKey: this.storageKey, 
                 storageType: this.storageType,
                 clientKey: this.clientKey,
                 serverKey: this.serverKey,
-                collection: this.collection,
+                collection: collection,
                 filter: this.filter,
                 options: this.options
             });
-        }
+        };
         
         var object = VoxClass.Class(
             'VoxObjectCollection',
