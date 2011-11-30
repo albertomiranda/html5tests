@@ -21,16 +21,16 @@ $(function() {
     //View
     window.TempConverterView = Backbone.View.extend({
 
-        el: $('#tempSlider'),
+        el: $('#slider'),
 
         events: {
-          "change #tempSlider" : "updateTemperature"
+          "change #tempSlider" : "updateTemperture"
         },
         
         initialize: function(){
             // every function that uses 'this' as the current object should be in here
             this.model = new Celsius();
-            _.bindAll(this, 'render', 'updateTemperature'); 
+            _.bindAll(this, 'render', 'updateTemperture'); 
             this.model.bind('change', this.render, this);
             this.render();
         },
@@ -42,9 +42,8 @@ $(function() {
             return this;
         },
         
-        updateTemperature : function() {
-            console.log('pepe');
-            this.model.set({temperture : $(this.el).val()});
+        updateTemperture : function() {
+            this.model.set({temperture : $('#tempSlider').val()});
         }
     });
     
